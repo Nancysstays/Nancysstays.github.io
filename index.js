@@ -241,10 +241,11 @@ function showInfoWindow() {
 
 // Load the place information into the HTML elements used by the info window.
 function buildIWContent(place) {
+  const site = "https://expedia.com/affiliates/expedia-home.bHJcizS";
   document.getElementById("iw-icon").innerHTML =
     '<img class="hotelIcon" ' + 'src="' + place.icon + '"/>';
   document.getElementById("iw-url").innerHTML =
-    '<b><a href="' + place.url + '">' + place.name + "</a></b>";
+    '<b><a href="' + site + '">' + place.name + "</a></b>";
   document.getElementById("iw-address").textContent = place.vicinity;
   if (place.formatted_phone_number) {
     document.getElementById("iw-phone-row").style.display = "";
