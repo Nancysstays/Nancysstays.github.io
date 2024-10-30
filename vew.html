@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Finance Pre-Market Gainers</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Google Finance Pre-Market Gainers</h1>
+
+  <div id="ticker-container"></div>
+
+  <script>
+    fetch("https://www.google.com/finance/markets/gainers?hl=en")
+      .then(response => response.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const rows = doc.querySelectorAll('div[role="row"]');
+
+        const data = [];
+        for (let i = 1; i < rows.length && i <= 100; i++) { // Start from 1 to skip the header row
+          const row = rows[i];
+          const cells = row.querySelectorAll('div[role="cell"]');
+          data.push({
+            symbol: cells[0].textContent.trim(),
+            price: cells[1].textContent.trim(),
+            change: cells[2].textContent.trim(),
+            changePercent: cells[3].textContent.trim(),
+          });
+        }
+
+        // Create ticker tape element
+        const tickerContainer = document.getElementById("ticker-container");
+        const tickerTape = document.createElement("div");
+        tickerTape.style.display = "flex";
+        tickerTape.style.overflowX = "auto";
+        tickerTape.style.whiteSpace = "nowrap";
+
+        data.forEach(item => {
+          const tickerItem = document.createElement("div");
+          tickerItem.style.padding = "5px 10px";
+          tickerItem.textContent = `${item.symbol} ${item.price} (${item.change} ${item.changePercent})`;
+          tickerTape.appendChild(tickerItem);
+        });
+
+        tickerContainer.appendChild(tickerTape);
+      })
+      .catch(error => console.error("Error fetching data:", error));
+  </script>
+
+</body>
+</html>
