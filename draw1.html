@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Line Drawing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+<style>
+#canvas {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Line Drawing Tool</h1>
+
+  <div class="form-group">
+    <label for="layer">Layer:</label>
+    <select class="form-control" id="layer">
+      <option value="0">Layer 1</option>
+    </select>
+    <button class="btn btn-sm btn-success mt-1" onclick="addLayer()">Add Layer</button>
+  </div>
+
+  <div class="form-group">
+    <label for="x">X:</label>
+    <input type="number" class="form-control" id="x" value="0">
+  </div>
+
+  <div class="form-group">
+    <label for="y">Y:</label>
+    <input type="number" class="form-control" id="y" value="0">
+  </div>
+
+  <button class="btn btn-primary" onclick="addPoint()">Add Point</button>
+  <button class="btn btn-danger" onclick="clearCanvas()">Clear</button>
+
+  <div class="form-group mt-3">
+    <label for="zoom">Zoom:</label>
+    <input type="range" class="form-control-range" id="zoom" min="1" max="5" step="0.1" value="1">
+  </div>
+
+  <canvas id="canvas" width="500" height="300"></canvas>
+</div>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let layers = [{ points: [], color: 'black' }]; // Start with one layer
+  let currentLayer = 0;
+  let scale = 1;
+
+  function addPoint() {
+    const x = parseInt(document.getElementById('x').value);
+    const y = parseInt(document.getElementById('y').value);
+    layers[currentLayer].points.push({ x, y });
+    redrawCanvas();
+  }
+
+  function clearCanvas() {
+    layers.forEach(layer => layer.points = []);
+    redrawCanvas();
+  }
+
+  function addLayer() {
+    const layerSelect = document.getElementById('layer');
+    const newLayer = layers.length;
+    layers.push({ points: [], color: 'black' }); // Add a new layer with default color
+    layerSelect.innerHTML += `<option value="${newLayer}">Layer ${newLayer + 1}</option>`;
+    layerSelect.value = newLayer; // Select the new layer
+    currentLayer = newLayer;
+  }
+
+  function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.scale(scale, scale);
+
+    layers.forEach(layer => {
+      ctx.beginPath();
+      ctx.strokeStyle = layer.color;
+      layer.points.forEach((point, index) => {
+        if (index === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+      });
+      ctx.stroke();
+    });
+
+    ctx.restore();
+  }
+
+  document.getElementById('layer').addEventListener('change', (event) => {
+    currentLayer = parseInt(event.target.value);
+  });
+
+  document.getElementById('zoom').addEventListener('input', (event) => {
+    scale = parseFloat(event.target.value);
+    redrawCanvas();
+  });
+</script>
+
+</body>
+</html>
