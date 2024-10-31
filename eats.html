@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Our Pizza Place</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Custom styles can be added here */
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container"> 
+
+  <h1>Our Pizza Place</h1>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Specialty Pizzas</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          The Works
+          <span class="badge badge-primary badge-pill">$15.99</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Meat Lover's
+          <span class="badge badge-primary badge-pill">$16.99</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Veggie Supreme
+          <span class="badge badge-primary badge-pill">$14.99</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2>Build Your Own</h2>
+      <p>Choose your size:</p>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeSmall" value="8.99" checked>
+        <label class="form-check-label" for="sizeSmall">
+          Small (10") - $8.99
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeMedium" value="10.99">
+        <label class="form-check-label" for="sizeMedium">
+          Medium (12") - $10.99
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeLarge" value="12.99">
+        <label class="form-check-label" for="sizeLarge">
+          Large (14") - $12.99
+        </label>
+      </div>
+      <p>Choose your toppings:</p>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingPepperoni" value="1.50">
+        <label class="form-check-label" for="toppingPepperoni">
+          Pepperoni - $1.50
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingMushrooms" value="1.00">
+        <label class="form-check-label" for="toppingMushrooms">
+          Mushrooms - $1.00
+        </label>
+      </div>
+      {/* Add more toppings here */}
+    </div>
+    <div class="col-md-4">
+      <h2>Sides</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Garlic Knots
+          <span class="badge badge-primary badge-pill">$4.99</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Breadsticks
+          <span class="badge badge-primary badge-pill">$5.99</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Caesar Salad
+          <span class="badge badge-primary badge-pill">$6.99</span>
+        </li>
+      </ul>
+
+      <h2>Drinks</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Soda
+          <span class="badge badge-primary badge-pill">$2.00</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Juice
+          <span class="badge badge-primary badge-pill">$2.50</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Water
+          <span class="badge badge-primary badge-pill">$1.50</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
