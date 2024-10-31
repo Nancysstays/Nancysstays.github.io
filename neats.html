@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Our Pizza Place</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .pizza-description {
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container"> 
+
+  <h1>Our Pizza Place</h1>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Specialty Pizzas</h2>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <h3>The Works</h3>
+          <p class="pizza-description">Pepperoni, sausage, mushrooms, onions, green peppers, olives</p>
+          <span class="badge badge-primary badge-pill">$15.99</span>
+        </li>
+        <li class="list-group-item">
+          <h3>Meat Lover's</h3>
+          <p class="pizza-description">Pepperoni, sausage, bacon, ham, ground beef</p>
+          <span class="badge badge-primary badge-pill">$16.99</span>
+        </li>
+        <li class="list-group-item">
+          <h3>Veggie Supreme</h3>
+          <p class="pizza-description">Mushrooms, onions, green peppers, olives, tomatoes, spinach</p>
+          <span class="badge badge-primary badge-pill">$14.99</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2>Build Your Own</h2>
+      <p>Choose your size:</p>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeSmall" value="small" checked>
+        <label class="form-check-label" for="sizeSmall">
+          Small (10") - $8.99
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeMedium" value="medium">
+        <label class="form-check-label" for="sizeMedium">
+          Medium (12") - $10.99
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeLarge" value="large">
+        <label class="form-check-label" for="sizeLarge">
+          Large (14") - $12.99
+        </label>
+      </div>
+      <p>Choose your toppings:</p>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingPepperoni" data-price-small="1.00" data-price-medium="1.50" data-price-large="2.00">
+        <label class="form-check-label" for="toppingPepperoni">
+          Pepperoni - $<span class="topping-price">1.00</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingMushrooms" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingMushrooms">
+          Mushrooms - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      {/* Add more toppings here, following the same pattern */}
+    </div>
+    <div class="col-md-4">
+      <h2>Sides</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Garlic Knots
+          <span class="badge badge-primary badge-pill">$4.99</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Breadsticks
+          <span class="badge badge-primary badge-pill">$5.99</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Caesar Salad
+          <span class="badge badge-primary badge-pill">$6.99</span>
+        </li>
+      </ul>
+
+      <h2>Drinks</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Soda
+          <span class="badge badge-primary badge-pill">$2.00</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Juice
+          <span class="badge badge-primary badge-pill">$2.50</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Water
+          <span class="badge badge-primary badge-pill">$1.50</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('input[name="pizzaSize"]').change(function() {
+      updateToppingPrices();
+    });
+
+    function updateToppingPrices() {
+      var selectedSize = $('input[name="pizzaSize"]:checked').val();
+      $('input[type="checkbox"][name="topping"]').each(function() {
+        var price = $(this).data('price-' + selectedSize);
+        $(this).next('label').find('.topping-price').text(price);
+      });
+    }
+
+    // Initial update on page load
+    updateToppingPrices();
+  });
+</script>
+</body>
+</html>
