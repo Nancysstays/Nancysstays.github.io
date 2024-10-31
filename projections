@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>10 Room Hotel Financial Projections</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h1>10 Room Hotel Financial Projections</h1>
+
+<div>
+  <label for="occupancyRate">Occupancy Rate:</label>
+  <input type="number" id="occupancyRate" value="70"> %
+</div>
+<div>
+  <label for="averageDailyRate">Average Daily Rate:</label>
+  <input type="number" id="averageDailyRate" value="100"> $
+</div>
+<div>
+  <label for="operatingExpenses">Operating Expenses (monthly):</label>
+  <input type="number" id="operatingExpenses" value="5000"> $
+</div>
+
+<button onclick="calculateProjections()">Calculate</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Yearly Projection</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total Revenue</td>
+      <td id="totalRevenue"></td>
+    </tr>
+    <tr>
+      <td>Total Expenses</td>
+      <td id="totalExpenses"></td>
+    </tr>
+    <tr>
+      <td>Gross Operating Profit</td>
+      <td id="grossOperatingProfit"></td>
+    </tr>
+    <tr>
+      <td>Net Operating Income</td>
+      <td id="netOperatingIncome"></td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+function calculateProjections() {
+  const occupancyRate = parseFloat(document.getElementById("occupancyRate").value) / 100;
+  const averageDailyRate = parseFloat(document.getElementById("averageDailyRate").value);
+  const operatingExpenses = parseFloat(document.getElementById("operatingExpenses").value);
+
+  const rooms = 10;
+  const daysInYear = 365;
+
+  const totalRevenue = rooms * occupancyRate * averageDailyRate * daysInYear;
+  const totalExpenses = operatingExpenses * 12; 
+  const grossOperatingProfit = totalRevenue - totalExpenses;
+  const netOperatingIncome = grossOperatingProfit; // Assuming no taxes or other deductions for simplicity
+
+  document.getElementById("totalRevenue").textContent = totalRevenue.toFixed(2) + " $";
+  document.getElementById("totalExpenses").textContent = totalExpenses.toFixed(2) + " $";
+  document.getElementById("grossOperatingProfit").textContent = grossOperatingProfit.toFixed(2) + " $";
+  document.getElementById("netOperatingIncome").textContent = netOperatingIncome.toFixed(2) + " $";
+}
+</script>
+
+</body>
+</html>
