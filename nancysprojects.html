@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Financial Projections</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hotel Financial Projections (10 Rooms)</h1>
+        <p>Enter your assumptions below to see projected income, expenses, and profit.</p>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Income</h2>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Average Occupancy Rate (%)</span>
+                    </div>
+                    <input type="number" class="form-control" id="occupancyRate" value="70">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Average Daily Rate ($)</span>
+                    </div>
+                    <input type="number" class="form-control" id="dailyRate" value="100">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Other Income ($/month)</span>
+                    </div>
+                    <input type="number" class="form-control" id="otherIncome" value="0">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Expenses</h2>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Fixed Costs ($/month)</span>
+                    </div>
+                    <input type="number" class="form-control" id="fixedCosts" value="5000">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Variable Costs per Room ($/night)</span>
+                    </div>
+                    <input type="number" class="form-control" id="variableCosts" value="20">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calculateProjections()">Calculate Projections</button>
+
+        <div id="results" style="margin-top: 20px;">
+            <h2>Projections</h2>
+            <p><strong>Monthly Revenue:</strong> <span id="monthlyRevenue"></span></p>
+            <p><strong>Monthly Expenses:</strong> <span id="monthlyExpenses"></span></p>
+            <p><strong>Monthly Profit:</strong> <span id="monthlyProfit"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateProjections() {
+            const occupancyRate = parseFloat(document.getElementById("occupancyRate").value) / 100;
+            const dailyRate = parseFloat(document.getElementById("dailyRate").value);
+            const otherIncome = parseFloat(document.getElementById("otherIncome").value);
+            const fixedCosts = parseFloat(document.getElementById("fixedCosts").value);
+            const variableCosts = parseFloat(document.getElementById("variableCosts").value);
+
+            const numRooms = 10;
+            const daysInMonth = 30; // You can adjust this for more accuracy
+
+            const monthlyRevenue = (numRooms * occupancyRate * dailyRate * daysInMonth) + otherIncome;
+            const monthlyExpenses = fixedCosts + (numRooms * occupancyRate * variableCosts * daysInMonth);
+            const monthlyProfit = monthlyRevenue - monthlyExpenses;
+
+            document.getElementById("monthlyRevenue").textContent = monthlyRevenue.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+            document.getElementById("monthlyExpenses").textContent = monthlyExpenses.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+            document.getElementById("monthlyProfit").textContent = monthlyProfit.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+        }
+    </script>
+</body>
+</html>
