@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Our Pizza Place</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .pizza-description {
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container"> 
+
+  <h1>Our Pizza Place</h1>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Specialty Pizzas</h2>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <h3>The Works</h3>
+          <p class="pizza-description">Pepperoni, sausage, mushrooms, onions, green peppers, olives</p>
+          <span class="badge badge-primary badge-pill">$15.99</span>
+        </li>
+        <li class="list-group-item">
+          <h3>Meat Lover's</h3>
+          <p class="pizza-description">Pepperoni, sausage, bacon, ham, ground beef</p>
+          <span class="badge badge-primary badge-pill">$16.99</span>
+        </li>
+        <li class="list-group-item">
+          <h3>Veggie Supreme</h3>
+          <p class="pizza-description">Mushrooms, onions, green peppers, olives, tomatoes, spinach</p>
+          <span class="badge badge-primary badge-pill">$14.99</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2>Build Your Own</h2>
+      <p>Choose your size:</p>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeSmall" value="small" checked>
+        <label class="form-check-label" for="sizeSmall">
+          Small (10") - $8.99
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeMedium" value="medium">
+        <label class="form-check-label" for="sizeMedium">
+          Medium (12") - $10.99
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="pizzaSize" id="sizeLarge" value="large">
+        <label class="form-check-label" for="sizeLarge">
+          Large (14") - $12.99
+        </label>
+      </div>
+      <p>Choose your toppings:</p>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingPepperoni" data-price-small="1.00" data-price-medium="1.50" data-price-large="2.00">
+        <label class="form-check-label" for="toppingPepperoni">
+          Pepperoni - $<span class="topping-price">1.00</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingMushrooms" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingMushrooms">
+          Mushrooms - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingOnions" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingOnions">
+          Onions - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingSausage" data-price-small="1.00" data-price-medium="1.50" data-price-large="2.00">
+        <label class="form-check-label" for="toppingSausage">
+          Sausage - $<span class="topping-price">1.00</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingBacon" data-price-small="1.25" data-price-medium="1.75" data-price-large="2.25">
+        <label class="form-check-label" for="toppingBacon">
+          Bacon - $<span class="topping-price">1.25</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingExtraCheese" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingExtraCheese">
+          Extra Cheese - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingGreenPeppers" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingGreenPeppers">
+          Green Peppers - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingOlives" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingOlives">
+          Olives - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingTomatoes" data-price-small="0.75" data-price-medium="1.00" data-price-large="1.25">
+        <label class="form-check-label" for="toppingTomatoes">
+          Tomatoes - $<span class="topping-price">0.75</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingSpinach" data-price-small="1.00" data-price-medium="1.25" data-price-large="1.50">
+        <label class="form-check-label" for="toppingSpinach">
+          Spinach - $<span class="topping-price">1.00</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingHam" data-price-small="1.00" data-price-medium="1.50" data-price-large="2.00">
+        <label class="form-check-label" for="toppingHam">
+          Ham - $<span class="topping-price">1.00</span>
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="topping" id="toppingGroundBeef" data-price-small="1.25" data-price-medium="1.75" data-price-large="2.25">
+        <label class="form-check-label
