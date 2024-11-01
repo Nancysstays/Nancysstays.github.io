@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Line Manipulation</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Line Manipulation</h1>
+
+    <div class="form-group">
+      <label for="canvasWidth">Canvas Width:</label>
+      <input type="number" class="form-control" id="canvasWidth" value="800">
+      <label for="canvasHeight">Canvas Height:</label>
+      <input type="number" class="form-control" id="canvasHeight" value="600">
+      <button onclick="setCanvasDimensions()" class="btn btn-info">Set Dimensions</button>
+    </div>
+
+    <div class="form-group">
+      <label for="startX">Start X:</label>
+      <input type="number" class="form-control" id="startX" value="50">
+      <label for="startY">Start Y:</label>
+      <input type="number" class="form-control" id="startY" value="50">
+      <label for="lengthX">Length X:</label>
+      <input type="number" class="form-control" id="lengthX" value="100">
+      <label for="lengthY">Length Y:</label>
+      <input type="number" class="form-control" id="lengthY" value="0">
+      <button onclick="drawLine()" class="btn btn-primary">Draw Line</button>
+    </div>
+    <div class="form-group">
+      <label for="offset">Offset:</label>
+      <select class="form-control" id="offset">
+        <option value="6">6 inches</option>
+        <option value="4">4 inches</option>
+        <option value="-6">-6 inches</option>
+        <option value="-4">-4 inches</option>
+      </select>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="oppositeSide">
+        <label class="form-check-label" for="oppositeSide">Offset to opposite side</label>
+      </div>
+      <button onclick="offsetLine()" class="btn btn-secondary">Offset Line</button>
+    </div>
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let line = null;
+
+    class Line {
+      // ... (Line class remains the same)
+    }
+
+    function setCanvasDimensions() {
+      const width = parseInt(document.getElementById('canvasWidth').value);
+      const height = parseInt(document.getElementById('canvasHeight').value);
+      canvas.width = width;
+      canvas.height = height;
+      // You might want to redraw the existing line here if any
+      if (line) {
+        line.draw();
+      }
+    }
+
+    function drawLine() {
+      // ... (drawLine function remains the same)
+    }
+
+    function offsetLine() {
+      // ... (offsetLine function remains the same)
+    }
+  </script>
+</body>
+</html>
