@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Line Manipulation</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Line Manipulation</h1>
+    <div class="form-group">
+      <label for="startX">Start X:</label>
+      <input type="number" class="form-control" id="startX" value="50">
+      <label for="startY">Start Y:</label>
+      <input type="number" class="form-control" id="startY" value="50">
+      <label for="lengthX">Length X:</label>
+      <input type="number" class="form-control" id="lengthX" value="100">
+      <label for="lengthY">Length Y:</label>
+      <input type="number" class="form-control" id="lengthY" value="0">
+      <button onclick="drawLine()" class="btn btn-primary">Draw Line</button>
+    </div>
+    <div class="form-group">
+      <label for="offset">Offset:</label>
+      <select class="form-control" id="offset">
+        <option value="6">6 inches</option>
+        <option value="4">4 inches</option>
+      </select>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="oppositeSide">
+        <label class="form-check-label" for="oppositeSide">Offset to opposite side</label>
+      </div>
+      <button onclick="offsetLine()" class="btn btn-secondary">Offset Line</button>
+    </div>
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let line = null;
+
+    class Line {
+      constructor(startX, startY, endX, endY) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.startX, this.startY);
+        ctx.lineTo(this.endX, this.endY);
+        ctx.stroke();
+      }
+
+      offset(xOffset, yOffset) {
+        const newStartX = this.startX + xOffset;
+        const newStartY = this.startY + yOffset;
+        const newEndX = this.endX + xOffset;
+        const newEndY = this.endY + yOffset;
+
+        // Extend the offset line to the orthogonal location
+        if (this.startX === this.endX) { // Vertical line
+          newEndX = newStartX;
+        } else if (this.startY === this.endY) { // Horizontal line
+          newEndY = newStartY;
+        } else {
+          // For diagonal lines, you'll need to calculate the intersection point
+          // with the original line's orthogonal line. This requires more complex
+          // geometry calculations and is not included in this simplified example.
+        }
+
+        return new Line(newStartX, newStartY, newEndX, newEndY);
+      }
+    }
+
+    function drawLine() {
+      const startX = parseInt(document.getElementById('startX').value);
+      const startY = parseInt(document.getElementById('startY').value);
+      const lengthX = parseInt(document.getElementById('lengthX').value);
+      const lengthY = parseInt(document.getElementById('lengthY').value);
+      const endX = startX + lengthX;
+      const endY = startY + lengthY;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      line = new Line(startX, startY, endX, endY);
+      line.draw();
+    }
+
+    function offsetLine() {
+      if (!line) return;
+
+      const offset = parseInt(document.getElementById('offset').value);
+      const oppositeSide = document.getElementById('oppositeSide').checked;
+      const xOffset = oppositeSide ? -offset : offset;
+      const yOffset = oppositeSide ? -offset : offset;
+
+      const offsettedLine = line.offset(xOffset, yOffset);
+      offsettedLine.draw();
+    }
+  </script>
+</body>
+
+</html>
