@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My PWA</title>
+</head>
+<body>
+  <script src="my-script.js"></script> 
+
+  <script>
+    // Register service worker (if not already registered)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(function(registration) {
+          console.log('Service worker registered:', registration);
+        })
+        .catch(function(error) {
+          console.error('Service worker registration failed:', error);
+        });
+    }
+
+    // Example usage of myFunction from my-script.js
+    myFunction({ some: 'data' }, function(result) {
+      console.log('Result from service worker:', result);
+    });
+  </script>
+</body>
+</html>
