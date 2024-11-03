@@ -1,63 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Interactive Plotly Chart</title>
+  <title>Cartesian Plot with CRUD</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
 
-  <div id="plotly-chart"></div>
+  <div id="plot"></div>
 
-  X: <input type="number" id="x-input" value="0"><br>
-  Y: <input type="number" id="y-input" value="0"><br>
+  <h2>Add Line</h2>
+  X: <input type="text" id="xInput" placeholder="Enter x values (comma-separated)"> 
+  Y: <input type="text" id="yInput" placeholder="Enter y values (comma-separated)"> 
+  <button onclick="addLine()">Add Line</button>
 
-  <button onclick="addPoint()">Add Point</button>
-  <button onclick="updatePoint()">Update Point</button>
-  <button onclick="deletePoint()">Delete Point</button>
+  <h2>Lines</h2>
+  <ul id="lineList"></ul>
 
   <script>
-    let data = [{ x: [], y: [], type: 'scatter', mode: 'markers' }];
-    let layout = { title: 'XY Cartesian System' };
-    Plotly.newPlot('plotly-chart', data, layout);
+    let data = []; // Store Plotly data
+    let counter = 1; // Keep track of line IDs
 
-    let selectedPointIndex = null;
+    // Initialize Plotly chart
+    Plotly.newPlot('plot', data);
 
-    function addPoint() {
-      let x = parseFloat(document.getElementById('x-input').value);
-      let y = parseFloat(document.getElementById('y-input').value);
-      data[0].x.push(x);
-      data[0].y.push(y);
-      Plotly.redraw('plotly-chart');
+    function addLine() {
+      let xStr = document.getElementById('xInput').value;
+      let yStr = document.getElementById('yInput').value;
+
+      // Basic input validation (you'll want more robust error handling)
+      if (!xStr || !yStr) {
+        alert("Please enter x and y values.");
+        return;
+      }
+
+      let xValues = xStr.split(',').map(Number);
+      let yValues = yStr.split(',').map(Number);
+
+      let newLine = {
+        x: xValues,
+        y: yValues,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Line ' + counter,
+        line: {shape: 'linear'} // 'spline' for curved lines
+      };
+
+      data.push(newLine);
+      counter++;
+
+      // Update Plotly chart
+      Plotly.react('plot', data);
+
+      // Add line to list with CRUD controls
+      addLineToList(newLine);
+
+      // Clear input fields
+      document.getElementById('xInput').value = '';
+      document.getElementById('yInput').value = '';
     }
 
-    function updatePoint() {
-      if (selectedPointIndex !== null) {
-        let x = parseFloat(document.getElementById('x-input').value);
-        let y = parseFloat(document.getElementById('y-input').value);
-        data[0].x[selectedPointIndex] = x;
-        data[0].y[selectedPointIndex] = y;
-        Plotly.redraw('plotly-chart');
+    function addLineToList(line) {
+      let lineList = document.getElementById('lineList');
+      let li = document.createElement('li');
+      li.id = 'line-' + (counter - 1); // Assign ID to list item
+      li.textContent = line.name + ' (x: ' + line.x.join(', ') + ', y: ' + line.y.join(', ') + ') ';
+
+      // Edit button
+      let editBtn = document.createElement('button');
+      editBtn.textContent = 'Edit';
+      editBtn.onclick = () => editLine(line.name);
+      li.appendChild(editBtn);
+
+      // Delete button
+      let deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onclick = () => deleteLine(line.name);
+      li.appendChild(deleteBtn);
+
+      lineList.appendChild(li);
+    }
+
+    function editLine(lineName) {
+      // Find the line in the data array
+      let lineIndex = data.findIndex(line => line.name === lineName);
+
+      if (lineIndex !== -1) {
+        // Get the line data
+        let line = data[lineIndex];
+
+        // Pre-fill input fields with existing data
+        document.getElementById('xInput').value = line.x.join(', ');
+        document.getElementById('yInput').value = line.y.join(', ');
+
+        // Remove the line from the data array
+        data.splice(lineIndex, 1);
+
+        // Remove the line from the list
+        let lineItem = document.getElementById('line-' + (lineIndex + 1));
+        lineItem.remove();
+
+        // Update the Plotly chart
+        Plotly.react('plot', data);
       }
     }
 
-    function deletePoint() {
-      if (selectedPointIndex !== null) {
-        data[0].x.splice(selectedPointIndex, 1);
-        data[0].y.splice(selectedPointIndex, 1);
-        Plotly.redraw('plotly-chart');
-        selectedPointIndex = null;
+
+    function deleteLine(lineName) {
+      // Find the index of the line to delete
+      let lineIndex = data.findIndex(line => line.name === lineName);
+
+      if (lineIndex !== -1) {
+        // Remove the line from the data array
+        data.splice(lineIndex, 1);
+
+        // Remove the line from the list
+        let lineItem = document.getElementById('line-' + (lineIndex + 1));
+        lineItem.remove();
+
+        // Update the Plotly chart
+        Plotly.react('plot', data);
       }
     }
-
-    // Add click event to select points
-    let plotlyChart = document.getElementById('plotly-chart');
-    plotlyChart.on('plotly_click', function(data){
-      let pointNumber = data.points[0].pointNumber;
-      selectedPointIndex = pointNumber;
-      document.getElementById('x-input').value = data[0].x[pointNumber];
-      document.getElementById('y-input').value = data[0].y[pointNumber];
-    });
-
   </script>
 
 </body>
