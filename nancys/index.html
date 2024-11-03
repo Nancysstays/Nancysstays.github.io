@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>SVG with Cartesian Input</title>
-<style>
-  #svgContainer {
-    width: 400px;
-    height: 400px;
-    border: 1px solid black;
-  }
-</style>
+  <title>Interactive Plotly Chart</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
 
-<h1>Cartesian Coordinates</h1>
+  <div id="plotly-chart"></div>
 
-<div>
-  <label for="x">X:</label>
-  <input type="number" id="x" value="50">
-  <label for="y">Y:</label>
-  <input type="number" id="y" value="50">
-  <button id="add">Add</button>
-</div>
+  X: <input type="number" id="x-input" value="0"><br>
+  Y: <input type="number" id="y-input" value="0"><br>
 
-<svg id="svgContainer" viewBox="0 0 400 400">
-  <circle cx="50" cy="50" r="10" fill="blue" /> 
-</svg>
+  <button onclick="addPoint()">Add Point</button>
+  <button onclick="updatePoint()">Update Point</button>
+  <button onclick="deletePoint()">Delete Point</button>
 
-<script>
-const svgContainer = document.getElementById('svgContainer');
-const xInput = document.getElementById('x');
-const yInput = document.getElementById('y');
-const addButton = document.getElementById('add');
+  <script>
+    let data = [{ x: [], y: [], type: 'scatter', mode: 'markers' }];
+    let layout = { title: 'XY Cartesian System' };
+    Plotly.newPlot('plotly-chart', data, layout);
 
-addButton.addEventListener('click', () => {
-  const x = xInput.value;
-  const y = yInput.value;
-  addCircle(x, y);
-});
+    let selectedPointIndex = null;
 
-function addCircle(x, y) {
-  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  circle.setAttribute('cx', x);
-  circle.setAttribute('cy', y);
-  circle.setAttribute('r', '10');
-  circle.setAttribute('fill', 'blue');
-  svgContainer.appendChild(circle);
+    function addPoint() {
+      let x = parseFloat(document.getElementById('x-input').value);
+      let y = parseFloat(document.getElementById('y-input').value);
+      data[0].x.push(x);
+      data[0].y.push(y);
+      Plotly.redraw('plotly-chart');
+    }
 
-  // Add event listeners for CRUD operations
-  circle.addEventListener('click', () => {
-    // For simplicity, this example only implements delete (remove)
-    svgContainer.removeChild(circle); 
-  });
+    function updatePoint() {
+      if (selectedPointIndex !== null) {
+        let x = parseFloat(document.getElementById('x-input').value);
+        let y = parseFloat(document.getElementById('y-input').value);
+        data[0].x[selectedPointIndex] = x;
+        data[0].y[selectedPointIndex] = y;
+        Plotly.redraw('plotly-chart');
+      }
+    }
 
-  // You can add more event listeners for update (e.g., drag and drop)
-  // and read operations (e.g., display coordinates on hover)
-}
-</script>
+    function deletePoint() {
+      if (selectedPointIndex !== null) {
+        data[0].x.splice(selectedPointIndex, 1);
+        data[0].y.splice(selectedPointIndex, 1);
+        Plotly.redraw('plotly-chart');
+        selectedPointIndex = null;
+      }
+    }
+
+    // Add click event to select points
+    let plotlyChart = document.getElementById('plotly-chart');
+    plotlyChart.on('plotly_click', function(data){
+      let pointNumber = data.points[0].pointNumber;
+      selectedPointIndex = pointNumber;
+      document.getElementById('x-input').value = data[0].x[pointNumber];
+      document.getElementById('y-input').value = data[0].y[pointNumber];
+    });
+
+  </script>
 
 </body>
 </html>
