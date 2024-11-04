@@ -12,18 +12,25 @@
   X: <input type="text" id="xInput" placeholder="Enter x values (comma-separated)"> 
   Y: <input type="text" id="yInput" placeholder="Enter y values (comma-separated)"> 
   Color: <input type="color" id="colorInput" value="#007bff"> 
-  <br>
-  X-Axis Range: <input type="text" id="xRangeInput" placeholder="e.g., 0, 10">
-  Y-Axis Range: <input type="text" id="yRangeInput" placeholder="e.g., -5, 5">
-  <br>
   <button onclick="addLine()">Add Line</button>
 
   <h2>Lines</h2>
   <ul id="lineList"></ul>
 
+  <h2>Range</h2>
+  X-axis: <input type="text" id="xRangeStart" placeholder="Start"> - 
+          <input type="text" id="xRangeEnd" placeholder="End">
+  Y-axis: <input type="text" id="yRangeStart" placeholder="Start"> - 
+          <input type="text" id="yRangeEnd" placeholder="End">
+  <button onclick="updateRange()">Update Range</button>
+
+  <button onclick="saveState()">Save State</button>
+  <button onclick="loadState()">Load State</button>
+
   <script>
-    let data = []; 
-    let counter = 1; 
+    let data = [];
+    let counter = 1;
+    let layout = {}; // Store layout for saving state
 
     Plotly.newPlot('plot', data);
 
@@ -31,8 +38,6 @@
       let xStr = document.getElementById('xInput').value;
       let yStr = document.getElementById('yInput').value;
       let color = document.getElementById('colorInput').value;
-      let xRangeStr = document.getElementById('xRangeInput').value;
-      let yRangeStr = document.getElementById('yRangeInput').value;
 
       if (!xStr || !yStr) {
         alert("Please enter x and y values.");
@@ -49,35 +54,68 @@
         mode: 'lines+markers',
         name: 'Line ' + counter,
         line: {
-          color: color, 
-          shape: 'linear' 
+          shape: 'linear',
+          color: color // Use the selected color
         }
       };
-
-      let layout = {}; 
-
-      if (xRangeStr) {
-        let xRange = xRangeStr.split(',').map(Number);
-        layout.xaxis = { range: xRange };
-      }
-
-      if (yRangeStr) {
-        let yRange = yRangeStr.split(',').map(Number);
-        layout.yaxis = { range: yRange };
-      }
 
       data.push(newLine);
       counter++;
 
-      Plotly.react('plot', data, layout); 
-
+      Plotly.react('plot', data);
       addLineToList(newLine);
 
       document.getElementById('xInput').value = '';
       document.getElementById('yInput').value = '';
     }
 
-    // ... (rest of your code - addLineToList, editLine, deleteLine) ... 
+    function addLineToList(line) {
+      // ... (same as before)
+    }
+
+    function editLine(lineName) {
+      // ... (same as before)
+    }
+
+    function deleteLine(lineName) {
+      // ... (same as before)
+    }
+
+    function updateRange() {
+      let xStart = parseFloat(document.getElementById('xRangeStart').value);
+      let xEnd = parseFloat(document.getElementById('xRangeEnd').value);
+      let yStart = parseFloat(document.getElementById('yRangeStart').value);
+      let yEnd = parseFloat(document.getElementById('yRangeEnd').value);
+
+      layout.xaxis = { range: [xStart, xEnd] };
+      layout.yaxis = { range: [yStart, yEnd] };
+
+      Plotly.react('plot', data, layout);
+    }
+
+    function saveState() {
+      let state = {
+        data: data,
+        layout: layout 
+      };
+      localStorage.setItem('chartState', JSON.stringify(state));
+    }
+
+    function loadState() {
+      let savedState = localStorage.getItem('chartState');
+      if (savedState) {
+        let state = JSON.parse(savedState);
+        data = state.data;
+        layout = state.layout;
+        counter = data.length + 1; // Update counter based on loaded data
+        Plotly.react('plot', data, layout); 
+
+        // Repopulate the line list
+        let lineList = document.getElementById('lineList');
+        lineList.innerHTML = ''; // Clear the list
+        data.forEach(line => addLineToList(line));
+      }
+    }
   </script>
 
 </body>
