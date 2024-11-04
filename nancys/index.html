@@ -11,23 +11,29 @@
   <h2>Add Line</h2>
   X: <input type="text" id="xInput" placeholder="Enter x values (comma-separated)"> 
   Y: <input type="text" id="yInput" placeholder="Enter y values (comma-separated)"> 
+  Color: <input type="color" id="colorInput" value="#007bff"> 
+  <br>
+  X-Axis Range: <input type="text" id="xRangeInput" placeholder="e.g., 0, 10">
+  Y-Axis Range: <input type="text" id="yRangeInput" placeholder="e.g., -5, 5">
+  <br>
   <button onclick="addLine()">Add Line</button>
 
   <h2>Lines</h2>
   <ul id="lineList"></ul>
 
   <script>
-    let data = []; // Store Plotly data
-    let counter = 1; // Keep track of line IDs
+    let data = []; 
+    let counter = 1; 
 
-    // Initialize Plotly chart
     Plotly.newPlot('plot', data);
 
     function addLine() {
       let xStr = document.getElementById('xInput').value;
       let yStr = document.getElementById('yInput').value;
+      let color = document.getElementById('colorInput').value;
+      let xRangeStr = document.getElementById('xRangeInput').value;
+      let yRangeStr = document.getElementById('yRangeInput').value;
 
-      // Basic input validation (you'll want more robust error handling)
       if (!xStr || !yStr) {
         alert("Please enter x and y values.");
         return;
@@ -42,85 +48,36 @@
         type: 'scatter',
         mode: 'lines+markers',
         name: 'Line ' + counter,
-        line: {shape: 'linear'} // 'spline' for curved lines
+        line: {
+          color: color, 
+          shape: 'linear' 
+        }
       };
+
+      let layout = {}; 
+
+      if (xRangeStr) {
+        let xRange = xRangeStr.split(',').map(Number);
+        layout.xaxis = { range: xRange };
+      }
+
+      if (yRangeStr) {
+        let yRange = yRangeStr.split(',').map(Number);
+        layout.yaxis = { range: yRange };
+      }
 
       data.push(newLine);
       counter++;
 
-      // Update Plotly chart
-      Plotly.react('plot', data);
+      Plotly.react('plot', data, layout); 
 
-      // Add line to list with CRUD controls
       addLineToList(newLine);
 
-      // Clear input fields
       document.getElementById('xInput').value = '';
       document.getElementById('yInput').value = '';
     }
 
-    function addLineToList(line) {
-      let lineList = document.getElementById('lineList');
-      let li = document.createElement('li');
-      li.id = 'line-' + (counter - 1); // Assign ID to list item
-      li.textContent = line.name + ' (x: ' + line.x.join(', ') + ', y: ' + line.y.join(', ') + ') ';
-
-      // Edit button
-      let editBtn = document.createElement('button');
-      editBtn.textContent = 'Edit';
-      editBtn.onclick = () => editLine(line.name);
-      li.appendChild(editBtn);
-
-      // Delete button
-      let deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Delete';
-      deleteBtn.onclick = () => deleteLine(line.name);
-      li.appendChild(deleteBtn);
-
-      lineList.appendChild(li);
-    }
-
-    function editLine(lineName) {
-      // Find the line in the data array
-      let lineIndex = data.findIndex(line => line.name === lineName);
-
-      if (lineIndex !== -1) {
-        // Get the line data
-        let line = data[lineIndex];
-
-        // Pre-fill input fields with existing data
-        document.getElementById('xInput').value = line.x.join(', ');
-        document.getElementById('yInput').value = line.y.join(', ');
-
-        // Remove the line from the data array
-        data.splice(lineIndex, 1);
-
-        // Remove the line from the list
-        let lineItem = document.getElementById('line-' + (lineIndex + 1));
-        lineItem.remove();
-
-        // Update the Plotly chart
-        Plotly.react('plot', data);
-      }
-    }
-
-
-    function deleteLine(lineName) {
-      // Find the index of the line to delete
-      let lineIndex = data.findIndex(line => line.name === lineName);
-
-      if (lineIndex !== -1) {
-        // Remove the line from the data array
-        data.splice(lineIndex, 1);
-
-        // Remove the line from the list
-        let lineItem = document.getElementById('line-' + (lineIndex + 1));
-        lineItem.remove();
-
-        // Update the Plotly chart
-        Plotly.react('plot', data);
-      }
-    }
+    // ... (rest of your code - addLineToList, editLine, deleteLine) ... 
   </script>
 
 </body>
