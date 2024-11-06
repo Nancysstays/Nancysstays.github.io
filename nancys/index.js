@@ -1,21 +1,19 @@
-  
-let data = [];
-let counter = 1;
-let color = 'blue'; // Set a default color
+    let data = [];
+    let counter = 1;
+    let color = 'blue'; 
 
-// Function to initialize the plot with aspect ratio maintained
-function initializePlot() {
-  let layout = {
-    yaxis: {
-      scaleanchor: "x",
-      scaleratio: 1 // Maintain 1:1 aspect ratio
+    // Initialize Plotly with aspect ratio maintained
+    function initializePlot() {
+      let layout = {
+        yaxis: {
+          scaleanchor: "x",
+          scaleratio: 1 
+        }
+      };
+      Plotly.newPlot('plot', data, layout);
     }
-  };
 
-  Plotly.newPlot('plot', data, layout);
-}
-
-initializePlot(); // Call the function to initialize the plot
+    initializePlot();
 
     function addLine() {
       let xStart = parseFloat(document.getElementById('xStart').value);
@@ -34,7 +32,7 @@ initializePlot(); // Call the function to initialize the plot
         type: 'scatter',
         mode: 'lines+markers',
         name: 'Line ' + counter,
-        line: {color: color, shape: 'linear'}
+        line: { color: color, shape: 'linear' }
       };
 
       data.push(newLine);
@@ -42,7 +40,6 @@ initializePlot(); // Call the function to initialize the plot
       Plotly.react('plot', data);
       addLineToList(newLine);
 
-      // Clear input fields
       document.getElementById('xStart').value = '';
       document.getElementById('xEnd').value = '';
       document.getElementById('yStart').value = '';
@@ -106,12 +103,62 @@ initializePlot(); // Call the function to initialize the plot
       let savedData = localStorage.getItem('plotData');
       if (savedData) {
         data = JSON.parse(savedData);
-        counter = data.length + 1; // Update the counter
+        counter = data.length + 1; 
         Plotly.react('plot', data);
 
-        // Repopulate the line list
         let lineList = document.getElementById('lineList');
-        lineList.innerHTML = ''; // Clear the list
+        lineList.innerHTML = ''; 
         data.forEach(line => addLineToList(line));
       }
+    }
+
+    // Calculator functions
+    let currentInput = '';
+    let operator = null;
+    let previousInput = '';
+
+    function appendNumber(number) {
+      currentInput += number;
+      document.getElementById('result').value = currentInput;
+    }
+
+    function setOperator(op) {
+      operator = op;
+      previousInput = currentInput;
+      currentInput = '';
+    }
+
+    function calculate() {
+      let result;
+      const num1 = parseFloat(previousInput);
+      const num2 = parseFloat(currentInput);
+
+      switch (operator) {
+        case '+':
+          result = num1 + num2;
+          break;
+        case '-':
+          result = num1 - num2;
+          break;
+        case '*':
+          result = num1 * num2;
+          break;
+        case '/':
+          result = num1 / num2;
+          break;
+        default:
+          return;
+      }
+
+      currentInput = result.toString();
+      document.getElementById('result').value = currentInput;
+      operator = null;
+      previousInput = '';
+    }
+
+    function clearResult() {
+      currentInput = '';
+      operator = null;
+      previousInput = '';
+      document.getElementById('result').value = '';
     }
