@@ -1,9 +1,21 @@
   
-    let data = [];
-    let counter = 1;
-    let color = 'blue'; // Set a default color
+let data = [];
+let counter = 1;
+let color = 'blue'; // Set a default color
 
-    Plotly.newPlot('plot', data);
+// Function to initialize the plot with aspect ratio maintained
+function initializePlot() {
+  let layout = {
+    yaxis: {
+      scaleanchor: "x",
+      scaleratio: 1 // Maintain 1:1 aspect ratio
+    }
+  };
+
+  Plotly.newPlot('plot', data, layout);
+}
+
+initializePlot(); // Call the function to initialize the plot
 
     function addLine() {
       let xStart = parseFloat(document.getElementById('xStart').value);
