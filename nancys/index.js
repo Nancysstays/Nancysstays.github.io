@@ -1,6 +1,6 @@
     let data = [];
     let counter = 1;
-    let color = "black"; 
+    let color = #00539B; 
 
     // Initialize Plotly with aspect ratio maintained
     function initializePlot() {
