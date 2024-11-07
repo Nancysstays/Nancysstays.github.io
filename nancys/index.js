@@ -1,6 +1,6 @@
     let data = [];
     let counter = 1;
-    let color = 'blue'; 
+    let color = "black"; 
 
     // Initialize Plotly with aspect ratio maintained
     function initializePlot() {
@@ -9,9 +9,32 @@
           scaleanchor: "x",
           scaleratio: 1 
         }
+ title: ' Chart',
+  showlegend: true, 
+  legend: {
+    x: 0.85, 
+    y: 1,
+    xanchor: 'right', 
+    yanchor: 'top',
+    bgcolor: 'rgba(255, 255, 255, 0.5)', 
+    bordercolor: 'black',
+    borderwidth: 1
+  }
       };
       Plotly.newPlot('plot', data, layout);
     }
+
+fig.update_layout(
+    plot_bgcolor="rgb(230, 230, 250)",  # Light blue plotting area
+    paper_bgcolor="white"              # White background around the plot
+)
+
+fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgray')
+
+
+fig.show()
+
 
     initializePlot();
 
