@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OHLC Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>OHLC Data</h1>
+        <div class="form-group">
+            <label for="symbol">Enter Stock Symbol:</label>
+            <input type="text" class="form-control" id="symbol" placeholder="e.g., IBM">
+        </div>
+        <button class="btn btn-primary" onclick="fetchData()">Fetch Data</button>
+        <div id="loading" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <table class="table table-striped" id="data-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Open</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Close</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
