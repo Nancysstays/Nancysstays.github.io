@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+</head>
+<body>
+
+<div id="my_camera"></div>
+
+<script language="JavaScript">
+    Webcam.set({
+        width: 320,
+        height: 240,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+    });
+    Webcam.attach( '#my_camera' );
+</script>
+
+<button onclick="take_snapshot()">Take Snapshot</button>
+
+<script language="JavaScript">
+    function take_snapshot() {
+        Webcam.snap( function(data_uri) {
+            document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+        } );
+    }
+</script>
+
+<div id="my_result"></div>
+
+</body>
+</html>
