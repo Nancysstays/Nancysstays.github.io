@@ -1,0 +1,4 @@
+/* Basic styling for the table */
+#data-table th, #data-table td {
+    text-align: right; 
+}
