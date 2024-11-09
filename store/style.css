@@ -1,0 +1,31 @@
+/* Basic Styling */
+.logo {
+    max-height: 80px;
+}
+
+.banner {
+    margin-top: 20px; 
+}
+
+.banner img {
+    width: 100%;
+}
+
+/* Improved Footer Styling */
+footer {
+    background-color: #f8f9fa; 
+    padding: 20px 0; 
+    border-top: 1px solid #dee2e6; 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .banner {
+        margin-top: 10px; 
+    }
+
+    .navbar-nav .nav-link {
+        text-align: center; 
+        padding: 10px 0; 
+    }
+}
