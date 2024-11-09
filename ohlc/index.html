@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OHLCV Data Downloader</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        /* Add more styles here if needed */
+        #download-link {
+            display: none; 
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">OHLCV Data Downloader</h1>
+        <div class="form-group">
+            <label for="symbol">Enter Stock Symbol:</label>
+            <input type="text" class="form-control" id="symbol" placeholder="e.g., IBM">
+        </div>
+        <button class="btn btn-primary" id="fetch-data-btn">Download Data</button>
+
+        <div id="loading" class="spinner-border text-primary mt-3" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+        <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
+
+        <a id="download-link" class="btn btn-success" download>Download CSV</a> 
+    </div>
+
+    <script>
+        const fetchDataBtn = document.getElementById('fetch-data-btn');
+        const symbolInput = document.getElementById('symbol');
+        const loadingIndicator = document.getElementById('loading');
+        const errorMessageDiv = document.getElementById('error-message');
+        const downloadLink = document.getElementById('download-link'); 
+
+        fetchDataBtn.addEventListener('click', () => {
+            const symbol = symbolInput.value.toUpperCase();
+            const apiKey = 'YOUR_API_KEY'; // Replace with your actual Alpha Vantage API key
+            const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${apiKey}&outputsize=full`;
+
+            showLoadingIndicator();
+            hideErrorMessage();
+            hideDownloadLink();
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok (status: ${response.status})`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data['Error Message']) {
+                        handleError('Invalid symbol or API error. Please check the symbol and your API key.');
+                        return;
+                    }
+
+                    const timeSeries = data['Time Series (Daily)'];
+                    const csvData = convertToCSV(timeSeries);
+                    const filename = `${symbol}_ohlcv_daily.csv`;
+
+                    // Instead of directly downloading, set the download link
+                    const blob = new Blob([csvData], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                    downloadLink.setAttribute('download', filename);
+                    showDownloadLink(); 
+                    hideLoadingIndicator();
+                })
+                .catch(error => {
+                    handleError('An error occurred while fetching or processing data. Please try again later.');
+                    console.error('Error:', error);
+                });
+        });
+
+        function convertToCSV(data) {
+            const headers = ['Date', 'Open', 'High', 'Low', 'Close', 'Adjusted Close', 'Volume'];
+            let csvString = headers.join(',') + '\n';
+
+            for (const date in data) {
+                const ohlcv = data[date];
+                const row = [
+                    date,
+                    ohlcv['1. open'],
+                    ohlcv['2. high'],
+                    ohlcv['3. low'],
+                    ohlcv['4. close'],
+                    ohlcv['5. adjusted close'],
+                    ohlcv['6. volume']
+                ];
+                csvString += row.join(',') + '\n';
+            }
+
+            return csvString;
+        }
+
+        function handleError(message) {
+            hideLoadingIndicator();
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.style.display = 'block';
+        }
+
+        function showLoadingIndicator() {
+            loadingIndicator.style.display = 'block';
+        }
+
+        function hideLoadingIndicator() {
+            loadingIndicator.style.display = 'none';
+        }
+
+        function hideErrorMessage() {
+            errorMessageDiv.style.display = 'none';
+        }
+
+        function showDownloadLink() {
+            downloadLink.style.display = 'block'; 
+        }
+
+        function hideDownloadLink() {
+            downloadLink.style.display = 'none'; 
+        }
+    </script>
+</body>
+</html>
