@@ -1,0 +1,53 @@
+{
+  "short_name": "Hotel Booking",
+  "name": "Book Your Dream Hotel Stay",
+  "icons": [
+    {
+      "src": "/images/hotel-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/hotel-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
+  "background_color": "#ffffff", 
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#007bff",  
+  "shortcuts": [
+    {
+      "name": "Find a Hotel",
+      "short_name": "Find",
+      "description": "Search for hotels by location",
+      "url": "/search?source=pwa",
+      "icons": [{ "src": "/images/search-icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Bookings",
+      "short_name": "Bookings",
+      "description": "View your upcoming hotel reservations",
+      "url": "/bookings?source=pwa",
+      "icons": [{ "src": "/images/bookings-icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "description": "Easily search and book hotel rooms online",
+  "screenshots": [
+    {
+      "src": "/images/hotel-screenshot1.png",
+      "type": "image/png",
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/images/hotel-screenshot2.jpg",
+      "type": "image/jpg",
+      "sizes": "720x540",
+      "form_factor": "wide"
+    }
+  ]
+}
