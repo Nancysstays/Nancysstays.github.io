@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopping List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .list-group-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Shopping List</h1>
+
+    <div class="input-group mb-3">
+      <input type="text" id="item-name" class="form-control" placeholder="Item name">
+      <input type="number" id="item-price" class="form-control" placeholder="Price">
+      <button id="add-item" class="btn btn-primary">Add Item</button>
+    </div>
+
+    <ul id="shopping-list" class="list-group"></ul>
+
+    <div class="mt-3">
+      <button id="save-list" class="btn btn-success">Save List</button>
+      <button id="load-list" class="btn btn-info">Load List</button>
+      <select id="list-names" class="form-select"></select>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const itemNameInput = document.getElementById('item-name');
+    const itemPriceInput = document.getElementById('item-price');
+    const addButton = document.getElementById('add-item');
+    const shoppingList = document.getElementById('shopping-list');
+    const saveButton = document.getElementById('save-list');
+    const loadButton = document.getElementById('load-list');
+    const listNamesSelect = document.getElementById('list-names');
+
+    let currentList = [];
+
+    // Load lists from localStorage on page load
+    function loadLists() {
+      const listNames = Object.keys(localStorage);
+      listNamesSelect.innerHTML = ''; // Clear existing options
+      listNames.forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.text = name;
+        listNamesSelect.add(option);
+      });
+    }
+
+    loadLists();
+
+    // Add item to the list
+    addButton.addEventListener('click', () => {
+      const itemName = itemNameInput.value.trim();
+      let itemPrice = parseFloat(itemPriceInput.value);
+
+      if (itemName === '') return;
+
+      // If price is not given, calculate average price from similar items
+      if (isNaN(itemPrice)) {
+        itemPrice = calculateAveragePrice(itemName);
+      }
+
+      const listItem = document.createElement('li');
+      listItem.classList.add('list-group-item');
+      listItem.innerHTML = `
+        ${itemName} 
+        <span class="price">$${itemPrice.toFixed(2)}</span>
+        <div>
+          <button class="edit-btn btn btn-sm btn-warning">Edit</button>
+          <button class="delete-btn btn btn-sm btn-danger">Delete</button>
+        </div>
+      `;
+
+      shoppingList.appendChild(listItem);
+
+      currentList.push({ name: itemName, price: itemPrice });
+
+      itemNameInput.value = '';
+      itemPriceInput.value = '';
+    });
+
+    // Calculate average price of similar items
+    function calculateAveragePrice(itemName) {
+      let totalPrice = 0;
+      let count = 0;
+      for (let i = 0; i < currentList.length; i++) {
+        if (currentList[i].name.toLowerCase().includes(itemName.toLowerCase())) {
+          totalPrice += currentList[i].price;
+          count++;
+        }
+      }
+      return count > 0 ? totalPrice / count : 0;
+    }
+
+    // Edit item
+    shoppingList.addEventListener('click', (event) => {
+      if (event.target.classList.contains('edit-btn')) {
+        const listItem = event.target.parentNode.parentNode;
+        const itemNameSpan = listItem.childNodes[0];
+        const priceSpan = listItem.querySelector('.price');
+
+        const currentName = itemNameSpan.textContent.trim();
+        const currentPrice = parseFloat(priceSpan.textContent.replace('$', ''));
+
+        itemNameSpan.innerHTML = `<input type="text" value="${currentName}">`;
+        priceSpan.innerHTML = `<input type="number" value="${currentPrice}">`;
+
+        const saveBtn = document.createElement('button');
+        saveBtn.classList.add('btn', 'btn-sm', 'btn-success');
+        saveBtn.textContent = 'Save';
+        listItem.appendChild(saveBtn);
+
+        saveBtn.addEventListener('click', () => {
+          const newName = itemNameSpan.querySelector('input').value.trim();
+          const newPrice = parseFloat(priceSpan.querySelector('input').value);
+
+          itemNameSpan.textContent = newName;
+          priceSpan.textContent = `$${newPrice.toFixed(2)}`;
+
+          // Update currentList array
+          const itemIndex = Array.from(shoppingList.children).indexOf(listItem);
+          currentList[itemIndex] = { name: newName, price: newPrice };
+
+          listItem.removeChild(saveBtn);
+        });
+      }
+    });
+
+    // Delete item
+    shoppingList.addEventListener('click', (event) => {
+      if (event.target.classList.contains('delete-btn')) {
+        const listItem = event.target.parentNode.parentNode;
+        const itemIndex = Array.from(shoppingList.children).indexOf(listItem);
+
+        shoppingList.removeChild(listItem);
+        currentList.splice(itemIndex, 1);
+      }
+    });
+
+    // Save list to localStorage
+    saveButton.addEventListener('click', () => {
+      const listName = prompt('Enter a name for your list:');
+      if (listName) {
+        localStorage.setItem(listName, JSON.stringify(currentList));
+        loadLists(); // Refresh list names
+      }
+    });
+
+    // Load list from localStorage
+    loadButton.addEventListener('click', () => {
+      const listName = listNamesSelect.value;
+      if (listName) {
+        const savedList = JSON.parse(localStorage.getItem(listName));
+        currentList = savedList;
+        // Re-render the list
+        shoppingList.innerHTML = '';
+        currentList.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.classList.add('list-group-item');
+          listItem.innerHTML = `
+            ${item.name} 
+            <span class="price">$${item.price.toFixed(2)}</span>
+            <div>
+              <button class="edit-btn btn btn-sm btn-warning">Edit</button>
+              <button class="delete-btn btn btn-sm btn-danger">Delete</button>
+            </div>
+          `;
+          shoppingList.appendChild(listItem);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
