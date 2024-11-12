@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopping List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .list-group-item {
+      display: flex;
+      align-items: center;
+    }
+    .item-name {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Shopping Lists</h1>
+
+    <div class="input-group mb-3">
+      <input type="text" id="new-list-name" class="form-control" placeholder="New List Name">
+      <button class="btn btn-outline-secondary" type="button" id="create-list">Create List</button>
+    </div>
+
+    <ul class="list-group" id="lists-container">
+      </ul>
+
+    <div id="list-items-container" class="mt-4">
+      <h2>List Items</h2>
+      <ul class="list-group" id="list-items">
+      </ul>
+
+      <div class="input-group mt-3">
+        <input type="text" id="new-item" class="form-control" placeholder="Add Item">
+        <button class="btn btn-outline-secondary" type="button" id="add-item">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const listsContainer = document.getElementById('lists-container');
+    const listItemsContainer = document.getElementById('list-items-container');
+    const listItems = document.getElementById('list-items');
+    const newListNameInput = document.getElementById('new-list-name');
+    const createListButton = document.getElementById('create-list');
+    const newItemInput = document.getElementById('new-item');
+    const addItemButton = document.getElementById('add-item');
+
+    let currentList = null;
+
+    // Load lists from localStorage
+    function loadLists() {
+      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      for (const listName in savedLists) {
+        addList(listName, savedLists[listName]);
+      }
+    }
+
+    // Save lists to localStorage
+    function saveLists() {
+      const lists = {};
+      const listItems = listsContainer.querySelectorAll('.list-group-item');
+      listItems.forEach(item => {
+        const listName = item.textContent;
+        lists[listName] = getListItems(listName);
+      });
+      localStorage.setItem('shoppingLists', JSON.stringify(lists));
+    }
+
+    // Add a new list
+    function addList(listName, items = []) {
+      const listItem = document.createElement('li');
+      listItem.classList.add('list-group-item');
+      listItem.textContent = listName;
+
+      // Edit button
+      const editButton = document.createElement('button');
+      editButton.classList.add('btn', 'btn-sm', 'btn-outline-primary', 'me-2');
+      editButton.textContent = 'Edit';
+      editButton.addEventListener('click', () => {
+        const newListName = prompt('Enter new list name:', listName);
+        if (newListName && newListName !== listName) {
+          listItem.textContent = newListName;
+          renameListInLocalStorage(listName, newListName);
+          saveLists();
+        }
+      });
+      listItem.appendChild(editButton);
+
+      // Delete button
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => {
+        if (confirm(`Are you sure you want to delete "${listName}"?`)) {
+          listsContainer.removeChild(listItem);
+          deleteListFromLocalStorage(listName);
+          if (currentList === listName) {
+            clearListItems();
+            currentList = null;
+          }
+        }
+      });
+      listItem.appendChild(deleteButton);
+
+      listsContainer.appendChild(listItem);
+
+      listItem.addEventListener('click', () => {
+        loadListItems(listName, items);
+      });
+    }
+
+    // Rename list in localStorage
+    function renameListInLocalStorage(oldName, newName) {
+      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      if (savedLists[oldName]) {
+        savedLists[newName] = savedLists[oldName];
+        delete savedLists[oldName];
+        localStorage.setItem('shoppingLists', JSON.stringify(savedLists));
+      }
+    }
+
+    // Delete list from localStorage
+    function deleteListFromLocalStorage(listName) {
+      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      if (savedLists[listName]) {
+        delete savedLists[listName];
+        localStorage.setItem('shoppingLists', JSON.stringify(savedLists));
+      }
+    }
+
+    // Get list items from localStorage
+    function getListItems(listName) {
+      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      return savedLists[listName] || [];
+    }
+
+    // Load list items
+    function loadListItems(listName, items) {
+      currentList = listName;
+      listItems.innerHTML = ''; // Clear current items
+      items.forEach(item => {
+        addItem(item, false);
+      });
+    }
+
+    // Clear list items
+    function clearListItems() {
+      listItems.innerHTML = '';
+    }
+
+    // Add a new item to the current list
+    function addItem(itemName, save = true) {
+      const listItem = document.createElement('li');
+      listItem.classList.add('list-group-item');
+
+      const itemNameSpan = document.createElement('span');
+      itemNameSpan.classList.add('item-name');
+      itemNameSpan.textContent = itemName;
+      listItem.appendChild(itemNameSpan);
+
+      // Edit button
+      const editButton = document.createElement('button');
+      editButton.classList.add('btn', 'btn-sm', 'btn-outline-primary', 'me-2');
+      editButton.textContent = 'Edit';
+      editButton.addEventListener('click', () => {
+        const newItemName = prompt('Enter new item name:', itemName);
+        if (newItemName) {
+          itemNameSpan.textContent = newItemName;
+          saveLists();
+        }
+      });
+      listItem.appendChild(editButton);
+
+      // Delete button
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => {
+        listItems.removeChild(listItem);
+        if (save) {
+          saveLists();
+        }
+      });
+      listItem.appendChild(deleteButton);
+
+      listItems.appendChild(listItem);
+    }
+
+    // Event listeners
+    createListButton.addEventListener('click', () => {
+      const listName = newListNameInput.value.trim();
+      if (listName) {
+        addList(listName);
+        newListNameInput.value = '';
+        saveLists();
+      }
+    });
+
+    addItemButton.addEventListener('click', () => {
+      const itemName = newItemInput.value.trim();
+      if (itemName && currentList) {
+        addItem(itemName);
+        newItemInput.value = '';
+        saveLists();
+      }
+    });
+
+    // Load initial lists
+    loadLists();
+  </script>
+</body>
+</html>
