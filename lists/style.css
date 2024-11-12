@@ -1,0 +1,7 @@
+/* style.css */
+/* Add your custom CSS here */
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
