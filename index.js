@@ -293,11 +293,11 @@ function buildIWContent(place) {
   }
 }
 
-new AjaxPopup({
-  message: 'Download our app and get 20% off your first booking!',
-  buttonText: 'Get the App',
-  link: 'https://your-app-link.com'
-});
+// new AjaxPopup({
+//   message: 'Download our app and get 20% off your first booking!',
+//   buttonText: 'Get the App',
+//   link: 'https://your-app-link.com'
+// });
 
 
 window.initMap = initMap;
