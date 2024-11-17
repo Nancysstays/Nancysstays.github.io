@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Broadcast</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        /* Add your custom CSS here */
+        #videoContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            background-color: #f0f0f0;
+        }
+        #localVideo {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        #chatbox {
+            height: 200px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WebRTC Broadcast</h1>
+        <div id="videoContainer">
+            <video id="localVideo" autoplay muted></video>
+        </div>
+        <div class="form-group">
+            <label for="viewerCount">Viewers:</label>
+            <input type="text" id="viewerCount" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <div id="chatbox" class="form-control"></div>
+            <input type="text" id="messageInput" class="form-control" placeholder="Enter message">
+            <button id="sendButton" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Add your JavaScript code here
+        let localStream;
+        let pc = []; // Array to store peer connections
+        let viewerCount = 0;
+
+        // Get user media (camera and microphone)
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localStream = stream;
+                document.getElementById('localVideo').srcObject = stream;
+            })
+            .catch(err => {
+                console.error('Error accessing media devices:', err);
+            });
+
+        // Function to create a new peer connection
+        function createPeerConnection(viewerId) {
+            let configuration = {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' }, // Google's public STUN server
+                    // Add more TURN servers for better connectivity
+                ]
+            };
+
+            let newPc = new RTCPeerConnection(configuration);
+
+            // Add local stream to the peer connection
+            localStream.getTracks().forEach(track => {
+                newPc.addTrack(track, localStream);
+            });
+
+            // Handle ICE candidates
+            newPc.onicecandidate = event => {
+                if (event.candidate) {
+                    // Send ICE candidate to the viewer
+                    sendSignal(viewerId, { type: 'candidate', candidate: event.candidate });
+                }
+            };
+
+            return newPc;
+        }
+
+        // Function to send a signal to a viewer
+        function sendSignal(viewerId, signal) {
+            // Implement your signaling mechanism here (e.g., using WebSockets)
+            // This example uses a hypothetical 'sendMessage' function
+            sendMessage(viewerId, JSON.stringify(signal));
+        }
+
+        // Function to handle incoming signals from viewers
+        function handleSignal(viewerId, signal) {
+            let pc = findOrCreatePeerConnection(viewerId);
+
+            if (signal.type === 'offer') {
+                pc.setRemoteDescription(new RTCSessionDescription(signal))
+                    .then(() => pc.createAnswer())
+                    .then(answer => pc.setLocalDescription(answer))
+                    .then(() => sendSignal(viewerId, pc.localDescription));
+            } else if (signal.type === 'answer') {
+                pc.setRemoteDescription(new RTCSessionDescription(signal));
+            } else if (signal.type === 'candidate') {
+                pc.addIceCandidate(new RTCIceCandidate(signal.candidate));
+            }
+        }
+
+        // Function to find or create a peer connection for a viewer
+        function findOrCreatePeerConnection(viewerId) {
+            let existingPc = pc.find(p => p.viewerId === viewerId);
+            if (existingPc) {
+                return existingPc;
+            } else {
+                let newPc = createPeerConnection(viewerId);
+                newPc.viewerId = viewerId;
+                pc.push(newPc);
+                return newPc;
+            }
+        }
+
+        // Function to update viewer count
+        function updateViewerCount() {
+            viewerCount++;
+            document.getElementById('viewerCount').value = viewerCount;
+        }
+
+        // Function to handle chat messages
+        function handleChatMessage(message) {
+            let chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += message + '<br>';
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        // Event listener for send button
+        document.getElementById('sendButton').addEventListener('click', () => {
+            let message = document.getElementById('messageInput').value;
+            handleChatMessage('Broadcaster: ' + message);
+            // Send message to all viewers
+            pc.forEach(p => {
+                // Implement your message sending logic here
+                // This example uses a hypothetical 'sendMessage' function
+                sendMessage(p.viewerId, message);
+            });
+            document.getElementById('messageInput').value = '';
+        });
+
+        // Example implementation of sendMessage function (replace with your actual implementation)
+        function sendMessage(viewerId, message) {
+            console.log('Sending message to', viewerId, ':', message);
+            // Implement your signaling mechanism here (e.g., using WebSockets)
+        }
+
+        // Example implementation of signaling mechanism using WebSockets
+        let websocket = new WebSocket('wss://your-websocket-server');
+
+        websocket.onopen = () => {
+            console.log('WebSocket connection opened');
+        };
+
+        websocket.onmessage = event => {
+            let message = JSON.parse(event.data);
+            if (message.type === 'viewerJoined') {
+                updateViewerCount();
+                handleSignal(message.viewerId, message.signal);
+            } else if (message.type === 'signal') {
+                handleSignal(message.viewerId, message.signal);
+            } else if (message.type === 'chat') {
+                handleChatMessage(message.viewerId + ': ' + message.message);
+            }
+        };
+
+        websocket.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+
+        // Hypothetical function to get viewer's IP address (replace with your actual implementation)
+        function getViewerIpAddress(viewerId) {
+            // Implement your logic to retrieve the IP address
+            // This example returns a dummy IP address
+            return '192.168.1.1';
+        }
+    </script>
+</body>
+</html>
