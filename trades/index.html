@@ -76,21 +76,6 @@ for (const date in timeSeriesData) {
 
 // ... (rest of the code)
 
-
-        // Populate table rows
-        /*
-        for (const date in timeSeriesData) {
-          const rowData = timeSeriesData[date];
-          const row = table.insertRow();
-          ['1. open', '2. high', '3. low', '4. close', '5. volume'].forEach(key => {
-            const cell = row.insertCell();
-            cell.textContent = rowData[key];
-          });
-          const dateCell = row.insertCell(0); // Add date to the first column
-          dateCell.textContent = date;
-        }
-        */
-
         // Create download link
         const downloadLink = document.createElement('a');
         downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
