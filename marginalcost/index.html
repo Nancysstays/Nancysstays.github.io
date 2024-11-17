@@ -4,48 +4,136 @@
   <title>Marginal Cost Curve</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    #chart {
+      width: 100%;
+      height: 500px;
+    }
+    #data-table th, #data-table td {
+      text-align: center;
+    }
+    /* Add styles for input validation */
+    .invalid-input {
+      border-color: red; 
+    }
+  </style>
 </head>
 <body>
   <div class="container mt-5">
-    <h1 class="text-center">Marginal Cost Curve</h1>
-    <div id="chart"></div>
+    <h1>Marginal Cost Curve</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <table id="data-table" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Quantity</th>
+              <th>Marginal Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="number" value="1"></td>
+              <td><input type="number" value="10"></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="2"></td>
+              <td><input type="number" value="8"></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="3"></td>
+              <td><input type="number" value="7"></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="4"></td>
+              <td><input type="number" value="7"></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="5"></td>
+              <td><input type="number" value="8"></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="6"></td>
+              <td><input type="number" value="9"></td>
+            </tr>
+          </tbody>
+        </table>
+        <button id="add-row" class="btn btn-secondary">Add Row</button>
+        <button id="update-chart" class="btn btn-primary">Update Chart</button>
+      </div>
+      <div class="col-md-6">
+        <div id="chart"></div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <h2>Understanding Marginal Cost</h2>
+      <p>Marginal cost is a fundamental concept in economics that measures the incremental cost of producing one more unit. It plays a crucial role in optimizing production levels, setting prices, and making strategic decisions about resource allocation. The characteristic U-shape of the marginal cost curve reflects the interplay of increasing and decreasing returns to scale, providing valuable insights into the efficiency of the production process.</p>
+    </div>
+
+    <div class="mt-4">
+      <h2>Interactive Exploration</h2>
+      <p>This interactive tool allows you to experiment with different data sets and visualize how the marginal cost curve responds to changes in input values. Add or remove data points, adjust the quantities and costs, and observe how the shape of the curve evolves. This hands-on approach can deepen your understanding of the relationship between production volume and marginal cost, providing a practical perspective on this essential economic principle.</p>
+    </div>
   </div>
 
   <script>
-    // Sample data (replace with your actual data)
-    const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const marginalCost = [20, 15, 12, 10, 11, 13, 16, 19, 23, 28];
+    function plotChart(data) {
+      const trace = {
+        x: data.map(row => row[0]),
+        y: data.map(row => row[1]),
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: { size: 8 }
+      };
 
-    // Create the Plotly trace
-    const trace = {
-      x: quantity,
-      y: marginalCost,
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Marginal Cost',
-      line: {
-        color: 'blue',
-        width: 2
-      },
-      marker: {
-        size: 8,
-        color: 'red'
+      const layout = {
+        title: 'Marginal Cost Curve',
+        xaxis: { title: 'Quantity' },
+        yaxis: { title: 'Marginal Cost' }
+      };
+
+      Plotly.newPlot('chart', [trace], layout);
+    }
+
+    function updateChart() {
+      const table = document.getElementById('data-table');
+      const data = [];
+      for (let i = 1; i < table.rows.length; i++) { 
+        const qty = parseFloat(table.rows[i].cells[0].querySelector('input').value);
+        const cost = parseFloat(table.rows[i].cells[1].querySelector('input').value);
+        if (!isNaN(qty) && !isNaN(cost) && qty >= 0 && cost >= 0) {
+          data.push([qty, cost]);
+          // Clear previous error indication (if any)
+          table.rows[i].cells[0].querySelector('input').classList.remove('invalid-input');
+          table.rows[i].cells[1].querySelector('input').classList.remove('invalid-input');
+        } else {
+          // Indicate error for invalid input
+          if (isNaN(qty) || qty < 0) {
+            table.rows[i].cells[0].querySelector('input').classList.add('invalid-input');
+          }
+          if (isNaN(cost) || cost < 0) {
+            table.rows[i].cells[1].querySelector('input').classList.add('invalid-input');
+          }
+        }
       }
-    };
+      plotChart(data);
+    }
 
-    // Create the Plotly layout
-    const layout = {
-      title: 'Marginal Cost Curve',
-      xaxis: {
-        title: 'Quantity'
-      },
-      yaxis: {
-        title: 'Marginal Cost ($)'
-      }
-    };
+    function addRow() {
+      const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow();
+      const qtyCell = newRow.insertCell();
+      const costCell = newRow.insertCell();
+      qtyCell.innerHTML = '<input type="number" value="0">';
+      costCell.innerHTML = '<input type="number" value="0">';
+    }
 
-    // Plot the chart
-    Plotly.newPlot('chart', [trace], layout);
+    // Initial chart with default data
+    updateChart();
+
+    // Event listeners for buttons
+    document.getElementById('update-chart').addEventListener('click', updateChart);
+    document.getElementById('add-row').addEventListener('click', addRow);
   </script>
 </body>
 </html>
