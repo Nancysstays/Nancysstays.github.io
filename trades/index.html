@@ -1,103 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dow Jones Historical Data</title>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      max-width: 800px;
-      margin: 20px auto;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+  <title>Tesla Stock Data</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Dow Jones Historical Data</h1>
-    <div id="loading">Loading data...</div>
-    <table id="data-table"></table>
-    <div id="download-link"></div> 
-  </div>
+
+  <h1>Tesla Stock Data</h1>
+  <div id="download-link"></div>
 
   <script>
-    const apiKey = 'XVYHOWRTRNPN3FJA'; // Replace with your actual API key
-    const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^DJI&apikey=${apiKey}`;
+    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=TSLA&apikey=XVYHOWRTRNPN3FJA';
 
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        const table = document.getElementById('data-table');
-        const loadingDiv = document.getElementById('loading');
-        const downloadLinkDiv = document.getElementById('download-link');
+        const csvData = convertToCSV(data);
 
-        if (data['Error Message']) {
-          loadingDiv.innerText = "Error fetching data. Please check your API key.";
-          return;
-        }
-
-        const timeSeriesData = data['Time Series (Daily)'];
-        const csvData = convertToCSV(timeSeriesData);
-
-        // Create table header
-        const headerRow = table.insertRow();
-        ['Date', 'Open', 'High', 'Low', 'Close', 'Volume'].forEach(headerText => {
-          const th = document.createElement('th');
-          th.textContent = headerText;
-          headerRow.appendChild(th);
-        });
-
-// ... (rest of the code)
-
-// Populate table rows
-for (const date in timeSeriesData) {
-  const rowData = timeSeriesData[date];
-  const row = table.insertRow(); 
-
-  // Create date cell first
-  const dateCell = row.insertCell(); // Corrected line
-  dateCell.textContent = date;
-
-  ['1. open', '2. high', '3. low', '4. close', '5. volume'].forEach(key => {
-    const cell = row.insertCell(); // Corrected line
-    cell.textContent = rowData[key];
-  });
-}
-
-// ... (rest of the code)
-
-        // Create download link
         const downloadLink = document.createElement('a');
         downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
-        downloadLink.download = 'dow_jones_data.csv';
+        downloadLink.download = 'tesla_stock_data.csv';
         downloadLink.textContent = 'Download CSV';
-        downloadLinkDiv.appendChild(downloadLink);
 
-        loadingDiv.style.display = 'none'; // Hide loading message
+        document.getElementById('download-link').appendChild(downloadLink);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
-        document.getElementById('loading').innerText = "Error fetching data.";
+        console.error('Error fetching or converting data:', error);
       });
 
     function convertToCSV(data) {
       let csv = 'Date,Open,High,Low,Close,Volume\n';
-      for (const date in data) {
-        const row = data[date];
+      const timeSeriesData = data['Time Series (Daily)'];
+      for (const date in timeSeriesData) {
+        const row = timeSeriesData[date];
         csv += `${date},${row['1. open']},${row['2. high']},${row['3. low']},${row['4. close']},${row['5. volume']}\n`;
       }
       return csv;
     }
   </script>
+
 </body>
 </html>
