@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dow Jones Historical Data</title>
+</head>
+<body>
+
+<h1>Dow Jones Historical Data</h1>
+
+<div id="data-container"></div>
+
+<script>
+const apiKey = 'XVYHOWRTRNPN3FJA'; // Your Alpha Vantage API key
+const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DJI&apikey=${apiKey}&datatype=csv`;
+
+fetch(apiUrl)
+  .then(response => response.text())
+  .then(csvData => {
+    // Create a download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+    downloadLink.target = '_blank';
+    downloadLink.download = 'dow_jones_historical.csv';
+    downloadLink.innerText = 'Download CSV';
+
+    // Add the link to the page
+    document.getElementById('data-container').appendChild(downloadLink);
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+    document.getElementById('data-container').innerHTML = 'Error fetching data. Please check your API key and try again.';
+  });
+
+</script>
+
+</body>
+</html>
