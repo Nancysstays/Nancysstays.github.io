@@ -1,37 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Dow Jones Historical Data</title>
+  <title>Dow Jones Historical Data</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Dow Jones Historical Data</h1>
+    <div id="loading">Loading data...</div>
+    <table id="data-table"></table>
+    <div id="download-link"></div> 
+  </div>
 
-<h1>Dow Jones Historical Data</h1>
+  <script>
+    const apiKey = 'XVYHOWRTRNPN3FJA'; // Replace with your actual API key
+    const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=^DJI&apikey=${apiKey}`;
 
-<div id="data-container"></div>
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const table = document.getElementById('data-table');
+        const loadingDiv = document.getElementById('loading');
+        const downloadLinkDiv = document.getElementById('download-link');
 
-<script>
-const apiKey = 'XVYHOWRTRNPN3FJA'; // Your Alpha Vantage API key
-const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DJI&apikey=${apiKey}&datatype=csv`;
+        if (data['Error Message']) {
+          loadingDiv.innerText = "Error fetching data. Please check your API key.";
+          return;
+        }
 
-fetch(apiUrl)
-  .then(response => response.text())
-  .then(csvData => {
-    // Create a download link
-    const downloadLink = document.createElement('a');
-    downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
-    downloadLink.target = '_blank';
-    downloadLink.download = 'dow_jones_historical.csv';
-    downloadLink.innerText = 'Download CSV';
+        const timeSeriesData = data['Time Series (Daily)'];
+        const csvData = convertToCSV(timeSeriesData);
 
-    // Add the link to the page
-    document.getElementById('data-container').appendChild(downloadLink);
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-    document.getElementById('data-container').innerHTML = 'Error fetching data. Please check your API key and try again.';
-  });
+        // Create table header
+        const headerRow = table.insertRow();
+        ['Date', 'Open', 'High', 'Low', 'Close', 'Volume'].forEach(headerText => {
+          const th = document.createElement('th');
+          th.textContent = headerText;
+          headerRow.appendChild(th);
+        });
 
-</script>
+        // Populate table rows
+        for (const date in timeSeriesData) {
+          const rowData = timeSeriesData[date];
+          const row = table.insertRow();
+          ['1. open', '2. high', '3. low', '4. close', '5. volume'].forEach(key => {
+            const cell = row.insertCell();
+            cell.textContent = rowData[key];
+          });
+          const dateCell = row.insertCell(0); // Add date to the first column
+          dateCell.textContent = date;
+        }
 
+        // Create download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);
+        downloadLink.download = 'dow_jones_data.csv';
+        downloadLink.textContent = 'Download CSV';
+        downloadLinkDiv.appendChild(downloadLink);
+
+        loadingDiv.style.display = 'none'; // Hide loading message
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        document.getElementById('loading').innerText = "Error fetching data.";
+      });
+
+    function convertToCSV(data) {
+      let csv = 'Date,Open,High,Low,Close,Volume\n';
+      for (const date in data) {
+        const row = data[date];
+        csv += `${date},${row['1. open']},${row['2. high']},${row['3. low']},${row['4. close']},${row['5. volume']}\n`;
+      }
+      return csv;
+    }
+  </script>
 </body>
 </html>
