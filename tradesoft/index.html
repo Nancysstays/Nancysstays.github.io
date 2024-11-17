@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tesla Stock Chart</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+  <div id="chart"></div>
+
+  <script>
+    const apiKey = 'YOUR_API_KEY'; // Replace with your actual API key
+    const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=TSLA&apikey=${apiKey}&outputsize=full`;
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const dates = [];
+        const openPrices = [];
+        const highPrices = [];
+        const lowPrices = [];
+        const closePrices = [];
+        const volume = [];
+
+        const timeSeriesData = data['Time Series (Daily)'];
+        for (const date in timeSeriesData) {
+          const rowData = timeSeriesData[date];
+          dates.push(date);
+          openPrices.push(parseFloat(rowData['1. open']));
+          highPrices.push(parseFloat(rowData['2. high']));
+          lowPrices.push(parseFloat(rowData['3. low']));
+          closePrices.push(parseFloat(rowData['4. close']));
+          volume.push(parseInt(rowData['5. volume']));
+        }
+
+        // Calculate MACD
+        const macd = calculateMACD(closePrices);
+
+        // Calculate ATR
+        const atr = calculateATR(highPrices, lowPrices, closePrices);
+
+        // Calculate Stochastics
+        const stochastics = calculateStochastics(highPrices, lowPrices, closePrices);
+
+        const trace1 = {
+          x: dates,
+          close: closePrices,
+          high: highPrices,
+          low: lowPrices,
+          open: openPrices,
+          increasing: { line: { color: 'green' } },
+          decreasing: { line: { color: 'red' } },
+          type: 'candlestick',
+          xaxis: 'x',
+          yaxis: 'y'
+        };
+
+        const trace2 = {
+          x: dates,
+          y: macd.macd,
+          type: 'scatter',
+          mode: 'lines',
+          line: { width: 1 },
+          name: 'MACD',
+          xaxis: 'x',
+          yaxis: 'y2'
+        };
+
+        const trace3 = {
+          x: dates,
+          y: macd.signal,
+          type: 'scatter',
+          mode: 'lines',
+          line: { width: 1 },
+          name: 'Signal',
+          xaxis: 'x',
+          yaxis: 'y2'
+        };
+
+        const trace4 = {
+          x: dates,
+          y: atr,
+          type: 'scatter',
+          mode: 'lines',
+          line: { width: 1 },
+          name: 'ATR',
+          xaxis: 'x',
+          yaxis: 'y3'
+        };
+
+        const trace5 = {
+          x: dates,
+          y: stochastics.k,
+          type: 'scatter',
+          mode: 'lines',
+          line: { width: 1 },
+          name: '%K',
+          xaxis: 'x',
+          yaxis: 'y4'
+        };
+
+        const trace6 = {
+          x: dates,
+          y: stochastics.d,
+          type: 'scatter',
+          mode: 'lines',
+          line: { width: 1 },
+          name: '%D',
+          xaxis: 'x',
+          yaxis: 'y4'
+        };
+
+        const dataPlot = [trace1, trace2, trace3, trace4, trace5, trace6];
+
+        const layout = {
+          xaxis: { domain: [0, 1] },
+          yaxis: { domain: [0.5, 1], title: 'Price' },
+          yaxis2: { domain: [0.35, 0.49], title: 'MACD' },
+          yaxis3: { domain: [0.2, 0.34], title: 'ATR' },
+          yaxis4: { domain: [0, 0.19], title: 'Stochastics' },
+          title: 'Tesla Stock Chart with Indicators',
+        };
+
+        Plotly.newPlot('chart', dataPlot, layout);
+      })
+      .catch(error => {
+        console.error('Error fetching or processing data:', error);
+      });
+
+    // Helper functions to calculate indicators (simplified example implementations)
+
+    function calculateMACD(closePrices) {
+      // ... (Implementation for MACD calculation - you can use a library or your own logic)
+    }
+
+    function calculateATR(highPrices, lowPrices, closePrices) {
+      // ... (Implementation for ATR calculation)
+    }
+
+    function calculateStochastics(highPrices, lowPrices, closePrices) {
+      // ... (Implementation for Stochastics calculation)
+    }
+  </script>
+
+</body>
+</html>
