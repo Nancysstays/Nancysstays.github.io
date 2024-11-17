@@ -41,11 +41,91 @@
       color: #333;
     }
   </style>
+ <style>
+    #video {
+      width: 640px;
+      height: 480px;
+      background-color: #000;
+      border: 1px solid #ccc; /* Add a border to the video */
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+    #status { /* Style for the status display */
+      margin-top: 10px;
+      font-weight: bold;
+    }
+     /* ... (Previous CSS styles) ... */
+    #remote-videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Responsive grid */
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .video-container {
+      position: relative; /* To position the "Connecting..." text */
+    }
+    .connecting-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 18px;
+    }
+  </style>
+<style>
+    #video {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+    }
+    #remote-videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .video-container {
+      position: relative;
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+    }
+    .connecting-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.5); 
+      padding: 5px 10px; 
+      border-radius: 3px; 
+    }
+    .viewer-info {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 3px 6px;
+      border-radius: 3px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1 class="mt-5 text-center">WebRTC Broadcast</h1>
-
+ <h1>Broadcast from Cell Phone</h1>
     <div id="video-container" class="mt-4">
       <video id="video" autoplay playsinline muted></video>
     </div>
@@ -71,6 +151,12 @@
     const stopBroadcastButton = document.getElementById('stop-broadcast');
     const statusDiv = document.getElementById('status');
     const remoteVideosContainer = document.getElementById('remote-videos');
+  const videoElement = document.getElementById('video');
+    const startButton = document.getElementById('start-broadcast');
+    const stopButton = document.getElementById('stop-broadcast');
+    const statusElement = document.getElementById('status'); // Get the status element
+    let mediaStream = null;
+    // let peerConnection = null; // Store the peer connection object
 
     let localStream;
     let peerConnections = {}; 
@@ -198,6 +284,333 @@
     stopBroadcastButton.addEventListener('click', stopBroadcast);
 
     // ... (Helper functions like generateUniqueId, getBrowserInfo, etc.) ...
+  </script>
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+</head>
+<body>
+
+  <script>
+  
+    async function startBroadcast() {
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        videoElement.srcObject = mediaStream;
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        statusElement.textContent = "Broadcast started."; // Update status
+
+        // Create a Peer Connection
+        peerConnection = new RTCPeerConnection({
+          iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' }, // Example STUN server
+            // ... Add TURN servers for better connectivity ...
+          ]
+        });
+
+        // Add tracks to the peer connection
+        mediaStream.getTracks().forEach(track => peerConnection.addTrack(track, mediaStream));
+
+        // Create and send an offer
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        sendOfferToPeer(offer); // Send the offer using your signaling mechanism
+
+        // Handle ICE candidates
+        peerConnection.onicecandidate = event => {
+          if (event.candidate) {
+            sendIceCandidateToPeer(event.candidate); // Send candidate using your signaling
+          }
+        };
+
+        // Handle connection state changes
+        peerConnection.onconnectionstatechange = () => {
+          statusElement.textContent = "Connection state: " + peerConnection.connectionState;
+        };
+
+        // ... (Handle peer's answer and ICE candidates using your signaling) ...
+
+      } catch (error) {
+        console.error('Error accessing media devices:', error);
+        statusElement.textContent = "Error starting broadcast."; // Update status on error
+      }
+    }
+
+    function stopBroadcast() {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        videoElement.srcObject = null;
+        mediaStream = null;
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        statusElement.textContent = "Broadcast stopped."; // Update status
+
+        // Close the peer connection
+        if (peerConnection) {
+          peerConnection.close();
+          peerConnection = null;
+        }
+      }
+    }
+
+    // Placeholder functions for signaling (replace with your actual implementation)
+    function sendOfferToPeer(offer) {
+      // Send the 'offer' to the peer using your signaling server
+      console.log("Sending offer:", offer);
+      // ... (Implementation depends on your signaling mechanism) ...
+    }
+
+    function sendIceCandidateToPeer(candidate) {
+      // Send the 'candidate' to the peer using your signaling server
+      console.log("Sending ICE candidate:", candidate);
+      // ... (Implementation depends on your signaling mechanism) ...
+    }
+
+    // ... (Add functions to receive answer and ICE candidates from the peer) ...
+
+    startButton.addEventListener('click', startBroadcast);
+    stopButton.addEventListener('click', stopBroadcast);
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+
+  <style>
+ 
+</head>
+<body>
+  <div class="container">
+    <h1>Broadcast from Cell Phone</h1>
+    <video id="video" autoplay playsinline muted></video>
+    <button id="start-broadcast">Start Broadcast</button>
+    <button id="stop-broadcast" disabled>Stop Broadcast</button>
+    <div id="status"></div>
+
+    <h2>Viewers:</h2>
+    <div id="remote-videos"></div> 
+  </div>
+
+  <script>
+    // ... (Previous JavaScript code) ...
+
+    const remoteVideosContainer = document.getElementById('remote-videos');
+
+    // Function to add a new viewer's video stream
+    function addViewer(stream, peerId) {
+      const videoContainer = document.createElement('div');
+      videoContainer.classList.add('video-container');
+
+      const connectingText = document.createElement('div');
+      connectingText.textContent = "Connecting...";
+      connectingText.classList.add('connecting-text');
+      videoContainer.appendChild(connectingText); 
+
+      const videoElement = document.createElement('video');
+      videoElement.id = `viewer-${peerId}`;
+      videoElement.autoplay = true;
+      videoElement.playsinline = true;
+      videoContainer.appendChild(videoElement);
+
+      remoteVideosContainer.appendChild(videoContainer);
+
+      videoElement.srcObject = stream;
+
+      // Remove "Connecting..." text when video starts playing
+      videoElement.onplaying = () => {
+        videoContainer.removeChild(connectingText);
+      };
+    }
+
+    // Function to remove a viewer's video stream
+    function removeViewer(peerId) {
+      const videoElement = document.getElementById(`viewer-${peerId}`);
+      if (videoElement) {
+        const videoContainer = videoElement.parentNode;
+        videoContainer.removeChild(videoElement);
+        remoteVideosContainer.removeChild(videoContainer);
+      }
+    }
+
+    // ... (In the signaling logic, call addViewer() when a new viewer connects
+    // and removeViewer() when a viewer disconnects) ...
+
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  
+</head>
+<body>
+  <div class="container">
+    <h1>Broadcast from Cell Phone</h1>
+    <video id="video" autoplay playsinline muted></video>
+    <button id="start-broadcast">Start Broadcast</button>
+    <button id="stop-broadcast" disabled>Stop Broadcast</button>
+    <div id="status"></div>
+
+    <h2>Viewers:</h2>
+    <div id="remote-videos"></div>
+  </div>
+
+  <script>
+    const videoElement = document.getElementById('video');
+    const startButton = document.getElementById('start-broadcast');
+    const stopButton = document.getElementById('stop-broadcast');
+    const statusDiv = document.getElementById('status');
+    const remoteVideosContainer = document.getElementById('remote-videos');
+
+    let mediaStream = null;
+    let peerConnections = {}; // Store PeerConnections for each viewer
+
+    startButton.addEventListener('click', async () => {
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        videoElement.srcObject = mediaStream;
+
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        statusDiv.textContent = "Broadcasting...";
+
+        // Signaling logic (using your preferred signaling server)
+        // ... (Code to establish connection with signaling server) ...
+
+      } catch (error) {
+        console.error('Error accessing media devices:', error);
+        statusDiv.textContent = "Error accessing camera/microphone.";
+      }
+    });
+
+    stopButton.addEventListener('click', () => {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        videoElement.srcObject = null;
+
+        // Close all peer connections
+        for (const peerId in peerConnections) {
+          peerConnections[peerId].close();
+        }
+        peerConnections = {}; 
+
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        statusDiv.textContent = "Broadcast stopped.";
+
+        // ... (Code to notify signaling server about stopping broadcast) ...
+      }
+    });
+
+    function addViewer(stream, peerId) {
+      const videoContainer = document.createElement('div');
+      videoContainer.classList.add('video-container');
+
+      const connectingText = document.createElement('div');
+      connectingText.textContent = "Connecting...";
+      connectingText.classList.add('connecting-text');
+      videoContainer.appendChild(connectingText);
+
+      const videoElement = document.createElement('video');
+      videoElement.id = `viewer-${peerId}`;
+      videoElement.autoplay = true;
+      videoElement.playsinline = true;
+      videoContainer.appendChild(videoElement);
+
+      // Add viewer info (e.g., peer ID or username)
+      const viewerInfo = document.createElement('div');
+      viewerInfo.textContent = `Viewer: ${peerId}`; 
+      viewerInfo.classList.add('viewer-info');
+      videoContainer.appendChild(viewerInfo);
+
+      remoteVideosContainer.appendChild(videoContainer);
+
+      videoElement.srcObject = stream;
+
+      videoElement.onplaying = () => {
+        videoContainer.removeChild(connectingText);
+      };
+    }
+
+    function removeViewer(peerId) {
+      const videoElement = document.getElementById(`viewer-${peerId}`);
+      if (videoElement) {
+        const videoContainer = videoElement.parentNode;
+        videoContainer.removeChild(videoElement);
+        remoteVideosContainer.removeChild(videoContainer);
+      }
+    }
+
+    // --- Signaling Logic (Illustrative Example) ---
+
+    // Replace this with your actual signaling server implementation
+    const signalingServer = new WebSocket('wss://your-signaling-server.com'); 
+
+    signalingServer.onopen = () => {
+      console.log('Connected to signaling server');
+    };
+
+    signalingServer.onmessage = async (event) => {
+      const message = JSON.parse(event.data);
+
+      if (message.type === 'new-viewer') {
+        const peerId = message.peerId;
+        const peerConnection = new RTCPeerConnection();
+        peerConnections[peerId] = peerConnection;
+
+        mediaStream.getTracks().forEach(track => peerConnection.addTrack(track, mediaStream));
+
+        peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+            // Send ICE candidate to signaling server
+            signalingServer.send(JSON.stringify({ 
+              type: 'ice-candidate', 
+              peerId: peerId, 
+              candidate: event.candidate 
+            }));
+          }
+        };
+
+        peerConnection.ontrack = (event) => {
+          // This should not happen in a one-way broadcast
+          console.log('Unexpected track received from viewer:', event.track); 
+        };
+
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+
+        // Send offer to signaling server
+        signalingServer.send(JSON.stringify({ 
+          type: 'offer', 
+          peerId: peerId, 
+          offer: offer 
+        }));
+      } else if (message.type === 'answer') {
+        const peerId = message.peerId;
+        const answer = message.answer;
+        const peerConnection = peerConnections[peerId];
+
+        if (peerConnection) {
+          await peerConnection.setRemoteDescription(answer);
+        }
+      } else if (message.type === 'ice-candidate') {
+        const peerId = message.peerId;
+        const candidate = message.candidate;
+        const peerConnection = peerConnections[peerId];
+
+        if (peerConnection) {
+          await peerConnection.addIceCandidate(candidate);
+        }
+      }
+    };
+
+    // ... (Rest of the signaling logic) ...
   </script>
 </body>
 </html>
