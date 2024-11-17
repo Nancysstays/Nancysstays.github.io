@@ -3,80 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expedia Sale</title>
+    <title>Expedia Ad</title>
     <style>
         body {
-            font-family: sans-serif;
             margin: 0;
-            padding: 0;
+            font-family: sans-serif;
         }
 
-        .container {
+        .parallax-container {
             position: relative;
-            text-align: center;
+            height: 500px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            perspective: 1px;
         }
 
-        .background-image {
-            width: 100%;
-            height: auto;
-        }
-
-        .content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white; 
-        }
-
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        .button {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px; 
-            display: block; 
-        }
-
-        /* Make the entire body clickable */
-        body {
-            cursor: pointer;
-        }
-        a {
-            display: block;
-            height: 100vh; 
-            width: 100%;
+        .parallax-image {
             position: absolute;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            transform: translateZ(-1px) scale(2);
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            color: white;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #003580; /* Expedia blue */
+            color: white;
             text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <a href="https://expedia.com/affiliate/XhR7pks"></a> 
 
-    <div class="container">
-        <img src="background.jpg" alt="Travel background" class="background-image">
-        <div class="content">
-            <a href="https://expedia.com/affiliate/XhR7pks" class="logo"> 
-                <img src="icons-512.png" alt="Expedia logo"> 
-            </a>
-            <div class="text">
-                <h2>Save Up to 50% on Your Next Trip</h2>
-            </div>
-            <a href="https://expedia.com/affiliate/XhR7pks" class="button">Book Now</a> 
-        </div>
+<div class="parallax-container">
+    <img src="https://media.expedia.com/hotels/1000000/530000/529100/529013/529013_70_y.jpg" alt="Hotel Room" class="parallax-image">
+
+    <div class="parallax-content">
+        <h1>Escape to Paradise</h1>
+        <p>Find your perfect getaway with Expedia.</p>
+        <a href="https://expedia.com/affiliate/XhR7pks" class="cta-button">Book Now</a>
     </div>
+</div>
+
+<div class="parallax-container">
+    <img src="https://media.expedia.com/flights/1000000/810000/809200/809142/809142_29_y.jpg" alt="Airplane" class="parallax-image">
+
+    <div class="parallax-content">
+        <h2>Explore the World</h2>
+        <p>Discover amazing destinations and unforgettable experiences.</p>
+        <a href="https://expedia.com/affiliate/XhR7pks" class="cta-button">Plan Your Trip</a>
+    </div>
+</div>
 
 </body>
 </html>
