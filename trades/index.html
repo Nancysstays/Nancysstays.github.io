@@ -57,7 +57,28 @@
           headerRow.appendChild(th);
         });
 
+// ... (rest of the code)
+
+// Populate table rows
+for (const date in timeSeriesData) {
+  const rowData = timeSeriesData[date];
+  const row = table.insertRow(); 
+
+  // Create date cell first
+  const dateCell = row.insertCell(); // Corrected line
+  dateCell.textContent = date;
+
+  ['1. open', '2. high', '3. low', '4. close', '5. volume'].forEach(key => {
+    const cell = row.insertCell(); // Corrected line
+    cell.textContent = rowData[key];
+  });
+}
+
+// ... (rest of the code)
+
+
         // Populate table rows
+        /*
         for (const date in timeSeriesData) {
           const rowData = timeSeriesData[date];
           const row = table.insertRow();
@@ -68,6 +89,7 @@
           const dateCell = row.insertCell(0); // Add date to the first column
           dateCell.textContent = date;
         }
+        */
 
         // Create download link
         const downloadLink = document.createElement('a');
