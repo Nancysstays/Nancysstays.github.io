@@ -20,54 +20,57 @@
         header {
             background-color: #f0f0f0;
             padding: 10px;
-            text-align: center;
         }
 
         .logo {
-            max-width: 5%; /* Responsive logo */
+            max-width: 50px;
             height: auto;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
 
         /* Navigation Styles */
+        nav {
+            text-align: center; /* Center the menu items */
+        }
+
         nav ul {
             list-style: none;
             padding: 10px;
         }
 
         nav li {
-            display: inline-block;
+            display: inline-block; /* Display items horizontally */
             margin: 0 10px;
         }
 
-        /* Banner Styles */
-        .banner {
-            position: relative;
+        /* Search Form Styles */
+        .search-form {
+            display: block; /* Make the form take up full width */
+            margin: 10px auto; /* Center the form */
+            width: 90%; /* Adjust width as needed */
+        }
+
+        .search-form input[type="text"] {
             width: 100%;
-            overflow: hidden;
+            padding: 8px;
+            border: 1px solid #ccc;
         }
 
-        .banner img {
-            width: 100%;
-            display: block; /* Removes extra space below image */
+        /* Media Query for smaller screens */
+        @media (max-width: 600px) {
+            nav ul {
+                padding: 0;
+            }
+
+            nav li {
+                display: block; /* Stack menu items vertically */
+                margin: 10px 0;
+            }
         }
 
-        /* Add more styles for image carousel (e.g., using JavaScript) */
-
-        /* Main Content Styles */
-        main {
-            padding: 20px;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed; /* Sticky footer */
-            bottom: 0;
-            width: 100%;
-        }
+        /* Other styles remain the same */
     </style>
 </head>
 <body>
@@ -83,22 +86,11 @@
             <li><a href="#">Services</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
+
+        <form class="search-form" role="search">
+            <input type="text" placeholder="Search...">
+        </form>
     </nav>
 
-    <section class="banner">
-        <img src="banner1.jpg" alt="Banner 1">
-        <img src="banner2.jpg" alt="Banner 2">
-        <img src="banner3.jpg" alt="Banner 3">
-        </section>
-
-    <main>
-        <h2>Welcome to our Mobile Site!</h2>
-        <p>This is a simple mobile web layout example.</p>
-    </main>
-
-    <footer>
-        <p>&copy; 2023 Your Company Name</p>
-    </footer>
-
-</body>
+    </body>
 </html>
