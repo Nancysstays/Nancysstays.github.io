@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MACD Indicator Chart</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+#chartContainer {
+  width: 80%;
+  margin: 20px auto;
+}
+</style>
+</head>
+<body>
+  <div id="chartContainer">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script>
+  const apiKey = 'XVYHOWRTRNPN3FJA'; 
+  const symbol = 'IBM'; // Replace with your desired stock symbol
+
+  fetch(`https://www.alphavantage.co/query?function=MACD&symbol=${symbol}&interval=daily&series_type=close&apikey=${apiKey}`)
+    .then(response => response.json())
+    .then(data => {
+      const macdData = data['Technical Analysis: MACD'];
+      const dates = Object.keys(macdData);
+      const macd = dates.map(date => macdData[date]['MACD']);
+      const signal = dates.map(date => macdData[date]['MACD_Signal']);
+      const histogram = dates.map(date => macdData[date]['MACD_Hist']);
+
+      const chartData = {
+        labels: dates,
+        datasets: [
+          {
+            label: 'MACD',
+            data: macd,
+            borderColor: 'blue',
+            fill: false
+          },
+          {
+            label: 'Signal',
+            data: signal,
+            borderColor: 'red',
+            fill: false
+          },
+          {
+            label: 'Histogram',
+            data: histogram,
+            type: 'bar',
+            backgroundColor: 'rgba(0, 128, 0, 0.5)' 
+          }
+        ]
+      };
+
+      const ctx = document.getElementById('myChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'MACD Value'
+              }
+            }
+          }
+        }
+      });
+    })
+    .catch(error => console.error('Error fetching data:', error)); 
+  </script>
+</body>
+</html>
