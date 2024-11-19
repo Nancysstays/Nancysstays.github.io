@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ROI Calculator</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  #result {
+    margin-top: 30px;
+    display: none;
+    text-align: center;
+  }
+
+  #result h2 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  #result span {
+    font-weight: bold;
+    font-size: 20px;
+    color: #28a745;
+  }
+
+  /* Responsive design for smaller screens */
+  @media (max-width: 480px) {
+    .container {
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>ROI Calculator</h1>
+    <form id="roi-form">
+      <div class="form-group">
+        <label for="initialInvestment">Initial Investment ($):</label>
+        <input type="number" id="initialInvestment" name="initialInvestment" required>
+      </div>
+      <div class="form-group">
+        <label for="earnings">Earnings ($):</label>
+        <input type="number" id="earnings" name="earnings" required>
+      </div>
+      <div class="form-group">
+        <label for="investmentPeriod">Investment Period (years):</label>
+        <input type="number" id="investmentPeriod" name="investmentPeriod" required>
+      </div>
+      <button type="button" onclick="calculateROI()">Calculate</button>
+    </form>
+
+    <div id="result">
+      <h2>Total ROI: <span id="totalROI"></span></h2>
+      <h2>Annualized ROI: <span id="annualizedROI"></span></h2>
+    </div>
+  </div>
+
+  <script>
+    function calculateROI() {
+      let initialInvestment = parseFloat(document.getElementById("initialInvestment").value);
+      let earnings = parseFloat(document.getElementById("earnings").value);
+      let investmentPeriod = parseFloat(document.getElementById("investmentPeriod").value);
+
+      let totalROI = ((earnings - initialInvestment) / initialInvestment) * 100;
+      let annualizedROI = (Math.pow((earnings / initialInvestment), (1 / investmentPeriod)) - 1) * 100;
+
+      document.getElementById("totalROI").textContent = totalROI.toFixed(2) + "%";
+      document.getElementById("annualizedROI").textContent = annualizedROI.toFixed(2) + "%";
+
+      document.getElementById("result").style.display = "block";
+    }
+  </script>
+</body>
+</html>
