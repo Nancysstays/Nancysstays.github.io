@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expedia Affiliate Search Widget</title>
+  <style>
+    /* Basic styling for the iframe container */
+    .iframe-container {
+      width: 100%;
+      max-width: 800px; /* Adjust as needed */
+      margin: 20px auto;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px; /* Adjust as needed */
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="iframe-container">
+    <iframe id="expediaIframe" src="https://expedia.com/affiliates/expedia-home.UYzGhdL" 
+            scrolling="no" frameborder="0"></iframe>
+  </div>
+
+  <script>
+    const iframe = document.getElementById('expediaIframe');
+    
+    // Wait for the iframe to load
+    iframe.onload = function() {
+      try {
+        // Calculate the date 7 days from today
+        const today = new Date();
+        const sevenDaysFromNow = new Date(today);
+        sevenDaysFromNow.setDate(today.getDate() + 7);
+
+        // Format the date as YYYY-MM-DD (required by Expedia's date picker)
+        const year = sevenDaysFromNow.getFullYear();
+        const month = (sevenDaysFromNow.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+        const day = sevenDaysFromNow.getDate().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        // Access the iframe's content window
+        const iframeWindow = iframe.contentWindow;
+
+        // Find the date input field within the iframe (you might need to adjust the selector)
+        const dateInput = iframeWindow.document.querySelector('input[type="date"]');
+
+        // Set the date value
+        if (dateInput) {
+          dateInput.value = formattedDate;
+        } else {
+          console.error("Date input field not found in the iframe.");
+        }
+
+      } catch (error) {
+        console.error("Error interacting with the iframe:", error);
+      }
+    };
+  </script>
+
+</body>
+</html>
