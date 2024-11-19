@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reaction Game</title>
+    <title>React Fast or Get Roasted!</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif; 
+            background-color: #f0f0f0; 
         }
         .container {
             height: 100vh;
@@ -19,24 +20,32 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 50vh; /* Adjust as needed */
+            height: 50vh;
             font-size: 2em;
-            transition: background-color 0.3s ease; /* Smooth transition for color change */
+            transition: background-color 0.3s ease;
+            border-radius: 20px; 
+            border: 5px dashed #ccc; 
         }
         .btn {
             font-size: 1.5em;
+            border-radius: 10px; 
+        }
+        #timer {
+            font-size: 3em; 
+            color: #fff; 
+            text-shadow: 2px 2px 4px #000; 
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <button id="player1Btn" class="btn btn-primary btn-lg btn-block">Player 1</button>
+        <button id="player1Btn" class="btn btn-primary btn-lg btn-block">Player 1 SMASH!</button>
 
         <div id="centerBox" class="center-box">
             <span id="timer">00:00</span>
         </div>
 
-        <button id="player2Btn" class="btn btn-danger btn-lg btn-block">Player 2</button>
+        <button id="player2Btn" class="btn btn-danger btn-lg btn-block">Player 2 SLAM!</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -48,98 +57,87 @@
         const centerBox = document.getElementById('centerBox');
         const timerDisplay = document.getElementById('timer');
 
-        let startTime;
-        let gameInterval;
-        let gameTime = 1000; // Initial game time in milliseconds (1 second)
-        let lastPlayer = 0; // 0: None, 1: Player 1, 2: Player 2
         let player1Wins = 0;
         let player2Wins = 0;
-        let gamesPlayed = 0;
+        let currentGame = 1;
+        let gameActive = false;
+        let timerInterval;
 
-        // Load data from localStorage
-        loadGameData();
+        let gameDuration = localStorage.getItem('gameDuration') || 60; 
+        let gamesPerSet = localStorage.getItem('gamesPerSet') || 3;
 
         function startGame() {
-            clearInterval(gameInterval);
-            startTime = new Date().getTime();
-            lastPlayer = 0;
-            centerBox.style.backgroundColor = ''; // Reset background color
-            timerDisplay.textContent = formatTime(gameTime);
+            clearInterval(timerInterval);
+            let timeRemaining = gameDuration;
+            timerDisplay.textContent = formatTime(timeRemaining);
 
-            gameInterval = setInterval(() => {
-                const currentTime = new Date().getTime();
-                const elapsed = currentTime - startTime;
-                timerDisplay.textContent = formatTime(gameTime - elapsed);
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                timerDisplay.textContent = formatTime(timeRemaining);
 
-                if (elapsed >= gameTime) {
-                    clearInterval(gameInterval);
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
                     endGame();
                 }
-            }, 10); // Update timer every 10 milliseconds
+            }, 1000);
+
+            gameActive = true;
+            centerBox.style.backgroundColor = '#ffffff'; // Reset color
         }
 
         function endGame() {
-            gamesPlayed++;
-            if (lastPlayer === 1) {
+            gameActive = false;
+
+            if (centerBox.style.backgroundColor === 'rgb(0, 83, 155)') {  // Player 1 wins
                 player1Wins++;
-            } else if (lastPlayer === 2) {
+                alert(`Player 1 wins game ${currentGame}!`);
+            } else if (centerBox.style.backgroundColor === 'rgb(140, 21, 21)') { // Player 2 wins
                 player2Wins++;
-            }
-            updateScoreDisplay();
-            saveGameData();
-
-            // Increase game time for the next round (up to 20 minutes)
-            gameTime += 1000; // Increase by 1 second
-            if (gameTime > 20 * 60 * 1000) {
-                gameTime = 20 * 60 * 1000;
+                alert(`Player 2 wins game ${currentGame}!`);
+            } else { // Draw
+                alert(`Game ${currentGame} is a draw!`);
             }
 
-            startGame();
+            currentGame++;
+            if (currentGame > gamesPerSet) {
+                alert(`Set finished! Player 1: ${player1Wins} wins, Player 2: ${player2Wins} wins`);
+                resetGame();
+            } else {
+                startGame();
+            }
         }
 
-        function updateScoreDisplay() {
-            console.log(`Player 1 Wins: ${player1Wins}, Player 2 Wins: ${player2Wins}, Games Played: ${gamesPlayed}`);
-        }
-
-        function saveGameData() {
-            localStorage.setItem('player1Wins', player1Wins);
-            localStorage.setItem('player2Wins', player2Wins);
-            localStorage.setItem('gamesPlayed', gamesPlayed);
-            localStorage.setItem('gameTime', gameTime);
-        }
-
-        function loadGameData() {
-            player1Wins = parseInt(localStorage.getItem('player1Wins')) || 0;
-            player2Wins = parseInt(localStorage.getItem('player2Wins')) || 0;
-            gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
-            gameTime = parseInt(localStorage.getItem('gameTime')) || 1000;
-            updateScoreDisplay();
-        }
-
-        function formatTime(milliseconds) {
-            const totalSeconds = Math.ceil(milliseconds / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            const formattedTime = `${pad(minutes)}:${pad(seconds)}`;
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
             return formattedTime;
         }
 
-        function pad(number) {
-            return (number < 10 ? '0' : '') + number;
+        function resetGame() {
+            player1Wins = 0;
+            player2Wins = 0;
+            currentGame = 1;
+            startGame();
         }
 
         player1Btn.addEventListener('click', () => {
-            lastPlayer = 1;
-            centerBox.style.backgroundColor = '#00539B';
+            if (gameActive) {
+                clearInterval(timerInterval);
+                centerBox.style.backgroundColor = '#00539B'; 
+                endGame();
+            }
         });
 
         player2Btn.addEventListener('click', () => {
-            lastPlayer = 2;
-            centerBox.style.backgroundColor = '#8C1515';
+            if (gameActive) {
+                clearInterval(timerInterval);
+                centerBox.style.backgroundColor = '#8C1515'; 
+                endGame();
+            }
         });
 
-        // Start the game initially
-        startGame();
+        startGame(); 
     </script>
 </body>
 </html>
