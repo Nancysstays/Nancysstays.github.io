@@ -1,0 +1,13 @@
+/* Basic styling - customize as you like */
+body {
+  font-family: sans-serif;
+}
+
+#mortgage-form label {
+  display: block;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+}
