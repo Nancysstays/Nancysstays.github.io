@@ -38,6 +38,31 @@ body {
   position: absolute; /* Allow absolute positioning for dragging */
   touch-action: none; /* Prevent default touch actions for better pinch handling */
 }
+
+#savedCircles {
+  margin-top: 20px;
+}
+
+#savedCircles ul {
+  list-style: none;
+  padding: 0;
+  display: flex; /* Display lists horizontally */
+  justify-content: space-around; /* Distribute space around */
+  width: 100%;
+}
+
+#savedCircles li {
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+#savedCircles li:hover {
+  background-color: #f0f0f0;
+}
 </style>
 </head>
 <body>
@@ -64,9 +89,18 @@ body {
 
       <label for="gradient">Gradient Fill (Text):</label>
       <input type="text" id="gradient" value="linear-gradient(to right, #f00, #ff0)">
+
+      <button type="button" onclick="saveCircle()">Save</button>
+      <button type="button" onclick="loadCircle()">Load</button>
     </div>
 
     <div id="circle" class="circle"></div>
+
+    <div id="savedCircles">
+      <h3>Saved Circles</h3>
+      <ul id="recentList"></ul>
+      <ul id="mostUsedList"></ul>
+    </div>
   </div>
 
   <script>
@@ -106,7 +140,6 @@ body {
       circleText.style.webkitTextFillColor = "transparent";
     }
 
-    // Attach event listeners to all inputs
     radiusInput.addEventListener('input', updateCircle);
     textInput.addEventListener('input', updateCircle);
     fontSelect.addEventListener('change', updateCircle);
@@ -114,31 +147,29 @@ body {
     circleColorInput.addEventListener('input', updateCircle);
     gradientInput.addEventListener('input', updateCircle);
 
-    // Initial circle generation
     updateCircle();
 
     let isDragging = false;
     let offsetX, offsetY;
-    let initialX; // Store initial X position for dragging
-    let initialY; // Store initial Y position for dragging
+    let initialX; 
+    let initialY; 
 
     circleDiv.addEventListener('mousedown', (e) => {
       isDragging = true;
       offsetX = circleDiv.offsetLeft - e.clientX;
       offsetY = circleDiv.offsetTop - e.clientY;
-      initialX = e.clientX; // Capture initial drag position
+      initialX = e.clientX; 
       initialY = e.clientY;
     });
 
     document.addEventListener('mouseup', (e) => {
       if (isDragging) {
         isDragging = false;
-        const finalX = e.clientX; // Capture final drag position
+        const finalX = e.clientX; 
         const finalY = e.clientY;
-        const deltaX = finalX - initialX; // Calculate drag distance
+        const deltaX = finalX - initialX; 
         const deltaY = finalY - initialY;
 
-        // Update the circle's position based on the drag distance
         circleDiv.style.left = `${circleDiv.offsetLeft + deltaX}px`;
         circleDiv.style.top = `${circleDiv.offsetTop + deltaY}px`;
       }
@@ -155,9 +186,8 @@ body {
       circleDiv.style.top = `${newY}px`;
     });
 
-    // Pinch to resize
     let initialDistance = 0;
-    let initialFontSize = 24; // Initial font size
+    let initialFontSize = 24; 
     circleDiv.addEventListener('touchstart', (e) => {
       if (e.touches.length === 2) {
         initialDistance = Math.hypot(
@@ -169,7 +199,7 @@ body {
 
     circleDiv.addEventListener('touchmove', (e) => {
       if (e.touches.length === 2) {
-        e.preventDefault(); // Prevent scrolling
+        e.preventDefault(); 
 
         const currentDistance = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
@@ -182,6 +212,92 @@ body {
         circleText.style.fontSize = `${newFontSize}px`;
       }
     });
+
+    function saveCircle() {
+      let circleName = prompt("Enter a name for this circle:");
+      if (circleName === null || circleName.trim() === "") {
+        return; 
+      }
+
+      let circleData = {
+        radius: radiusInput.value,
+        text: textInput.value,
+        font: fontSelect.value,
+        backgroundColor: backgroundColorInput.value,
+        circleColor: circleColorInput.value,
+        gradient: gradientInput.value
+      };
+
+      localStorage.setItem(circleName, JSON.stringify(circleData));
+      updateSavedCircles(circleName);
+    }
+
+    function loadCircle(circleName = null) {
+      if (circleName === null) {
+        circleName = prompt("Enter the name of the circle to load:");
+        if (circleName === null || circleName.trim() === "") {
+          return;
+        }
+      }
+
+      let savedData = localStorage.getItem(circleName);
+      if (savedData) {
+        let circleData = JSON.parse(savedData);
+        radiusInput.value = circleData.radius;
+        textInput.value = circleData.text;
+        fontSelect.value = circleData.font;
+        backgroundColorInput.value = circleData.backgroundColor;
+        circleColorInput.value = circleData.circleColor;
+        gradientInput.value = circleData.gradient;
+        updateCircle();
+        updateSavedCircles(circleName);
+      } else {
+        alert("No saved circle found with this name.");
+      }
+    }
+
+    function updateSavedCircles(circleName) {
+      let recentCircles = localStorage.getItem("recentCircles") ? JSON.parse(localStorage.getItem("recentCircles")) : [];
+      updateCircleList(recentCircles, circleName, "recentCircles", 10);
+
+      let mostUsedCircles = localStorage.getItem("mostUsedCircles") ? JSON.parse(localStorage.getItem("mostUsedCircles")) : {};
+      mostUsedCircles[circleName] = (mostUsedCircles[circleName] || 0) + 1;
+      localStorage.setItem("mostUsedCircles", JSON.stringify(mostUsedCircles));
+
+      let sortedMostUsed = Object.entries(mostUsedCircles).sort((a, b) => b[1] - a[1]).slice(0, 10).map(entry => entry[0]);
+      localStorage.setItem("mostUsedCirclesList", JSON.stringify(sortedMostUsed));
+      displaySavedCircles();
+    }
+
+    function updateCircleList(list, circleName, storageKey, maxLength) {
+      let index = list.indexOf(circleName);
+      if (index > -1) {
+        list.splice(index, 1);
+      }
+      list.unshift(circleName);
+      list = list.slice(0, maxLength);
+      localStorage.setItem(storageKey, JSON.stringify(list));
+    }
+
+    function displaySavedCircles() {
+      displayCircleList("recentCircles", "recentList");
+      displayCircleList("mostUsedCirclesList", "mostUsedList");
+    }
+
+    function displayCircleList(storageKey, listId) {
+      let circles = localStorage.getItem(storageKey) ? JSON.parse(localStorage.getItem(storageKey)) : [];
+      let list = document.getElementById(listId);
+      list.innerHTML = "";
+
+      circles.forEach(name => {
+        let li = document.createElement("li");
+        li.textContent = name;
+        li.addEventListener("click", () => loadCircle(name));
+        list.appendChild(li);
+      });
+    }
+
+    displaySavedCircles();
   </script>
 </body>
 </html>
