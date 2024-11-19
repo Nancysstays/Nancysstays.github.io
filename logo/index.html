@@ -27,14 +27,16 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Add smooth transitions */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative; /* To allow positioning of text inside */
 }
 
 .circle-text {
   font-size: 24px;
-  /* Additional styles for better text rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: absolute; /* Allow absolute positioning for dragging */
+  touch-action: none; /* Prevent default touch actions for better pinch handling */
 }
 </style>
 </head>
@@ -90,7 +92,6 @@ body {
 
       let textContent = "";
       if (font === "FontAwesome") {
-        // Assuming the textInput contains the Font Awesome icon class
         textContent = `<i class="${text} circle-text"></i>`;
       } else {
         textContent = `<span class="circle-text">${text}</span>`;
@@ -115,6 +116,72 @@ body {
 
     // Initial circle generation
     updateCircle();
+
+    let isDragging = false;
+    let offsetX, offsetY;
+    let initialX; // Store initial X position for dragging
+    let initialY; // Store initial Y position for dragging
+
+    circleDiv.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      offsetX = circleDiv.offsetLeft - e.clientX;
+      offsetY = circleDiv.offsetTop - e.clientY;
+      initialX = e.clientX; // Capture initial drag position
+      initialY = e.clientY;
+    });
+
+    document.addEventListener('mouseup', (e) => {
+      if (isDragging) {
+        isDragging = false;
+        const finalX = e.clientX; // Capture final drag position
+        const finalY = e.clientY;
+        const deltaX = finalX - initialX; // Calculate drag distance
+        const deltaY = finalY - initialY;
+
+        // Update the circle's position based on the drag distance
+        circleDiv.style.left = `${circleDiv.offsetLeft + deltaX}px`;
+        circleDiv.style.top = `${circleDiv.offsetTop + deltaY}px`;
+      }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      e.preventDefault();
+
+      const newX = e.clientX + offsetX;
+      const newY = e.clientY + offsetY;
+      circleDiv.style.left = `${newX}px`;
+      circleDiv.style.top = `${newY}px`;
+    });
+
+    // Pinch to resize
+    let initialDistance = 0;
+    let initialFontSize = 24; // Initial font size
+    circleDiv.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        initialDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    });
+
+    circleDiv.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault(); // Prevent scrolling
+
+        const currentDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+
+        const scaleFactor = currentDistance / initialDistance;
+        const newFontSize = initialFontSize * scaleFactor;
+        const circleText = circleDiv.querySelector('.circle-text');
+        circleText.style.fontSize = `${newFontSize}px`;
+      }
+    });
   </script>
 </body>
 </html>
