@@ -82,19 +82,19 @@
             }, 1000);
 
             gameActive = true;
-            centerBox.style.backgroundColor = '#ffffff'; // Reset color
+            centerBox.style.backgroundColor = '#ffffff'; 
         }
 
         function endGame() {
             gameActive = false;
 
-            if (centerBox.style.backgroundColor === 'rgb(0, 83, 155)') {  // Player 1 wins
+            if (centerBox.style.backgroundColor === 'rgb(0, 83, 155)') { 
                 player1Wins++;
                 alert(`Player 1 wins game ${currentGame}!`);
-            } else if (centerBox.style.backgroundColor === 'rgb(140, 21, 21)') { // Player 2 wins
+            } else if (centerBox.style.backgroundColor === 'rgb(140, 21, 21)') { 
                 player2Wins++;
                 alert(`Player 2 wins game ${currentGame}!`);
-            } else { // Draw
+            } else { 
                 alert(`Game ${currentGame} is a draw!`);
             }
 
@@ -137,7 +137,12 @@
             }
         });
 
-        startGame(); 
+        // Check for pre-game data
+        if (localStorage.getItem('gameDuration') === null || localStorage.getItem('gamesPerSet') === null) {
+            window.location.href = 'settings.html'; 
+        } else {
+            startGame(); 
+        }
     </script>
 </body>
 </html>
