@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Canvas Drawing</title>
+<style>
+body { margin: 0; } /* Remove default body margin */
+canvas { 
+  display: block; /* Prevent scrollbars */
+}
+#fullscreen-canvas {
+  width: 100vw; 
+  height: 100vh; 
+}
+#half-screen-canvas {
+  width: 50vw;
+  height: 100vh;
+}
+</style>
+</head>
+<body>
+
+<canvas id="fullscreen-canvas"></canvas>
+<canvas id="half-screen-canvas"></canvas>
+
+<script>
+const fullscreenCanvas = document.getElementById('fullscreen-canvas');
+const halfscreenCanvas = document.getElementById('half-screen-canvas');
+const fullscreenCtx = fullscreenCanvas.getContext('2d');
+const halfscreenCtx = halfscreenCanvas.getContext('2d');
+
+// Fullscreen canvas drawing example
+fullscreenCtx.fillStyle = 'blue';
+fullscreenCtx.fillRect(10, 10, 100, 50);
+
+// Halfscreen canvas drawing example
+halfscreenCtx.beginPath();
+halfscreenCtx.arc(100, 75, 50, 0, 2 * Math.PI);
+halfscreenCtx.stroke();
+
+// Add drawing functionality (e.g., with mouse events)
+let isDrawing = false;
+let currentCanvas = fullscreenCanvas; // Start with fullscreen canvas
+
+fullscreenCanvas.addEventListener('mousedown', startDrawing);
+fullscreenCanvas.addEventListener('mousemove', draw);
+fullscreenCanvas.addEventListener('mouseup', stopDrawing);
+fullscreenCanvas.addEventListener('mouseout', stopDrawing);
+
+halfscreenCanvas.addEventListener('mousedown', startDrawing);
+halfscreenCanvas.addEventListener('mousemove', draw);
+halfscreenCanvas.addEventListener('mouseup', stopDrawing);
+halfscreenCanvas.addEventListener('mouseout', stopDrawing);
+
+function startDrawing(e) {
+  isDrawing = true;
+  currentCanvas = e.target; // Set the current canvas being drawn on
+  draw(e);
+}
+
+function draw(e) {
+  if (!isDrawing) return;
+
+  const ctx = currentCanvas.getContext('2d');
+  const rect = currentCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+}
+
+function stopDrawing() {
+  isDrawing = false;
+}
+</script>
+
+</body>
+</html>
