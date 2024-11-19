@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Trading Simulator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .strategy-description {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Options Trading Simulator</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Option Parameters</h2>
+                <div class="form-group">
+                    <label for="option-strategy">Option Strategy:</label>
+                    <select id="option-strategy" class="form-control">
+                        <option value="call">Long Call</option>
+                        <option value="put">Long Put</option>
+                        <option value="covered_call">Covered Call</option>
+                        <option value="protective_put">Protective Put</option>
+                        <option value="long_straddle">Long Straddle</option>
+                        <option value="long_strangle">Long Strangle</option>
+                        <option value="bull_call_spread">Bull Call Spread</option>
+                        <option value="bear_put_spread">Bear Put Spread</option>
+                        <option value="long_calendar_spread">Long Calendar Spread</option>
+                    </select>
+                </div>
+                <div id="strategy-description" class="strategy-description"></div>
+
+                <div class="form-group">
+                    <label for="stock-price">Stock Price:</label>
+                    <input type="number" id="stock-price" value="100" class="form-control">
+                    <p>The current market price of the underlying stock.</p>
+                </div>
+                <div class="form-group">
+                    <label for="strike-price">Strike Price (Primary):</label>
+                    <input type="number" id="strike-price" value="100" class="form-control">
+                    <p>The price at which the option allows you to buy (for calls) or sell (for puts) the
+                        underlying stock.</p>
+                </div>
+                <div class="form-group">
+                    <label for="strike-price2">Strike Price (Secondary - for spreads):</label>
+                    <input type="number" id="strike-price2" value="110" class="form-control">
+                    <p>The strike price of the second option used in spread strategies.</p>
+                </div>
+                <div class="form-group">
+                    <label for="volatility">Volatility (%):</label>
+                    <input type="number" id="volatility" value="30" class="form-control">
+                    <p>A measure of how much the stock price is expected to fluctuate. Higher volatility
+                        generally leads to higher option prices.</p>
+                </div>
+                <div class="form-group">
+                    <label for="time-to-expiry">Time to Expiry (days) - Primary:</label>
+                    <input type="number" id="time-to-expiry" value="30" class="form-control">
+                    <p>The number of days until the option expires. Longer time to expiry generally leads to
+                        higher option prices.</p>
+                </div>
+                <div class="form-group">
+                    <label for="time-to-expiry2">Time to Expiry (days) - Secondary:</label>
+                    <input type="number" id="time-to-expiry2" value="60" class="form-control">
+                    <p>The time to expiry of the second option used in strategies like calendar spreads.</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Option Pricing Model (Black-Scholes-Merton)
+        function calculateOptionPrice(optionType, stockPrice, strikePrice, volatility, timeToExpiry, riskFreeRate = 0.05) {
+            timeToExpiry /= 365; // Convert days to years
+            const d1 = (Math.log(stockPrice / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
+            const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
+            const callPrice = stockPrice * normCDF(d1) - strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(d2);
+            const putPrice = strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(-d2) - stockPrice * normCDF(-d1);
+            return optionType === 'call' ? callPrice : putPrice;
+
+            function normCDF(x) {
+                // Approximation of the cumulative distribution function for the standard normal distribution
+                const a1 = 0.254829592;
+                const a2 = -0.284496736;
+                const a3 = 1.421413741;
+                const a4 = -1.453152027;
+                const a5 = 1.061405429;
+                const p = 0.3275911;
+                const sign = x < 0 ? -1 : 1;
+                x = Math.abs(x) / Math.sqrt(2.0);
+                const t = 1.0 / (1.0 + p * x);
+                const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+                return 0.5 * (1.0 + sign * y);
+            }
+        }
+
+        function calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry, timeToExpiry2) {
+          const priceRange = [];
+          const profitLoss = [];
+
+          for (let i = Math.max(0, stockPrice - 3 * strikePrice); i <= stockPrice + 3 * strikePrice; i += 0.5) {
+            let profit = 0;
+            switch (strategy) {
+              case 'call':
+                profit = Math.max(0, i - strikePrice) - calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry);
+                break;
+              case 'put':
+                profit = Math.max(0, strikePrice - i) - calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry);
+                break;
+              case 'covered_call':
+                profit = i - stockPrice + calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice);
+                break;
+              case 'protective_put':
+                profit = i - stockPrice - calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) + Math.max(0, strikePrice - i);
+                break;
+              case 'long_straddle':
+                profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) + calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice) - Math.max(0, strikePrice - i);
+                break;
+              case 'long_strangle':
+                profit = calculateOptionPrice('call', stockPrice, strikePrice2, volatility, timeToExpiry) + calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice2) - Math.max(0, strikePrice - i);
+                break;
+              case 'bull_call_spread':
+                profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) - calculateOptionPrice('call', stockPrice, strikePrice2, volatility, timeToExpiry) - Math.max(0, i - strikePrice) + Math.max(0, i - strikePrice2);
+                break;
+              case 'bear_put_spread':
+                profit = calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - calculateOptionPrice('put', stockPrice, strikePrice2, volatility, timeToExpiry) - Math.max(0, strikePrice - i) + Math.max(0, strikePrice2 - i);
+                break;
+              case 'long_calendar_spread': 
+                profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry2) - calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry);
+                break;
+              // Add more strategies here...
+            }
+            priceRange.push(i);
+            profitLoss.push(-profit);
+          }
+
+          return [{
+            x: priceRange,
+            y: profitLoss,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Profit/Loss',
+          }];
+        }
+
+        const strategyDescriptions = {
+            call: {
+                description: "A long call option gives you the right to buy the underlying asset at the strike price. Profitable if the stock price goes up significantly.",
+                positiveExternalities: "Potential for unlimited gains if the stock price rises significantly.",
+                negativeExternalities: "Limited to the premium paid if the stock price doesn't rise above the strike price.",
+            },
+            put: {
+                description: "A long put option gives you the right to sell the underlying asset at the strike price. Profitable if the stock price goes down significantly.",
+                positiveExternalities: "Potential for large gains if the stock price falls significantly.",
+                negativeExternalities: "Limited to the premium paid if the stock price doesn't fall below the strike price.",
+            },
+            covered_call: {
+                description: "A covered call involves owning the underlying asset and selling a call option on it. Generates income but limits potential gains.",
+                positiveExternalities: "Income generation from the option premium. Limited downside risk.",
+                negativeExternalities: "Limited potential gains if the stock price rises significantly.",
+            },
+            protective_put: {
+                description: "A protective put involves owning the underlying asset and buying a put option on it. Limits downside risk but reduces potential gains.",
+                positiveExternalities: "Limits potential losses if the stock price falls significantly.",
+                negativeExternalities: "Reduces potential gains if the stock price rises significantly. Costs the option premium.",
+            },
+            long_straddle: {
+                description: "A long straddle involves buying both a call and a put option with the same strike price and expiry. Profitable if the stock price makes a large move in either direction.",
+                positiveExternalities: "Potential for large gains if the stock price moves significantly in either direction.",
+                negativeExternalities: "Losses can be significant if the stock price doesn't move much. Costs both option premiums.",
+            },
+            long_strangle: {
+                description: "A long strangle involves buying a call and a put option with different strike prices but the same expiry. Profitable if the stock price makes a large move in either direction.",
+                positiveExternalities: "Potential for large gains if the stock price moves significantly in either direction. Lower cost than a straddle.",
+                negativeExternalities: "Losses can be significant if the stock price doesn't move much. Requires a larger price move to be profitable than a straddle.",
+            },
+            bull_call_spread: {
+                description: "A bull call spread involves buying a call option with a lower strike price and selling a call option with a higher strike price. Profitable if the stock price goes up moderately.",
+                positiveExternalities: "Limited risk and defined maximum profit. Lower cost than buying a single call option.",
+                negativeExternalities: "Limited profit potential. Requires the stock price to rise above the lower strike price to be profitable.",
+            },
+            bear_put_spread: {
+                description: "A bear put spread involves buying a put option with a higher strike price and selling a put option with a lower strike price. Profitable if the stock price goes down moderately.",
+                positiveExternalities: "Limited risk and defined maximum profit. Lower cost than buying a single put option.",
+                negativeExternalities: "Limited profit potential. Requires the stock price to fall below the higher strike price to be profitable.",
+            },
+            long_calendar_spread: {
+                description: "A long calendar spread involves buying a longer-term option and selling a shorter-term option with the same strike price. Profitable if the stock price stays relatively stable.",
+                positiveExternalities: "Potential for profit if the stock price remains stable or experiences low volatility.",
+                negativeExternalities: "Limited profit potential. Can be complex to manage.",
+            }
+        };
+
+        function updateChart() {
+            const strategy = document.getElementById('option-strategy').value;
+            const stockPrice = parseFloat(document.getElementById('stock-price').value);
+            const strikePrice = parseFloat(document.getElementById('strike-price').value);
+            const strikePrice2 = parseFloat(document.getElementById('strike-price2').value); // For spreads
+            const volatility = parseFloat(document.getElementById('volatility').value) / 100;
+            const timeToExpiry = parseFloat(document.getElementById('time-to-expiry').value);
+            const timeToExpiry2 = parseFloat(document.getElementById('time-to-expiry2').value); // For calendars
+
+            const chartData = calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry, timeToExpiry2);
+
+            const layout = {
+                title: `${strategy.replace(/_/g, ' ').toUpperCase()} Payoff`,
+                xaxis: {title: 'Stock Price at Expiry'},
+                yaxis: {title: 'Profit/Loss'},
+            };
+
+            Plotly.newPlot('chart', chartData, layout);
+
+            // Update strategy description
+            const descriptionDiv = document.getElementById('strategy-description');
+            const description = strategyDescriptions[strategy];
+            descriptionDiv.innerHTML = `
+                <h3>${strategy.replace(/_/g, ' ').toUpperCase()}</h3>
+                <p>${description.description}</p>
+                <h4>Positive Externalities:</h4>
+                <p>${description.positiveExternalities}</p>
+                <h4>Negative Externalities:</h4>
+                <p>${description.negativeExternalities}</p>
+              `;
+        }
+
+        // Event listeners for input changes
+        document.getElementById('option-strategy').addEventListener('change', updateChart);
+        document.getElementById('stock-price').addEventListener('input', updateChart);
+        document.getElementById('strike-price').addEventListener('input', updateChart);
+        document.getElementById('strike-price2').addEventListener('input', updateChart);
+        document.getElementById('volatility').addEventListener('input', updateChart);
+        document.getElementById('time-to-expiry').addEventListener('input', updateChart);
+        document.getElementById('time-to-expiry2').addEventListener('input', updateChart);
+
+        // Initial chart rendering
+        updateChart();
+    </script>
+</body>
+</html>
