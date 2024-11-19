@@ -1,29 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mortgage Calculator</title>
-<link rel="stylesheet" href="style.css">
+  <title>Mortgage Calculator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      display: none; /* Initially hide the result */
+    }
+    #amortization-schedule {
+      margin-top: 20px;
+    }
+    #amortization-schedule table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    #amortization-schedule th,
+    #amortization-schedule td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
-  <h1>Mortgage Calculator</h1>
-  <form id="mortgage-form">
-    <label for="loanAmount">Loan Amount:</label>
-    <input type="number" id="loanAmount" name="loanAmount" required><br><br>
+  <div class="container">
+    <h1>Mortgage Calculator</h1>
+    <form id="mortgage-form">
+      <div class="form-group">
+        <label for="loanAmount">Loan Amount ($):</label>
+        <input type="number" id="loanAmount" name="loanAmount" required>
+      </div>
+      <div class="form-group">
+        <label for="interestRate">Annual Interest Rate (%):</label>
+        <input type="number" id="interestRate" name="interestRate" required>
+      </div>
+      <div class="form-group">
+        <label for="loanTerm">Loan Term (years):</label>
+        <input type="number" id="loanTerm" name="loanTerm" required>
+      </div>
+      <button type="button" onclick="calculateMortgage()">Calculate</button>
+    </form>
 
-    <label for="interestRate">Interest Rate (%):</label>
-    <input type="number" id="interestRate" name="interestRate" required><br><br>
-
-    <label for="loanTerm">Loan Term (years):</label>
-    <input type="number" id="loanTerm" name="loanTerm" required><br><br>
-
-    <button type="button" onclick="calculateMortgage()">Calculate</button>
-  </form>
-
-  <div id="result">
-    <h2>Monthly Payment: <span id="monthlyPayment"></span></h2>
-    <h2>Total Payment: <span id="totalPayment"></span></h2>
+    <div id="result">
+      <h2>Monthly Payment: <span id="monthlyPayment"></span></h2>
+      <h2>Total Payment: <span id="totalPayment"></span></h2>
+      <h2>Total Interest: <span id="totalInterest"></span></h2>
+      <div id="amortization-schedule">
+        <h3>Amortization Schedule</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Payment</th>
+              <th>Principal</th>
+              <th>Interest</th>
+              <th>Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    function calculateMortgage() {
+      let loanAmount = parseFloat(document.getElementById("loanAmount").value);
+      let interestRate = parseFloat(document.getElementById("interestRate").value) / 100 / 12;
+      let loanTerm = parseInt(document.getElementById("loanTerm").value) * 12;
+
+      let monthlyPayment = (loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -loanTerm));
+      let totalPayment = monthlyPayment * loanTerm;
+      let totalInterest = totalPayment - loanAmount;
+
+      document.getElementById("monthlyPayment").textContent = "$" + monthlyPayment.toFixed(2);
+      document.getElementById("totalPayment").textContent = "$" + totalPayment.toFixed(2);
+      document.getElementById("totalInterest").textContent = "$" + totalInterest.toFixed(2);
+
+      // Amortization schedule calculation
+      let balance = loanAmount;
+      let amortizationTableBody = document.querySelector("#amortization-schedule tbody");
+      amortizationTableBody.innerHTML = ""; // Clear previous schedule
+
+      for (let month = 1; month <= loanTerm; month++) {
+        let interestPayment = balance * interestRate;
+        let principalPayment = monthlyPayment - interestPayment;
+        balance -= principalPayment;
+
+        let row = amortizationTableBody.insertRow();
+        row.insertCell().textContent = month;
+        row.insertCell().textContent = "$" + monthlyPayment.toFixed(2);
+        row.insertCell().textContent = "$" + principalPayment.toFixed(2);
+        row.insertCell().textContent = "$" + interestPayment.toFixed(2);
+        row.insertCell().textContent = "$" + balance.toFixed(2);
+      }
+
+      // Show the result
+      document.getElementById("result").style.display = "block";
+    }
+  </script>
 </body>
 </html>
