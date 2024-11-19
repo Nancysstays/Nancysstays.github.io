@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My React App</title>
+  <title>My React App</title>
 </head>
 <body>
-    <div id="root"></div> 
+  <div id="root"></div>
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> 
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <script type="text/babel">
-        // Your React code here 
-        ReactDOM.render(
-            <h1>Hello from React!</h1>,
-            document.getElementById('root')
-        );
+  <script type="text/babel">
+    function SearchBar({ onPlaceSelected }) {
+      const [searchValue, setSearchValue] = useState('');
+      const autocompleteRef = useRef(null);
 
-    </script>
+      const handlePlaceChanged = () => {
+        const place = autocompleteRef.current.getPlace();
+        onPlaceSelected(place); 
+      };
+
+      const onLoad = (autocomplete) => {
+        autocompleteRef.current = autocomplete;
+      };
+
+      return (
+        <div>
+          <input
+            type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Enter hotel location"
+            ref={autocompleteRef}
+          />
+          <script
+            src={`https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`}
+            onLoad={onLoad}
+            async
+          />
+        </div>
+      );
+    }
+
+    // Simple example usage (replace with your actual app logic)
+    ReactDOM.render(
+      <SearchBar onPlaceSelected={(place) => console.log(place)} />, 
+      document.getElementById('root')
+    );
+  </script>
 </body>
 </html>
