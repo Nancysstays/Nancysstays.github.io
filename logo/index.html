@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Circle Generator</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+body {
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Add smooth transitions */
+}
+
+.circle-text {
+  font-size: 24px;
+  /* Additional styles for better text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Circle Generator</h1>
+    <div class="options">
+      <label for="radius">Radius (px):</label>
+      <input type="number" id="radius" value="100">
+
+      <label for="text">Text:</label>
+      <input type="text" id="text" value="Circle Text">
+
+      <label for="font">Font:</label>
+      <select id="font">
+        <option value="FontAwesome">Font Awesome</option>
+        <option value="GoogleFont">Google Font</option>
+      </select>
+
+      <label for="backgroundColor">Background Color:</label>
+      <input type="color" id="backgroundColor" value="#ffffff">
+
+      <label for="circleColor">Circle Color:</label>
+      <input type="color" id="circleColor" value="#007bff">
+
+      <label for="gradient">Gradient Fill (Text):</label>
+      <input type="text" id="gradient" value="linear-gradient(to right, #f00, #ff0)">
+    </div>
+
+    <div id="circle" class="circle"></div>
+  </div>
+
+  <script>
+    const radiusInput = document.getElementById('radius');
+    const textInput = document.getElementById('text');
+    const fontSelect = document.getElementById('font');
+    const backgroundColorInput = document.getElementById('backgroundColor');
+    const circleColorInput = document.getElementById('circleColor');
+    const gradientInput = document.getElementById('gradient');
+    const circleDiv = document.getElementById('circle');
+
+    function updateCircle() {
+      const radius = radiusInput.value;
+      const text = textInput.value;
+      const font = fontSelect.value;
+      const backgroundColor = backgroundColorInput.value;
+      const circleColor = circleColorInput.value;
+      const gradient = gradientInput.value;
+
+      circleDiv.style.width = `${2 * radius}px`;
+      circleDiv.style.height = `${2 * radius}px`;
+      circleDiv.style.backgroundColor = circleColor;
+
+      let textContent = "";
+      if (font === "FontAwesome") {
+        // Assuming the textInput contains the Font Awesome icon class
+        textContent = `<i class="${text} circle-text"></i>`;
+      } else {
+        textContent = `<span class="circle-text">${text}</span>`;
+      }
+
+      circleDiv.innerHTML = textContent;
+      circleDiv.style.background = backgroundColor;
+
+      const circleText = circleDiv.querySelector('.circle-text');
+      circleText.style.background = gradient;
+      circleText.style.webkitBackgroundClip = "text";
+      circleText.style.webkitTextFillColor = "transparent";
+    }
+
+    // Attach event listeners to all inputs
+    radiusInput.addEventListener('input', updateCircle);
+    textInput.addEventListener('input', updateCircle);
+    fontSelect.addEventListener('change', updateCircle);
+    backgroundColorInput.addEventListener('input', updateCircle);
+    circleColorInput.addEventListener('input', updateCircle);
+    gradientInput.addEventListener('input', updateCircle);
+
+    // Initial circle generation
+    updateCircle();
+  </script>
+</body>
+</html>
