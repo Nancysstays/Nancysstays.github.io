@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expedia Things To Do Message</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Expedia Things To Do Message</h1>
+    <ul id="messageList"></ul>
+  </div>
+
+  <script>
+    const url = 'https://expedia13.p.rapidapi.com/api/v1/things/message';
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': '324aa0762emsh819e95a929bb601p12c02cjsn53c4a93bd374',
+        'x-rapidapi-host': 'expedia13.p.rapidapi.com'
+      }
+    };
+
+    async function fetchMessage() {
+      try {
+        const response = await fetch(url, options);
+        const result = await response.json(); // Parse the response as JSON
+
+        // Assuming the API returns an array of messages
+        const messageList = document.getElementById('messageList');
+        result.forEach(message => {
+          const li = document.createElement('li');
+          li.textContent = message; // Assuming 'message' is a string
+          messageList.appendChild(li);
+        });
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchMessage(); // Call the function to fetch and display the message
+  </script>
+
+</body>
+</html>
