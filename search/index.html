@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking.com Hotel Search</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    h2 {
+      margin-top: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 3px;
+    }
+    #hotelDetailsList, #roomList {
+      display: none; 
+    }
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Booking.com Hotel Search</h1>
+
+    <label for="destination">Destination:</label>
+    <input type="text" id="destination" value="Paris">
+    <button onclick="searchHotels()">Search</button>
+
+    <div id="loading">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_icon.gif" alt="Loading..." /> 
+    </div>
+
+    <h2>Hotels</h2>
+    <ul id="hotelList"></ul>
+
+    <h2 id="hotelDetailsHeading">Hotel Details</h2>
+    <ul id="hotelDetailsList"></ul>
+
+    <h2 id="roomListHeading">Room List</h2>
+    <ul id="roomList"></ul>
+
+  </div>
+
+  <script>
+    const apiKey = '324aa0762emsh819e95a929bb601p12c02cjsn53c4a93bd374'; 
+
+    async function fetchData(url) {
+      const options = {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': apiKey,
+          'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Error fetching data from the API. Please try again later.'); 
+        return null;
+      }
+    }
+
+    async function searchHotels() {
+      document.getElementById('loading').style.display = 'block'; 
+      const destination = document.getElementById('destination').value;
+      const destinationUrl = `https://booking-com15.p.rapidapi.com/api/v1/hotels/searchDestination?query=${destination}`;
+      const destinationData = await fetchData(destinationUrl);
+      document.getElementById('loading').style.display = 'none'; 
+
+      if (destinationData) {
+        displayHotelList(destinationData);
+      }
+    }
+
+    function displayHotelList(data) {
+      const hotelList = document.getElementById('hotelList');
+      hotelList.innerHTML = ''; 
+
+      if (data.result.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = "No hotels found.";
+        hotelList.appendChild(li);
+        return;
+      }
+
+      data.result.forEach(hotel => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <h3>${hotel.hotel_name}</h3>
+          <p>${hotel.address}</p>
+          <button onclick="getHotelDetails(${hotel.hotel_id})">View Details</button>
+        `;
+        hotelList.appendChild(li);
+      });
+    }
+
+    async function getHotelDetails(hotelId) {
+      document.getElementById('loading').style.display = 'block'; 
+      const hotelDetailsUrl = `https://booking-com15.p.rapidapi.com/api/v1/hotels/getHotelDetails?hotel_id=${hotelId}&adults=1&children_age=1%2C17&room_qty=1&units=metric&temperature_unit=c&languagecode=en-us&currency_code=EUR`;
+      const hotelDetailsData = await fetchData(hotelDetailsUrl);
+      document.getElementById('loading').style.display = 'none'; 
+
+      if (hotelDetailsData) {
+        displayHotelDetails(hotelDetailsData);
+        getRoomList(hotelId); 
+      }
+    }
+
+    function displayHotelDetails(data) {
+      const hotelDetailsList = document.getElementById('hotelDetailsList');
+      hotelDetailsList.innerHTML = ''; 
+
+      for (const key in data) {
+        const li = document.createElement('li');
+        li.textContent = `${key}: ${JSON.stringify(data[key])}`;
+        hotelDetailsList.appendChild(li);
+      }
+
+      document.getElementById('hotelDetailsHeading').style.display = 'block';
+      hotelDetailsList.style.display = 'block';
+    }
+
+    async function getRoomList(hotelId) {
+      document.getElementById('loading').style.display = 'block'; 
+      const roomListUrl = `https://booking-com15.p.rapidapi.com/api/v1/hotels/getRoomList?hotel_id=${hotelId}&adults=1&children_age=1%2C0&room_qty=1&units=metric&temperature_unit=c&languagecode=en-us&currency_code=EUR`;
+      const roomListData = await fetchData(roomListUrl);
+      document.getElementById('loading').style.display = 'none'; 
+
+      if (roomListData) {
+        displayRoomList(roomListData);
+      }
+    }
+
+    function displayRoomList(data) {
+      const roomList = document.getElementById('roomList');
+      roomList.innerHTML = ''; 
+
+      data.result.forEach(room => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <h4>${room.room_name}</h4>
+          <p>Price: ${room.price.amount} ${room.price.currency}</p>
+          <p>Max Occupancy: ${room.max_occupancy}</p>
+        `;
+        roomList.appendChild(li);
+      });
+
+      document.getElementById('roomListHeading').style.display = 'block';
+      roomList.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
