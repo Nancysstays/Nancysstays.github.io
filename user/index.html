@@ -42,6 +42,29 @@
         .then(response => console.log('Success!', response))
         .catch(error => console.error('Error!', error.message));
     });
-  </script>
+
+
+function updateWebsite() {
+  fetch(scriptURL)
+    .then(response => response.json())
+    .then(data => {
+      // Process the data and update the website content
+      const tableBody = document.getElementById('data-table-body'); // Replace with your table body ID
+      tableBody.innerHTML = ''; // Clear existing table data
+
+      data.forEach(row => {
+        const newRow = tableBody.insertRow();
+        row.forEach(cell => {
+          const newCell = newRow.insertCell();
+          newCell.textContent = cell;
+        });
+      });
+    })
+    .catch(error => console.error('Error!', error.message));
+}
+
+updateWebsite(); // Initial update
+setInterval(updateWebsite, 5000); // Update every 5 seconds
+</script>
 </body>
 </html>
