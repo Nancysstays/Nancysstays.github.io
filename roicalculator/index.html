@@ -105,6 +105,7 @@
 <body>
   <div class="container">
     <h1>ROI Calculator</h1>
+
     <form id="roi-form">
       <div class="form-group">
         <label for="costPerRoom">Cost per Room ($):</label>
@@ -133,6 +134,13 @@
       <h2>Total ROI: <span id="totalROI"></span></h2>
       <h2>Annualized ROI: <span id="annualizedROI"></span></h2>
     </div>
+
+    <div id="details" style="display: none;">
+      <h3>Calculation Details</h3>
+      <p><strong>Total Expenses:</strong> $<span id="totalExpenses"></span></p>
+      <p><strong>Annual Income:</strong> $<span id="annualIncome"></span></p>
+      <p><strong>Total Earnings:</strong> $<span id="totalEarnings"></span></p>
+    </div>
   </div>
 
   <script>
@@ -153,6 +161,12 @@
 
       document.getElementById("totalROI").textContent = totalROI.toFixed(2) + "%";
       document.getElementById("annualizedROI").textContent = annualizedROI.toFixed(2) + "%";
+
+      // Display calculation details
+      document.getElementById("totalExpenses").textContent = totalExpenses.toFixed(2);
+      document.getElementById("annualIncome").textContent = annualIncome.toFixed(2);
+      document.getElementById("totalEarnings").textContent = totalEarnings.toFixed(2);
+      document.getElementById("details").style.display = "block";
 
       document.getElementById("result").style.display = "block";
     }
