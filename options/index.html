@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Options Profit/Loss Calculator</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+  <h2>Options Profit/Loss Calculator</h2>
+
+  <div>
+    <label for="optionType">Option Type:</label>
+    <select id="optionType">
+      <option value="call">Call</option>
+      <option value="put">Put</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="buySell">Buy/Sell:</label>
+    <select id="buySell">
+      <option value="buy">Buy</option>
+      <option value="sell">Sell</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="stockPrice">Stock Price:</label>
+    <input type="number" id="stockPrice" value="100">
+  </div>
+
+  <div>
+    <label for="strikePrice">Strike Price:</label>
+    <input type="number" id="strikePrice" value="100">
+  </div>
+
+  <div>
+    <label for="premium">Premium:</label>
+    <input type="number" id="premium" value="5">
+  </div>
+
+  <div>
+    <label for="expiry">Days to Expiry:</label>
+    <input type="number" id="expiry" value="30">
+  </div>
+
+  <div>
+    <label for="volatility">Volatility (%):</label>
+    <input type="number" id="volatility" value="30">
+  </div>
+
+  <div>
+    <label for="interestRate">Interest Rate (%):</label>
+    <input type="number" id="interestRate" value="5">
+  </div>
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="plot"></div>
+
+  <script>
+    function calculate() {
+      const optionType = document.getElementById('optionType').value;
+      const buySell = document.getElementById('buySell').value;
+      const stockPrice = parseFloat(document.getElementById('stockPrice').value);
+      const strikePrice = parseFloat(document.getElementById('strikePrice').value);
+      const premium = parseFloat(document.getElementById('premium').value);
+      const expiry = parseFloat(document.getElementById('expiry').value) / 365; // Convert days to years
+      const volatility = parseFloat(document.getElementById('volatility').value) / 100;
+      const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+
+      const stockPrices = [];
+      const profits = [];
+
+      // Generate stock prices for the x-axis
+      for (let i = strikePrice - 20; i <= strikePrice + 20; i += 0.5) {
+        stockPrices.push(i);
+      }
+
+      // Calculate profit/loss for each stock price
+      stockPrices.forEach(price => {
+        let profit;
+        if (optionType === 'call') {
+          if (buySell === 'buy') {
+            profit = Math.max(price - strikePrice, 0) - premium;
+          } else { // sell
+            profit = premium - Math.max(price - strikePrice, 0);
+          }
+        } else { // put
+          if (buySell === 'buy') {
+            profit = Math.max(strikePrice - price, 0) - premium;
+          } else { // sell
+            profit = premium - Math.max(strikePrice - price, 0);
+          }
+        }
+        profits.push(profit);
+      });
+
+      // Create the Plotly chart
+      const data = [{
+        x: stockPrices,
+        y: profits,
+        type: 'scatter',
+        mode: 'lines',
+        name: `${buySell.toUpperCase()} ${optionType.toUpperCase()}`
+      }];
+
+      const layout = {
+        title: 'Option Profit/Loss',
+        xaxis: { title: 'Stock Price at Expiry' },
+        yaxis: { title: 'Profit/Loss' }
+      };
+
+      Plotly.newPlot('plot', data, layout);
+    }
+  </script>
+
+</body>
+</html>
