@@ -107,12 +107,20 @@
     <h1>ROI Calculator</h1>
     <form id="roi-form">
       <div class="form-group">
-        <label for="initialInvestment">Initial Investment ($):</label>
-        <input type="number" id="initialInvestment" name="initialInvestment" required>
+        <label for="costPerRoom">Cost per Room ($):</label>
+        <input type="number" id="costPerRoom" name="costPerRoom" required>
       </div>
       <div class="form-group">
-        <label for="earnings">Earnings ($):</label>
-        <input type="number" id="earnings" name="earnings" required>
+        <label for="numberOfRooms">Number of Rooms:</label>
+        <input type="number" id="numberOfRooms" name="numberOfRooms" required>
+      </div>
+      <div class="form-group">
+        <label for="monthlyIncomePerRoom">Monthly Income per Room ($):</label>
+        <input type="number" id="monthlyIncomePerRoom" name="monthlyIncomePerRoom" required>
+      </div>
+      <div class="form-group">
+        <label for="occupancyRate">Occupancy Rate (%):</label>
+        <input type="number" id="occupancyRate" name="occupancyRate" required>
       </div>
       <div class="form-group">
         <label for="investmentPeriod">Investment Period (years):</label>
@@ -129,12 +137,19 @@
 
   <script>
     function calculateROI() {
-      let initialInvestment = parseFloat(document.getElementById("initialInvestment").value);
-      let earnings = parseFloat(document.getElementById("earnings").value);
+      let costPerRoom = parseFloat(document.getElementById("costPerRoom").value);
+      let numberOfRooms = parseFloat(document.getElementById("numberOfRooms").value);
+      let monthlyIncomePerRoom = parseFloat(document.getElementById("monthlyIncomePerRoom").value);
+      let occupancyRate = parseFloat(document.getElementById("occupancyRate").value) / 100;
       let investmentPeriod = parseFloat(document.getElementById("investmentPeriod").value);
 
-      let totalROI = ((earnings - initialInvestment) / initialInvestment) * 100;
-      let annualizedROI = (Math.pow((earnings / initialInvestment), (1 / investmentPeriod)) - 1) * 100;
+      let totalExpenses = costPerRoom * numberOfRooms;
+      let monthlyIncome = monthlyIncomePerRoom * numberOfRooms * occupancyRate;
+      let annualIncome = monthlyIncome * 12;
+      let totalEarnings = annualIncome * investmentPeriod;
+
+      let totalROI = ((totalEarnings - totalExpenses) / totalExpenses) * 100;
+      let annualizedROI = (Math.pow((totalEarnings / totalExpenses), (1 / investmentPeriod)) - 1) * 100;
 
       document.getElementById("totalROI").textContent = totalROI.toFixed(2) + "%";
       document.getElementById("annualizedROI").textContent = annualizedROI.toFixed(2) + "%";
