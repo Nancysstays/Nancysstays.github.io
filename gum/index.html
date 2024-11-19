@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .center-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50vh; /* Adjust as needed */
+            font-size: 2em;
+            transition: background-color 0.3s ease; /* Smooth transition for color change */
+        }
+        .btn {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="player1Btn" class="btn btn-primary btn-lg btn-block">Player 1</button>
+
+        <div id="centerBox" class="center-box">
+            <span id="timer">00:00</span>
+        </div>
+
+        <button id="player2Btn" class="btn btn-danger btn-lg btn-block">Player 2</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const player1Btn = document.getElementById('player1Btn');
+        const player2Btn = document.getElementById('player2Btn');
+        const centerBox = document.getElementById('centerBox');
+        const timerDisplay = document.getElementById('timer');
+
+        let startTime;
+        let gameInterval;
+        let gameTime = 1000; // Initial game time in milliseconds (1 second)
+        let lastPlayer = 0; // 0: None, 1: Player 1, 2: Player 2
+        let player1Wins = 0;
+        let player2Wins = 0;
+        let gamesPlayed = 0;
+
+        // Load data from localStorage
+        loadGameData();
+
+        function startGame() {
+            clearInterval(gameInterval);
+            startTime = new Date().getTime();
+            lastPlayer = 0;
+            centerBox.style.backgroundColor = ''; // Reset background color
+            timerDisplay.textContent = formatTime(gameTime);
+
+            gameInterval = setInterval(() => {
+                const currentTime = new Date().getTime();
+                const elapsed = currentTime - startTime;
+                timerDisplay.textContent = formatTime(gameTime - elapsed);
+
+                if (elapsed >= gameTime) {
+                    clearInterval(gameInterval);
+                    endGame();
+                }
+            }, 10); // Update timer every 10 milliseconds
+        }
+
+        function endGame() {
+            gamesPlayed++;
+            if (lastPlayer === 1) {
+                player1Wins++;
+            } else if (lastPlayer === 2) {
+                player2Wins++;
+            }
+            updateScoreDisplay();
+            saveGameData();
+
+            // Increase game time for the next round (up to 20 minutes)
+            gameTime += 1000; // Increase by 1 second
+            if (gameTime > 20 * 60 * 1000) {
+                gameTime = 20 * 60 * 1000;
+            }
+
+            startGame();
+        }
+
+        function updateScoreDisplay() {
+            console.log(`Player 1 Wins: ${player1Wins}, Player 2 Wins: ${player2Wins}, Games Played: ${gamesPlayed}`);
+        }
+
+        function saveGameData() {
+            localStorage.setItem('player1Wins', player1Wins);
+            localStorage.setItem('player2Wins', player2Wins);
+            localStorage.setItem('gamesPlayed', gamesPlayed);
+            localStorage.setItem('gameTime', gameTime);
+        }
+
+        function loadGameData() {
+            player1Wins = parseInt(localStorage.getItem('player1Wins')) || 0;
+            player2Wins = parseInt(localStorage.getItem('player2Wins')) || 0;
+            gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
+            gameTime = parseInt(localStorage.getItem('gameTime')) || 1000;
+            updateScoreDisplay();
+        }
+
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.ceil(milliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            const formattedTime = `${pad(minutes)}:${pad(seconds)}`;
+            return formattedTime;
+        }
+
+        function pad(number) {
+            return (number < 10 ? '0' : '') + number;
+        }
+
+        player1Btn.addEventListener('click', () => {
+            lastPlayer = 1;
+            centerBox.style.backgroundColor = '#00539B';
+        });
+
+        player2Btn.addEventListener('click', () => {
+            lastPlayer = 2;
+            centerBox.style.backgroundColor = '#8C1515';
+        });
+
+        // Start the game initially
+        startGame();
+    </script>
+</body>
+</html>
