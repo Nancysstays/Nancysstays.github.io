@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-details {
+            margin-top: 20px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            margin-bottom: 20px;
+        }
+
+        .buy-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .gpay-button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <img class="product-image" src="https://via.placeholder.com/400x300" alt="Product Image">
+
+    <div class="product-details">
+        <h2 class="product-title">Product Title</h2>
+        <p class="product-price">$19.99</p>
+        <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+        <button class="buy-button" onclick="buyNow()">Buy Now</button>
+        <div id="gpay-button" class="gpay-button"></div> 
+    </div>
+
+    <script src="https://pay.google.com/gp/p/js/pay.js" async></script> 
+    <script>
+        const paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' }); 
+
+        function buyNow() {
+            // Handle regular buy now logic here
+            console.log("Buy Now clicked");
+        }
+
+        async function onGooglePayLoaded() {
+            const isReadyToPay = await paymentsClient.isReadyToPay({
+                apiVersions: [{ apiVersion: 2, apiVersionMinor: 0 }],
+                existingPaymentMethodRequired: true,
+                paymentMethods: [{
+                    type: 'CARD',
+                    parameters: {
+                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                        allowedCardNetworks: ['AMEX', 'DISCOVER', 'INTERAC', 'JCB', 'MASTERCARD', 'VISA'],
+                    },
+                    tokenizationSpecification: {
+                        type: 'PAYMENT_GATEWAY',
+                        parameters: {
+                            'gateway': 'example',
+                            'gatewayMerchantId': 'exampleGatewayMerchantId'
+                        }
+                    }
+                }]
+            });
+
+            if (isReadyToPay.result) {
+                const button = paymentsClient.createButton({
+                    onClick: onGooglePaymentButtonClicked
+                });
+                document.getElementById('gpay-button').appendChild(button);
+            }
+        }
+
+        async function onGooglePaymentButtonClicked() {
+            const paymentDataRequest = {
+                apiVersion: 2,
+                apiVersionMinor: 0,
+                merchantInfo: {
+                    merchantId: '12345678901234567890',
+                    merchantName: 'Example Merchant'
+                },
+                transactionInfo: {
+                    totalPriceStatus: 'FINAL',
+                    totalPriceLabel: 'Total',
+                    totalPrice: '19.99',
+                    currencyCode: 'USD',
+                    countryCode: 'US'
+                }
+            };
+
+            try {
+                const paymentData = await paymentsClient.loadPaymentData(paymentDataRequest);
+                console.log('loadPaymentData response: ', paymentData);
+                // Process the payment data here
+            } catch (error) {
+                console.error('loadPaymentData failed', error);
+            }
+        }
+
+        onGooglePayLoaded();
+    </script>
+</body>
+</html>
