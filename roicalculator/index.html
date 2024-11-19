@@ -40,7 +40,7 @@
     font-weight: 600;
   }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
@@ -67,6 +67,7 @@
     font-size: 16px;
     transition: background-color 0.3s ease;
     width: 100%;
+    margin-bottom: 10px; /* Add spacing between buttons */
   }
 
   button:hover {
@@ -108,6 +109,10 @@
 
     <form id="roi-form">
       <div class="form-group">
+        <label for="calculationName">Calculation Name:</label>
+        <input type="text" id="calculationName" name="calculationName">
+      </div>
+      <div class="form-group">
         <label for="costPerRoom">Cost per Room ($):</label>
         <input type="number" id="costPerRoom" name="costPerRoom" required>
       </div>
@@ -128,6 +133,8 @@
         <input type="number" id="investmentPeriod" name="investmentPeriod" required>
       </div>
       <button type="button" onclick="calculateROI()">Calculate</button>
+      <button type="button" onclick="saveCalculation()">Save</button>
+      <button type="button" onclick="loadCalculation()">Load</button>
     </form>
 
     <div id="result">
@@ -169,6 +176,46 @@
       document.getElementById("details").style.display = "block";
 
       document.getElementById("result").style.display = "block";
+    }
+
+    function saveCalculation() {
+      let calculationName = document.getElementById("calculationName").value;
+      if (calculationName === "") {
+        alert("Please enter a calculation name.");
+        return;
+      }
+
+      let calculationData = {
+        costPerRoom: parseFloat(document.getElementById("costPerRoom").value),
+        numberOfRooms: parseFloat(document.getElementById("numberOfRooms").value),
+        monthlyIncomePerRoom: parseFloat(document.getElementById("monthlyIncomePerRoom").value),
+        occupancyRate: parseFloat(document.getElementById("occupancyRate").value),
+        investmentPeriod: parseFloat(document.getElementById("investmentPeriod").value)
+      };
+
+      localStorage.setItem(calculationName, JSON.stringify(calculationData));
+      alert("Calculation saved successfully!");
+    }
+
+    function loadCalculation() {
+      let calculationName = document.getElementById("calculationName").value;
+      if (calculationName === "") {
+        alert("Please enter a calculation name.");
+        return;
+      }
+
+      let savedData = localStorage.getItem(calculationName);
+      if (savedData) {
+        let calculationData = JSON.parse(savedData);
+        document.getElementById("costPerRoom").value = calculationData.costPerRoom;
+        document.getElementById("numberOfRooms").value = calculationData.numberOfRooms;
+        document.getElementById("monthlyIncomePerRoom").value = calculationData.monthlyIncomePerRoom;
+        document.getElementById("occupancyRate").value = calculationData.occupancyRate;
+        document.getElementById("investmentPeriod").value = calculationData.investmentPeriod;
+        calculateROI(); // Recalculate with loaded data
+      } else {
+        alert("No saved calculation found with this name.");
+      }
     }
   </script>
 </body>
