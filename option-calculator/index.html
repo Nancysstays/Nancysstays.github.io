@@ -18,7 +18,8 @@
     <option value="long_strangle">Long Strangle</option>
     <option value="bull_call_spread">Bull Call Spread</option>
     <option value="bear_put_spread">Bear Put Spread</option>
-  </select><br><br>
+    <option value="long_calendar_spread">Long Calendar Spread</option>
+    </select><br><br>
 
   <label for="stock-price">Stock Price:</label>
   <input type="number" id="stock-price" value="100"><br><br>
@@ -32,15 +33,41 @@
   <label for="volatility">Volatility (%):</label>
   <input type="number" id="volatility" value="30"><br><br>
 
-  <label for="time-to-expiry">Time to Expiry (days):</label>
+  <label for="time-to-expiry">Time to Expiry (days) - Primary:</label>
   <input type="number" id="time-to-expiry" value="30"><br><br>
+
+  <label for="time-to-expiry2">Time to Expiry (days) - Secondary:</label>
+  <input type="number" id="time-to-expiry2" value="60"><br><br>
 
   <div id="chart"></div>
 
   <script>
-    // ... (Black-Scholes function from previous response)
+    // Option Pricing Model (Black-Scholes-Merton)
+    function calculateOptionPrice(optionType, stockPrice, strikePrice, volatility, timeToExpiry, riskFreeRate = 0.05) {
+      timeToExpiry /= 365; // Convert days to years
+      const d1 = (Math.log(stockPrice / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
+      const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
+      const callPrice = stockPrice * normCDF(d1) - strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(d2);
+      const putPrice = strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(-d2) - stockPrice * normCDF(-d1);
+      return optionType === 'call' ? callPrice : putPrice;
 
-    function calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry) {
+      function normCDF(x) {
+        // Approximation of the cumulative distribution function for the standard normal distribution
+        const a1 = 0.254829592;
+        const a2 = -0.284496736;
+        const a3 = 1.421413741;
+        const a4 = -1.453152027;
+        const a5 = 1.061405429;
+        const p = 0.3275911;
+        const sign = x < 0 ? -1 : 1;
+        x = Math.abs(x) / Math.sqrt(2.0);
+        const t = 1.0 / (1.0 + p * x);
+        const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+        return 0.5 * (1.0 + sign * y);
+      }
+    }
+
+    function calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry, timeToExpiry2) {
       const priceRange = [];
       const profitLoss = [];
 
@@ -48,10 +75,10 @@
         let profit = 0;
         switch (strategy) {
           case 'call':
-            profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice);
+            profit = Math.max(0, i - strikePrice) - calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry);
             break;
           case 'put':
-            profit = calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, strikePrice - i);
+            profit = Math.max(0, strikePrice - i) - calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry);
             break;
           case 'covered_call':
             profit = i - stockPrice + calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice);
@@ -71,10 +98,13 @@
           case 'bear_put_spread':
             profit = calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - calculateOptionPrice('put', stockPrice, strikePrice2, volatility, timeToExpiry) - Math.max(0, strikePrice - i) + Math.max(0, strikePrice2 - i);
             break;
+          case 'long_calendar_spread': 
+            profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry2) - calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry);
+            break;
           // Add more strategies here...
         }
         priceRange.push(i);
-        profitLoss.push(profit);
+        profitLoss.push(-profit);
       }
 
       return [{
@@ -93,8 +123,9 @@
       const strikePrice2 = parseFloat(document.getElementById('strike-price2').value); // For spreads
       const volatility = parseFloat(document.getElementById('volatility').value) / 100;
       const timeToExpiry = parseFloat(document.getElementById('time-to-expiry').value);
+      const timeToExpiry2 = parseFloat(document.getElementById('time-to-expiry2').value); // For calendars
 
-      const chartData = calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry);
+      const chartData = calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry, timeToExpiry2);
 
       const layout = {
         title: `${strategy.replace(/_/g, ' ').toUpperCase()} Payoff`,
@@ -112,6 +143,7 @@
     document.getElementById('strike-price2').addEventListener('input', updateChart);
     document.getElementById('volatility').addEventListener('input', updateChart);
     document.getElementById('time-to-expiry').addEventListener('input', updateChart);
+    document.getElementById('time-to-expiry2').addEventListener('input', updateChart);
 
     // Initial chart rendering
     updateChart();
