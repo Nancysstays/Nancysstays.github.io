@@ -10,7 +10,7 @@ generateBtn.addEventListener('click', () => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer YOUR_API_KEY'
+      'Authorization': 'Bearer AIzaSyDQrSmRiGSdgD50wdDypG5z7MTWDRNVl1k'
     },
     body: JSON.stringify({
       prompt: prompt,
