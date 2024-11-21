@@ -183,3 +183,97 @@ Token,Item Name,Variation Name,SKU,Description,Reporting Category,GTIN,Item Type
 ,Educational Toys,Alphabet Blocks,ET-AB,Alphabet blocks for learning letters and spelling,Educational Toys,16048123456791,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Alphabet Blocks,10.00,KT's Clothes,ABC123,15,25,Y,5
 ,Outdoor Toys,Ball,OT-BL,Ball for outdoor play and games,Outdoor Toys,27159234567802,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Ball,5.00,KT's Clothes,ABC123,25,35,Y,5
 ,Outdoor Toys,Sandbox Set,OT-SB,Sandbox set with shovels and buckets,Outdoor Toys,38260345678913,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Sandbox Set,15.00,KT's Clothes,ABC123,12,20,Y,5
+,Necklace,Pendant,NK-PD,Gold necklace with gemstone pendant,Necklaces,49481234567913,Physical,,,129.99,99.99,N,Y,Y,Y,Y,Pendant,65.00,KT's Jewelry,JWL123,8,12,Y,5
+,Necklace,Chain,NK-CH,Silver chain necklace,Necklaces,60592345678024,Physical,,,79.99,59.99,N,Y,Y,Y,Y,Chain,40.00,KT's Jewelry,JWL123,10,15,Y,5
+,Earrings,Stud,ER-ST,Diamond stud earrings,Earrings,71603456789135,Physical,,,249.99,199.99,N,Y,Y,Y,Y,Stud,125.00,KT's Jewelry,JWL123,5,8,Y,5
+,Earrings,Hoop,ER-HO,Gold hoop earrings,Earrings,82714567890246,Physical,,,99.99,79.99,N,Y,Y,Y,Y,Hoop,50.00,KT's Jewelry,JWL123,12,18,Y,5
+,Bracelet,Bangle,BR-BA,Silver bangle bracelet,Bracelets,93825678901357,Physical,,,149.99,119.99,N,Y,Y,Y,Y,Bangle,75.00,KT's Jewelry,JWL123,7,10,Y,5
+,Bracelet,Charm,BR-CH,Charm bracelet with personalized charms,Bracelets,10493678901246,Physical,,,199.99,159.99,N,Y,Y,Y,Y,Charm,100.00,KT's Jewelry,JWL123,9,14,Y,5
+,Ring,Gemstone,RN-GS,Gold ring with gemstone,Rings,11504789012357,Physical,,,399.99,299.99,N,Y,Y,Y,Y,Gemstone,200.00,KT's Jewelry,JWL123,4,6,Y,5
+,Ring,Band,RN-BD,Silver band ring,Rings,12615890123468,Physical,,,149.99,119.99,N,Y,Y,Y,Y,Band,75.00,KT's Jewelry,JWL123,6,9,Y,5
+,Watch,Leather,WA-LE,Leather strap watch with quartz movement,Watches,13726901234579,Physical,,,299.99,249.99,N,Y,Y,Y,Y,Leather,150.00,KT's Jewelry,JWL123,3,5,Y,5
+,Watch,Metal,WA-ME,Metal band watch with chronograph function,Watches,14837012345680,Physical,,,399.99,349.99,N,Y,Y,Y,Y,Metal,200.00,KT's Jewelry,JWL123,5,8,Y,5
+,Pendant,Gemstone,PD-GS,Gemstone pendant for necklaces,Pendants,15948123456791,Physical,,,79.99,59.99,N,Y,Y,Y,Y,Gemstone,40.00,KT's Jewelry,JWL123,10,15,Y,5
+,Pendant,Pearl,PD-PE,Pearl pendant for necklaces,Pendants,16059234567802,Physical,,,99.99,79.99,N,Y,Y,Y,Y,Pearl,50.00,KT's Jewelry,JWL123,8,12,Y,5
+,Charm,Silver,CH-SV,Silver charm for bracelets,Charms,27160345678913,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Silver,12.50,KT's Jewelry,JWL123,15,20,Y,5
+,Charm,Gold,CH-GD,Gold charm for bracelets,Charms,38271456789024,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Gold,20.00,KT's Jewelry,JWL123,12,18,Y,5
+,Brooch,Floral,BO-FL,Floral brooch with crystal accents,Brooches,49382567890135,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Floral,25.00,KT's Jewelry,JWL123,7,10,Y,5
+,Brooch,Vintage,BO-VT,Vintage brooch with pearl and rhinestone details,Brooches,60493678901246,Physical,,,69.99,59.99,N,Y,Y,Y,Y,Vintage,35.00,KT's Jewelry,JWL123,5,8,Y,5
+,Cufflinks,Silver,CL-SV,Silver cufflinks with engraved design,Cufflinks,71504789012357,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Silver,40.00,KT's Jewelry,JWL123,10,15,Y,5
+,Cufflinks,Gold,CL-GD,Gold cufflinks with gemstone accents,Cufflinks,82615890123468,Physical,,,129.99,99.99,N,Y,Y,Y,Y,Gold,65.00,KT's Jewelry,JWL123,8,12,Y,5
+,Tie Clip,Silver,TC-SV,Silver tie clip with minimalist design,Tie Clips,93726901234579,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Silver,20.00,KT's Jewelry,JWL123,12,18,Y,5
+,Tie Clip,Gold,TC-GD,Gold tie clip with engraved initials,Tie Clips,10483701234568,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Gold,30.00,KT's Jewelry,JWL123,10,15,Y,5
+,Jewelry Box,Wooden,JB-WO,Wooden jewelry box with multiple compartments,Jewelry Boxes,11594812345679,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Wooden,25.00,KT's Jewelry,JWL123,8,12,Y,5
+,Jewelry Box,Leather,JB-LE,Leather jewelry box with velvet lining,Jewelry Boxes,12605923456780,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Leather,40.00,KT's Jewelry,JWL123,6,10,Y,5
+,Jewelry Cleaning Kit,Basic,JCK-BA,Basic jewelry cleaning kit with cleaning solution and cloth,Jewelry Cleaning Kits,13716034567891,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Basic,10.00,KT's Jewelry,JWL123,10,15,Y,5
+,Jewelry Cleaning Kit,Advanced,JCK-AD,Advanced jewelry cleaning kit with ultrasonic cleaner,Jewelry Cleaning Kits,14827145678902,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Advanced,25.00,KT's Jewelry,JWL123,8,12,Y,5
+,Underwear,Briefs,UW-BR,Men's cotton briefs,Underwear,15958123456791,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Briefs,6.50,KT's Apparel,APP123,20,30,Y,5
+,Underwear,Boxers,UW-BX,Men's woven boxers,Underwear,26069234567802,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Boxers,7.50,KT's Apparel,APP123,18,28,Y,5
+,Underwear,Trunks,UW-TR,Men's athletic trunks,Underwear,37170345678913,Physical,,,16.99,14.99,N,Y,Y,Y,Y,Trunks,8.50,KT's Apparel,APP123,15,25,Y,5
+,Undershirt,Crew Neck,US-CN,Men's crew neck undershirt,Undershirts,48281456789024,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Crew Neck,7.50,KT's Apparel,APP123,12,22,Y,5
+,Undershirt,V-Neck,US-VN,Men's V-neck undershirt,Undershirts,59392567890135,Physical,,,14.99,12.99,N,Y,Y,Y,Y,V-Neck,7.50,KT's Apparel,APP123,10,20,Y,5
+,Socks,Crew,SO-CR,Men's crew socks,Socks,70403678901246,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Crew,5.00,KT's Apparel,APP123,30,40,Y,5
+,Socks,Ankle,SO-AN,Men's ankle socks,Socks,81514789012357,Physical,,,8.99,6.99,N,Y,Y,Y,Y,Ankle,4.50,KT's Apparel,APP123,25,35,Y,5
+,Bra,T-Shirt,BR-TS,Women's t-shirt bra,Bras,92625890123468,Physical,,,39.99,29.99,N,Y,Y,Y,Y,T-Shirt,20.00,KT's Apparel,APP123,8,12,Y,5
+,Bra,Sports,BR-SP,Women's sports bra,Bras,10373690123457,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Sports,25.00,KT's Apparel,APP123,6,10,Y,5
+,Bra,Push-Up,BR-PU,Women's push-up bra,Bras,11484701234568,Physical,,,44.99,34.99,N,Y,Y,Y,Y,Push-Up,22.50,KT's Apparel,APP123,7,11,Y,5
+,Panties,Bikini,PA-BI,Women's bikini panties,Panties,12595812345679,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Bikini,6.50,KT's Apparel,APP123,15,25,Y,5
+,Panties,Hipster,PA-HI,Women's hipster panties,Panties,13606923456780,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Hipster,7.50,KT's Apparel,APP123,12,22,Y,5
+,Panties,Boy Shorts,PA-BS,Women's boy shorts panties,Panties,14717034567891,Physical,,,16.99,14.99,N,Y,Y,Y,Y,Boy Shorts,8.50,KT's Apparel,APP123,10,20,Y,5
+,Lingerie,Slip,LI-SL,Women's satin slip,Lingerie,15828145678902,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Slip,25.00,KT's Apparel,APP123,5,8,Y,5
+,Lingerie,Chemise,LI-CH,Women's lace chemise,Lingerie,16939256789013,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Chemise,30.00,KT's Apparel,APP123,4,7,Y,5
+,Lingerie,Babydoll,LI-BD,Women's satin babydoll,Lingerie,27040367890124,Physical,,,69.99,59.99,N,Y,Y,Y,Y,Babydoll,35.00,KT's Apparel,APP123,3,6,Y,5
+,Shapewear,Bodysuit,SH-BO,Women's shaping bodysuit,Shapewear,38151478901235,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Bodysuit,40.00,KT's Apparel,APP123,6,10,Y,5
+,Shapewear,Slip,SH-SL,Women's shaping slip,Shapewear,49262589012346,Physical,,,69.99,59.99,N,Y,Y,Y,Y,Slip,35.00,KT's Apparel,APP123,8,12,Y,5
+,Shapewear,High-Waisted Briefs,SH-HW,Women's high-waisted shaping briefs,Shapewear,60373690123457,Physical,,,49.99,39.99,N,Y,Y,Y,Y,High-Waisted Briefs,25.00,KT's Apparel,APP123,10,15,Y,5
+,Thermal Underwear,Top,TU-TO,Men's thermal underwear top,Thermal Underwear,71484701234568,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Top,20.00,KT's Apparel,APP123,12,18,Y,5
+,Thermal Underwear,Bottoms,TU-BO,Men's thermal underwear bottoms,Thermal Underwear,82595812345679,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Bottoms,20.00,KT's Apparel,APP123,10,16,Y,5
+,Tights,Opaque,TI-OP,Women's opaque tights,Tights,93606923456780,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Opaque,7.50,KT's Apparel,APP123,15,22,Y,5
+,Tights,Sheer,TI-SH,Women's sheer tights,Tights,10471703456789,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Sheer,6.50,KT's Apparel,APP123,18,25,Y,5
+,Leggings,Cotton,LE-CO,Women's cotton leggings,Leggings,11582814567890,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Cotton,15.00,KT's Apparel,APP123,10,18,Y,5
+,Leggings,Fleece-Lined,LE-FL,Women's fleece-lined leggings,Leggings,12693925678901,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Fleece-Lined,20.00,KT's Apparel,APP123,8,15,Y,5
+,Car,Sedan,CAR-SD,Fuel-efficient sedan with spacious interior,Cars,72514567890123,Physical,,,24999,22999,N,Y,Y,Y,Y,Sedan,12500,KT's Autos,AUT123,5,8,Y,5
+,Car,SUV,CAR-SV,Spacious SUV with all-wheel drive,Cars,83625678901234,Physical,,,34999,31999,N,Y,Y,Y,Y,SUV,17500,KT's Autos,AUT123,7,10,Y,5
+,Car,Truck,CAR-TR,Powerful truck with towing capacity,Cars,94736789012345,Physical,,,44999,41999,N,Y,Y,Y,Y,Truck,22500,KT's Autos,AUT123,4,6,Y,5
+,Car,Hatchback,CAR-HB,Compact hatchback with excellent fuel economy,Cars,10584789012345,Physical,,,19999,17999,N,Y,Y,Y,Y,Hatchback,10000,KT's Autos,AUT123,10,15,Y,5
+,Car,Convertible,CAR-CV,Stylish convertible for open-top driving,Cars,11695890123456,Physical,,,39999,36999,N,Y,Y,Y,Y,Convertible,20000,KT's Autos,AUT123,3,5,Y,5
+,Car,Sports Car,CAR-SC,High-performance sports car with sleek design,Cars,12706901234567,Physical,,,69999,64999,N,Y,Y,Y,Y,Sports Car,35000,KT's Autos,AUT123,2,4,Y,5
+,Car,Electric,CAR-EL,Electric car with zero emissions,Cars,13817012345678,Physical,,,49999,46999,N,Y,Y,Y,Y,Electric,25000,KT's Autos,AUT123,6,9,Y,5
+,Car,Hybrid,CAR-HY,Hybrid car with fuel efficiency and electric power,Cars,14928123456789,Physical,,,39999,36999,N,Y,Y,Y,Y,Hybrid,20000,KT's Autos,AUT123,8,12,Y,5
+,Tire,All-Season,TI-AS,Set of all-season tires for passenger cars,Tires,25039234567890,Physical,,,699,599,N,Y,Y,Y,Y,All-Season,350,KT's Autos,AUT123,15,20,Y,5
+,Tire,Winter,TI-WN,Set of winter tires for snow and ice,Tires,36140345678901,Physical,,,799,699,N,Y,Y,Y,Y,Winter,400,KT's Autos,AUT123,12,18,Y,5
+,Engine Oil,Synthetic,EO-SY,Synthetic engine oil for optimal performance,Engine Oil,47251456789012,Physical,,,49,39,N,Y,Y,Y,Y,Synthetic,25,KT's Autos,AUT123,20,30,Y,5
+,Engine Oil,Conventional,EO-CO,Conventional engine oil for standard use,Engine Oil,58362567890123,Physical,,,39,29,N,Y,Y,Y,Y,Conventional,20,KT's Autos,AUT123,25,35,Y,5
+,Car Battery,Standard,CB-ST,Standard car battery with reliable starting power,Car Batteries,69473678901234,Physical,,,129,99,N,Y,Y,Y,Y,Standard,65,KT's Autos,AUT123,10,15,Y,5
+,Car Battery,Premium,CB-PR,Premium car battery with long life and high performance,Car Batteries,80584789012345,Physical,,,199,159,N,Y,Y,Y,Y,Premium,100,KT's Autos,AUT123,8,12,Y,5
+,Brake Pads,Front,BP-FR,Front brake pads for disc brakes,Brake Pads,91695890123456,Physical,,,79,69,N,Y,Y,Y,Y,Front,40,KT's Autos,AUT123,15,20,Y,5
+,Brake Pads,Rear,BP-RE,Rear brake pads for disc brakes,Brake Pads,10270690123456,Physical,,,69,59,N,Y,Y,Y,Y,Rear,35,KT's Autos,AUT123,18,25,Y,5
+,Wiper Blades,Standard,WB-ST,Standard wiper blades for clear visibility,Wiper Blades,11381701234567,Physical,,,29,24,N,Y,Y,Y,Y,Standard,15,KT's Autos,AUT123,20,30,Y,5
+,Wiper Blades,Winter,WB-WN,Winter wiper blades for snow and ice,Wiper Blades,12492812345678,Physical,,,39,34,N,Y,Y,Y,Y,Winter,20,KT's Autos,AUT123,15,22,Y,5
+,Headlights,Halogen,HL-HA,Halogen headlights for bright illumination,Headlights,13503923456789,Physical,,,129,99,N,Y,Y,Y,Y,Halogen,65,KT's Autos,AUT123,10,15,Y,5
+,Headlights,LED,HL-LE,LED headlights for energy efficiency and long life,Headlights,14614034567890,Physical,,,199,179,N,Y,Y,Y,Y,LED,100,KT's Autos,AUT123,8,12,Y,5
+,Sofa,Sectional,SO-SC,Large sectional sofa with chaise lounge,Living Room Furniture,13828145678902,Physical,,,1299.99,999.99,N,Y,Y,Y,Y,Sectional,650.00,Home Furnishings,HOM123,3,5,Y,5
+,Sofa,Loveseat,SO-LS,Classic loveseat sofa,Living Room Furniture,14939256789013,Physical,,,899.99,699.99,N,Y,Y,Y,Y,Loveseat,450.00,Home Furnishings,HOM123,5,8,Y,5
+,Armchair,Accent,AC-AC,Accent armchair with upholstered seat,Living Room Furniture,15040367890124,Physical,,,399.99,299.99,N,Y,Y,Y,Y,Accent,200.00,Home Furnishings,HOM123,8,12,Y,5
+,Coffee Table,Wood,CT-WO,Wooden coffee table with storage shelf,Living Room Furniture,16151478901235,Physical,,,249.99,199.99,N,Y,Y,Y,Y,Wood,125.00,Home Furnishings,HOM123,10,15,Y,5
+,TV Stand,Media Console,TV-MC,Media console TV stand with multiple shelves,Living Room Furniture,27262589012346,Physical,,,349.99,299.99,N,Y,Y,Y,Y,Media Console,175.00,Home Furnishings,HOM123,6,10,Y,5
+,Dining Table,Rectangular,DT-RE,Rectangular dining table with seating for six,Dining Room Furniture,38373690123457,Physical,,,499.99,399.99,N,Y,Y,Y,Y,Rectangular,250.00,Home Furnishings,HOM123,4,7,Y,5
+,Dining Chair,Upholstered,DC-UP,Upholstered dining chair with wooden legs,Dining Room Furniture,49484701234568,Physical,,,149.99,119.99,N,Y,Y,Y,Y,Upholstered,75.00,Home Furnishings,HOM123,8,12,Y,5
+,Bed Frame,Queen,BF-QU,Queen size bed frame with headboard and footboard,Bedroom Furniture,60595812345679,Physical,,,399.99,299.99,N,Y,Y,Y,Y,Queen,200.00,Home Furnishings,HOM123,3,5,Y,5
+,Mattress,Queen,MA-QU,Queen size memory foam mattress,Bedroom Furniture,71606923456780,Physical,,,599.99,499.99,N,Y,Y,Y,Y,Queen,300.00,Home Furnishings,HOM123,5,8,Y,5
+,Nightstand,Two-Drawer,NS-TD,Two-drawer nightstand with storage space,Bedroom Furniture,82717034567891,Physical,,,149.99,119.99,N,Y,Y,Y,Y,Two-Drawer,75.00,Home Furnishings,HOM123,8,12,Y,5
+,Dresser,Six-Drawer,DR-SD,Six-drawer dresser with mirror,Bedroom Furniture,93828145678902,Physical,,,499.99,399.99,N,Y,Y,Y,Y,Six-Drawer,250.00,Home Furnishings,HOM123,4,7,Y,5
+,Desk,Office,DE-OF,Office desk with drawers and keyboard tray,Home Office Furniture,10493678901235,Physical,,,299.99,249.99,N,Y,Y,Y,Y,Office,150.00,Home Furnishings,HOM123,6,10,Y,5
+,Office Chair,Ergonomic,OC-ER,Ergonomic office chair with adjustable height,Home Office Furniture,11504789012346,Physical,,,199.99,159.99,N,Y,Y,Y,Y,Ergonomic,100.00,Home Furnishings,HOM123,8,12,Y,5
+,Bookshelf,Tall,BO-TA,Tall bookshelf with five shelves,Home Office Furniture,12615890123457,Physical,,,149.99,119.99,N,Y,Y,Y,Y,Tall,75.00,Home Furnishings,HOM123,10,15,Y,5
+,Area Rug,Wool,AR-WO,Wool area rug with geometric pattern,Rugs,13726901234568,Physical,,,299.99,249.99,N,Y,Y,Y,Y,Wool,150.00,Home Furnishings,HOM123,5,8,Y,5
+,Area Rug,Cotton,AR-CO,Cotton area rug with floral pattern,Rugs,14837012345679,Physical,,,199.99,149.99,N,Y,Y,Y,Y,Cotton,100.00,Home Furnishings,HOM123,8,12,Y,5
+,Lamp,Table,LA-TA,Table lamp with fabric shade,Lighting,15948123456780,Physical,,,79.99,59.99,N,Y,Y,Y,Y,Table,40.00,Home Furnishings,HOM123,10,15,Y,5
+,Lamp,Floor,LA-FL,Floor lamp with adjustable height,Lighting,16059234567891,Physical,,,129.99,99.99,N,Y,Y,Y,Y,Floor,65.00,Home Furnishings,HOM123,6,10,Y,5
+,Mirror,Wall,MI-WA,Wall mirror with decorative frame,Decor,27160345678902,Physical,,,99.99,79.99,N,Y,Y,Y,Y,Wall,50.00,Home Furnishings,HOM123,8,12,Y,5
+,Wall Art,Canvas,WA-CA,Canvas wall art with abstract design,Decor,38271456789013,Physical,,,149.99,119.99,N,Y,Y,Y,Y,Canvas,75.00,Home Furnishings,HOM123,5,8,Y,5
+,Throw Pillow,Velvet,TP-VE,Velvet throw pillow with decorative pattern,Decor,49382567890124,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Velvet,15.00,Home Furnishings,HOM123,12,18,Y,5
+,Curtains,Blackout,CU-BO,Blackout curtains for bedroom,Window Treatments,60493678901235,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Blackout,40.00,Home Furnishings,HOM123,10,15,Y,5
+,Curtains,Sheer,CU-SH,Sheer curtains for living room,Window Treatments,71504789012346,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Sheer,30.00,Home Furnishings,HOM123,12,18,Y,5
+,Bath Towel Set,Cotton,BT-CO,Cotton bath towel set with two bath towels and two hand towels,Bathroom,82615890123457,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Cotton,25.00,Home Furnishings,HOM123,8,12,Y,5
+,Bath Mat,Chenille,BM-CH,Chenille bath mat with non-slip backing,Bathroom,93726901234568,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Chenille,12.50,Home Furnishings,HOM123,10,15,Y,5
