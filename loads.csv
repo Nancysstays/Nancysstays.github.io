@@ -1,2 +1,185 @@
 Token,Item Name,Variation Name,SKU,Description,Reporting Category,GTIN,Item Type,Weight (lb),Social Media Link Title,Social Media Link Description,Price,Online Sale Price,Archived,Sellable,Stockable,Skip Detail Screen in POS,Option Name 1,Option Value 1,Default Unit Cost,Default Vendor Name,Default Vendor Code,Current Quantity Nancys,New Quantity Nancys,Stock Alert Enabled Nancys,Stock Alert Count Nancys
 ,Cozy Comfort Crewneck,Heather Gray,CC-HG-S,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789012,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Size,Small,20.00,KT's Clothes,ABC123,10,15,Y,5
+,Cozy Comfort Crewneck,Heather Gray,CC-HG-M,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789013,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Medium,20.00,KT's Clothes,ABC123,12,20,Y,5
+,Cozy Comfort Crewneck,Heather Gray,CC-HG-L,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789014,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Large,20.00,KT's Clothes,ABC123,8,10,Y,5
+,Cozy Comfort Crewneck,Navy Blue,CC-NB-S,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789025,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Small,20.00,KT's Clothes,ABC123,5,8,Y,5
+,Cozy Comfort Crewneck,Navy Blue,CC-NB-M,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789026,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Medium,20.00,KT's Clothes,ABC123,7,12,Y,5
+,Cozy Comfort Crewneck,Navy Blue,CC-NB-L,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789027,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Large,20.00,KT's Clothes,ABC123,9,15,Y,5
+,Classic Hoodie,Charcoal,CH-C-S,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210987,Physical,,,49.99,42.99,N,Y,Y,Y,Y,Small,25.00,KT's Clothes,ABC123,15,20,Y,5
+,Classic Hoodie,Charcoal,CH-C-M,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210988,Physical,,,49.99,42.99,N,Y,Y,Y,Y,Medium,25.00,KT's Clothes,ABC123,18,25,Y,5
+,Classic Hoodie,Charcoal,CH-C-L,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210989,Physical,,,49.99,42.99,N,Y,Y,Y,Y,Large,25.00,KT's Clothes,ABC123,12,15,Y,5
+,Classic Hoodie,Forest Green,CH-FG-S,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210976,Physical,,,49.99,42.99,N,Y,Y,Y,Y,Small,25.00,KT's Clothes,ABC123,8,12,Y,5
+,Classic Hoodie,Forest Green,CH-FG-M,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210977,Physical,,,49.99,42.99,N,Y,Y,Y,Y,Medium,25.00,KT's Clothes,ABC123,10,15,Y,5
+,Classic Hoodie,Forest Green,CH-FG-L,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210978,Physical,,,49.99,42.99,N,Y,Y,Y,Y,Large,25.00,KT's Clothes,ABC123,12,18,Y,5 
+,Warm Winter Scarf,Red,WWS-R,Chunky knit scarf perfect for cold weather,Scarves,1029384756123,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Red,12.00,KT's Clothes,ABC123,20,30,Y,5
+,Warm Winter Scarf,Gray,WWS-G,Chunky knit scarf perfect for cold weather,Scarves,1029384756124,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Gray,12.00,KT's Clothes,ABC123,18,25,Y,5
+,Warm Winter Scarf,Blue,WWS-B,Chunky knit scarf perfect for cold weather,Scarves,1029384756125,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Blue,12.00,KT's Clothes,ABC123,15,20,Y,5
+,Wool Beanie,Gray,WB-G,Wool beanie with a cozy fit,Beanies,1357924680135,Physical,,,19.99,15.99,N,Y,Y,Y,Y,Gray,10.00,KT's Clothes,ABC123,25,35,Y,5
+,Wool Beanie,Black,WB-B,Wool beanie with a cozy fit,Beanies,1357924680136,Physical,,,19.99,15.99,N,Y,Y,Y,Y,Black,10.00,KT's Clothes,ABC123,22,30,Y,5
+,Wool Beanie,Navy,WB-N,Wool beanie with a cozy fit,Beanies,1357924680137,Physical,,,19.99,15.99,N,Y,Y,Y,Y,Navy,10.00,KT's Clothes,ABC123,20,28,Y,5
+,Fingerless Gloves,Black,FG-B,Knit fingerless gloves,Gloves,2468013579246,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Black,7.50,KT's Clothes,ABC123,18,25,Y,5
+,Fingerless Gloves,Gray,FG-G,Knit fingerless gloves,Gloves,2468013579247,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Gray,7.50,KT's Clothes,ABC123,15,22,Y,5
+,Fingerless Gloves,Brown,FG-BR,Knit fingerless gloves,Gloves,2468013579248,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Brown,7.50,KT's Clothes,ABC123,12,18,Y,5
+,Cozy Socks,Red,CS-R,Thick wool socks,Socks,3579246801357,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Red,5.00,KT's Clothes,ABC123,30,40,Y,5
+,Cozy Socks,Green,CS-G,Thick wool socks,Socks,3579246801358,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Green,5.00,KT's Clothes,ABC123,28,38,Y,5
+,Cozy Socks,Blue,CS-B,Thick wool socks,Socks,3579246801359,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Blue,5.00,KT's Clothes,ABC123,25,35,Y,5
+,Turtleneck Sweater,Cream,TS-C-S,Classic turtleneck sweater,Sweaters,4680135792468,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Small,30.00,KT's Clothes,ABC123,8,12,Y,5
+,Turtleneck Sweater,Black,TS-B-S,Classic turtleneck sweater,Sweaters,5791364820759,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Small,30.00,KT's Clothes,ABC123,10,15,Y,5
+,Turtleneck Sweater,Black,TS-B-M,Classic turtleneck sweater,Sweaters,6802475931860,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Medium,30.00,KT's Clothes,ABC123,12,18,Y,5
+,Turtleneck Sweater,Black,TS-B-L,Classic turtleneck sweater,Sweaters,7913648207593,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Large,30.00,KT's Clothes,ABC123,14,21,Y,5
+,Turtleneck Sweater,Forest Green,TS-FG-S,Classic turtleneck sweater,Sweaters,8024759318604,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Small,30.00,KT's Clothes,ABC123,8,12,Y,5
+,Turtleneck Sweater,Forest Green,TS-FG-M,Classic turtleneck sweater,Sweaters,9136482075935,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Medium,30.00,KT's Clothes,ABC123,10,15,Y,5
+,Turtleneck Sweater,Forest Green,TS-FG-L,Classic turtleneck sweater,Sweaters,10247593186046,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Large,30.00,KT's Clothes,ABC123,12,18,Y,5
+,Cashmere Scarf,Gray,CAS-G,Luxurious cashmere scarf,Scarves,11364820759357,Physical,,,89.99,79.99,N,Y,Y,Y,Y,Gray,45.00,KT's Clothes,ABC123,5,8,Y,5
+,Cashmere Scarf,Black,CAS-B,Luxurious cashmere scarf,Scarves,12475931860468,Physical,,,89.99,79.99,N,Y,Y,Y,Y,Black,45.00,KT's Clothes,ABC123,7,10,Y,5
+,Cashmere Scarf,Camel,CAS-C,Luxurious cashmere scarf,Scarves,13586042971579,Physical,,,89.99,79.99,N,Y,Y,Y,Y,Camel,45.00,KT's Clothes,ABC123,6,9,Y,5
+,Leather Belt,Brown,LB-BR-S,Genuine leather belt with classic buckle,Belts,14697153082680,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Small,17.50,KT's Clothes,ABC123,10,15,Y,5
+,Leather Belt,Brown,LB-BR-M,Genuine leather belt with classic buckle,Belts,15708264193791,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Medium,17.50,KT's Clothes,ABC123,12,18,Y,5
+,Leather Belt,Brown,LB-BR-L,Genuine leather belt with classic buckle,Belts,26819375204802,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Large,17.50,KT's Clothes,ABC123,8,12,Y,5
+,Leather Belt,Black,LB-B-S,Genuine leather belt with classic buckle,Belts,37920486315913,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Small,17.50,KT's Clothes,ABC123,10,15,Y,5
+,Leather Belt,Black,LB-B-M,Genuine leather belt with classic buckle,Belts,48031597426024,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Medium,17.50,KT's Clothes,ABC123,12,18,Y,5
+,Leather Belt,Black,LB-B-L,Genuine leather belt with classic buckle,Belts,59142608537135,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Large,17.50,KT's Clothes,ABC123,8,12,Y,5
+,Sunglasses,Aviator,SUN-AV,Classic aviator sunglasses with UV protection,Sunglasses,60253719648246,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Aviator,25.00,KT's Clothes,ABC123,15,20,Y,5
+,Sunglasses,Wayfarer,SUN-WF,Timeless wayfarer sunglasses with UV protection,Sunglasses,71364820759357,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Wayfarer,25.00,KT's Clothes,ABC123,12,18,Y,5
+,Sunglasses,Round,SUN-RD,Retro round sunglasses with UV protection,Sunglasses,82475931860468,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Round,25.00,KT's Clothes,ABC123,10,15,Y,5
+,Baseball Cap,Navy,BC-N,Adjustable baseball cap with embroidered logo,Hats,93586042971570,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Navy,12.50,KT's Clothes,ABC123,20,30,Y,5
+,Baseball Cap,Black,BC-B,Adjustable baseball cap with embroidered logo,Hats,10467153082681,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Black,12.50,KT's Clothes,ABC123,18,25,Y,5
+,Baseball Cap,Red,BC-R,Adjustable baseball cap with embroidered logo,Hats,11578264193792,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Red,12.50,KT's Clothes,ABC123,15,20,Y,5
+,Weekender Bag,Gray,WB-G,Durable canvas weekender bag with multiple compartments,Bags,13790375204813,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Gray,40.00,KT's Clothes,ABC123,8,12,Y,5
+,Weekender Bag,Black,WB-B,Durable canvas weekender bag with multiple compartments,Bags,14801486315924,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Black,40.00,KT's Clothes,ABC123,10,15,Y,5
+,Weekender Bag,Olive,WB-O,Durable canvas weekender bag with multiple compartments,Bags,15912597426035,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Olive,40.00,KT's Clothes,ABC123,6,9,Y,5
+,Toiletry Bag,Gray,TB-G,Waterproof toiletry bag with hanging hook,Bags,27023608537146,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Gray,15.00,KT's Clothes,ABC123,12,18,Y,5
+,Toiletry Bag,Black,TB-B,Waterproof toiletry bag with hanging hook,Bags,38134719648257,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Black,15.00,KT's Clothes,ABC123,14,21,Y,5
+,Toiletry Bag,Navy,TB-N,Waterproof toiletry bag with hanging hook,Bags,49245830759368,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Navy,15.00,KT's Clothes,ABC123,10,15,Y,5
+,Travel Wallet,Brown,TW-BR,Leather travel wallet with RFID blocking,Wallets,60356941870479,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Brown,20.00,KT's Clothes,ABC123,10,15,Y,5
+,Travel Wallet,Black,TW-B,Leather travel wallet with RFID blocking,Wallets,71468052981580,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Black,20.00,KT's Clothes,ABC123,12,18,Y,5
+,Card Holder,Brown,CH-BR,Slim leather card holder with RFID blocking,Wallets,82579163092691,Physical,,,19.99,17.99,N,Y,Y,Y,Y,Brown,10.00,KT's Clothes,ABC123,15,22,Y,5
+,Card Holder,Black,CH-B,Slim leather card holder with RFID blocking,Wallets,93680274103702,Physical,,,19.99,17.99,N,Y,Y,Y,Y,Black,10.00,KT's Clothes,ABC123,18,25,Y,5
+,Phone Case,iPhone 13,PC-IP13,Protective phone case for iPhone 13,Phone Accessories,10479285214813,Physical,,,29.99,24.99,N,Y,Y,Y,Y,iPhone 13,15.00,KT's Clothes,ABC123,20,30,Y,5
+,Phone Case,iPhone 14,PC-IP14,Protective phone case for iPhone 14,Phone Accessories,11580396325924,Physical,,,29.99,24.99,N,Y,Y,Y,Y,iPhone 14,15.00,KT's Clothes,ABC123,18,28,Y,5
+,Phone Case,Samsung S22,PC-SS22,Protective phone case for Samsung S22,Phone Accessories,12691407436035,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Samsung S22,15.00,KT's Clothes,ABC123,15,25,Y,5
+,Portable Charger,10000mAh,PCH-10K,Portable charger with 10000mAh capacity,Electronics,14913518547146,Physical,,,39.99,32.99,N,Y,Y,Y,Y,10000mAh,20.00,KT's Clothes,ABC123,12,20,Y,5
+,Portable Charger,20000mAh,PCH-20K,Portable charger with 20000mAh capacity,Electronics,26024629658257,Physical,,,49.99,42.99,N,Y,Y,Y,Y,20000mAh,25.00,KT's Clothes,ABC123,10,18,Y,5
+,Bluetooth Speaker,Small,BS-S,Compact Bluetooth speaker with long battery life,Electronics,37135740769368,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Small,30.00,KT's Clothes,ABC123,8,15,Y,5
+,Bluetooth Speaker,Large,BS-L,Powerful Bluetooth speaker with deep bass,Electronics,48246851870479,Physical,,,79.99,69.99,N,Y,Y,Y,Y,Large,40.00,KT's Clothes,ABC123,6,12,Y,5
+,Wireless Earbuds,Black,WEB-B,Wireless earbuds with noise cancellation,Electronics,59357962981590,Physical,,,99.99,89.99,N,Y,Y,Y,Y,Black,50.00,KT's Clothes,ABC123,10,18,Y,5
+,Wireless Earbuds,White,WEB-W,Wireless earbuds with noise cancellation,Electronics,70468073092601,Physical,,,99.99,89.99,N,Y,Y,Y,Y,White,50.00,KT's Clothes,ABC123,8,15,Y,5
+,Yoga Mat,Blue,YM-B,Thick yoga mat with non-slip surface,Yoga,81579184103712,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Blue,17.50,KT's Clothes,ABC123,12,20,Y,5
+,Yoga Mat,Purple,YM-P,Thick yoga mat with non-slip surface,Yoga,92680295214823,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Purple,17.50,KT's Clothes,ABC123,10,18,Y,5
+,Yoga Block,Cork,YB-C,Yoga block made from sustainable cork,Yoga,10379306325934,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Cork,7.50,KT's Clothes,ABC123,15,25,Y,5
+,Yoga Block,Foam,YB-F,Yoga block made from high-density foam,Yoga,11480417437045,Physical,,,12.99,10.99,N,Y,Y,Y,Y,Foam,6.50,KT's Clothes,ABC123,18,30,Y,5
+,Resistance Band Set,Light,RB-L,Set of resistance bands with varying resistance levels,Fitness,12591528548156,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Light,12.50,KT's Clothes,ABC123,10,15,Y,5
+,Resistance Band Set,Medium,RB-M,Set of resistance bands with varying resistance levels,Fitness,13602639659267,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Medium,12.50,KT's Clothes,ABC123,12,18,Y,5
+,Resistance Band Set,Heavy,RB-H,Set of resistance bands with varying resistance levels,Fitness,14713740760378,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Heavy,12.50,KT's Clothes,ABC123,8,12,Y,5
+,Jump Rope,Basic,JR-B,Basic jump rope for cardio workouts,Fitness,15824851871489,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Basic,6.50,KT's Clothes,ABC123,15,22,Y,5
+,Jump Rope,Weighted,JR-W,Weighted jump rope for intense cardio workouts,Fitness,16935962982590,Physical,,,19.99,15.99,N,Y,Y,Y,Y,Weighted,10.00,KT's Clothes,ABC123,12,20,Y,5
+,Water Bottle,Stainless Steel,WB-SS,Stainless steel water bottle with leak-proof lid,Hydration,18046073093701,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Stainless Steel,10.00,KT's Clothes,ABC123,20,30,Y,5
+,Water Bottle,Plastic,WB-P,BPA-free plastic water bottle with straw,Hydration,29157184104812,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Plastic,7.50,KT's Clothes,ABC123,25,35,Y,5
+,Shaker Bottle,Black,SB-B,Shaker bottle with mixing ball for protein shakes,Hydration,30268295215923,Physical,,,12.99,10.99,N,Y,Y,Y,Y,Black,6.50,KT's Clothes,ABC123,18,28,Y,5
+,Shaker Bottle,Clear,SB-C,Shaker bottle with mixing ball for protein shakes,Hydration,41379306326034,Physical,,,12.99,10.99,N,Y,Y,Y,Y,Clear,6.50,KT's Clothes,ABC123,15,25,Y,5
+,Gym Towel,Blue,GT-B,Microfiber gym towel with quick-drying technology,Fitness,52480417438156,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Blue,7.50,KT's Clothes,ABC123,20,30,Y,5
+,Gym Towel,Gray,GT-G,Microfiber gym towel with quick-drying technology,Fitness,63591528549267,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Gray,7.50,KT's Clothes,ABC123,18,28,Y,5
+,Headband,Black,HB-B,Moisture-wicking headband for workouts,Fitness,74602639650378,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Black,5.00,KT's Clothes,ABC123,25,35,Y,5
+,Headband,Gray,HB-G,Moisture-wicking headband for workouts,Fitness,85713750761489,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Gray,5.00,KT's Clothes,ABC123,22,32,Y,5
+,Cooling Towel,Blue,CT-B,Cooling towel for staying cool during exercise,Fitness,96824861872590,Physical,,,19.99,17.99,N,Y,Y,Y,Y,Blue,10.00,KT's Clothes,ABC123,15,25,Y,5
+,Cooling Towel,Green,CT-G,Cooling towel for staying cool during exercise,Fitness,10793597283601,Physical,,,19.99,17.99,N,Y,Y,Y,Y,Green,10.00,KT's Clothes,ABC123,12,22,Y,5
+,Workout Gloves,Black,WG-B,Workout gloves with padded palms,Fitness,11804708394712,Physical,,,24.99,22.99,N,Y,Y,Y,Y,Black,12.50,KT's Clothes,ABC123,10,20,Y,5
+,Workout Gloves,Pink,WG-P,Workout gloves with padded palms,Fitness,12915819405823,Physical,,,24.99,22.99,N,Y,Y,Y,Y,Pink,12.50,KT's Clothes,ABC123,8,18,Y,5
+,Lifting Straps,Black,LS-B,Lifting straps for weightlifting,Fitness,24026930516934,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Black,7.50,KT's Clothes,ABC123,12,22,Y,5
+,Lifting Straps,Red,LS-R,Lifting straps for weightlifting,Fitness,35138041627045,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Red,7.50,KT's Clothes,ABC123,10,20,Y,5
+,Knee Sleeves,Black,KS-B,Knee sleeves for support during exercise,Fitness,46249152738156,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Black,15.00,KT's Clothes,ABC123,8,18,Y,5
+,Knee Sleeves,Blue,KS-BL,Knee sleeves for support during exercise,Fitness,57350263849267,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Blue,15.00,KT's Clothes,ABC123,6,16,Y,5
+,Elbow Sleeves,Black,ES-B,Elbow sleeves for support during exercise,Fitness,68461374950378,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Black,12.50,KT's Clothes,ABC123,10,20,Y,5
+,Elbow Sleeves,Red,ES-R,Elbow sleeves for support during exercise,Fitness,79572485061489,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Red,12.50,KT's Clothes,ABC123,8,18,Y,5
+,Wrist Wraps,Black,WW-B,Wrist wraps for support during weightlifting,Fitness,80683596172500,Physical,,,12.99,10.99,N,Y,Y,Y,Y,Black,6.50,KT's Clothes,ABC123,12,22,Y,5
+,Wrist Wraps,Blue,WW-BL,Wrist wraps for support during weightlifting,Fitness,91794607283611,Physical,,,12.99,10.99,N,Y,Y,Y,Y,Blue,6.50,KT's Clothes,ABC123,10,20,Y,5
+,Ankle Supports,Black,AS-B,Ankle supports for stability during exercise,Fitness,102805718394722,Physical,,,19.99,17.99,N,Y,Y,Y,Y,Black,10.00,KT's Clothes,ABC123,8,18,Y,5
+,Ankle Supports,White,AS-W,Ankle supports for stability during exercise,Fitness,113916829405833,Physical,,,19.99,17.99,N,Y,Y,Y,Y,White,10.00,KT's Clothes,ABC123,6,16,Y,5
+,Protein Powder,Chocolate,PP-C,Whey protein powder in chocolate flavor,Supplements,124027930516944,Physical,,,49.99,44.99,N,Y,Y,Y,Y,Chocolate,25.00,KT's Clothes,ABC123,10,20,Y,5
+,Protein Powder,Vanilla,PP-V,Whey protein powder in vanilla flavor,Supplements,135139041628055,Physical,,,49.99,44.99,N,Y,Y,Y,Y,Vanilla,25.00,KT's Clothes,ABC123,12,22,Y,5
+,Creatine,Unflavored,CR-U,Creatine monohydrate powder,Supplements,146240152739166,Physical,,,29.99,27.99,N,Y,Y,Y,Y,Unflavored,15.00,KT's Clothes,ABC123,8,18,Y,5
+,Pre-Workout,Fruit Punch,PW-FP,Pre-workout powder in fruit punch flavor,Supplements,157351263840277,Physical,,,34.99,31.99,N,Y,Y,Y,Y,Fruit Punch,17.50,KT's Clothes,ABC123,10,20,Y,5
+,BCAA,Tropical,BCAA-T,Branched-chain amino acids in tropical flavor,Supplements,16846237495
+,Christmas Tree,6ft,CT-6,Artificial Christmas tree with pre-lit lights,Christmas Trees,5246789013579,Physical,,,129.99,99.99,N,Y,Y,Y,Y,6ft,65.00,KT's Clothes,ABC123,5,10,Y,5
+,Christmas Tree,7ft,CT-7,Artificial Christmas tree with pre-lit lights,Christmas Trees,6357890124680,Physical,,,159.99,129.99,N,Y,Y,Y,Y,7ft,80.00,KT's Clothes,ABC123,7,12,Y,5
+,Christmas Tree,8ft,CT-8,Artificial Christmas tree with pre-lit lights,Christmas Trees,7468901235791,Physical,,,199.99,159.99,N,Y,Y,Y,Y,8ft,100.00,KT's Clothes,ABC123,4,8,Y,5
+,Ornament Set,Classic,OS-CL,Set of classic Christmas ornaments in various colors,Ornaments,8579012346802,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Classic,12.50,KT's Clothes,ABC123,20,30,Y,5
+,Ornament Set,Modern,OS-MO,Set of modern Christmas ornaments with geometric designs,Ornaments,9680123457913,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Modern,15.00,KT's Clothes,ABC123,15,25,Y,5
+,Ornament Set,Rustic,OS-RU,Set of rustic Christmas ornaments with natural elements,Ornaments,10791234568024,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Rustic,12.50,KT's Clothes,ABC123,18,28,Y,5
+,Christmas Lights,White,CL-W,String of white Christmas lights for indoor/outdoor use,Lights,11802345679135,Physical,,,19.99,14.99,N,Y,Y,Y,Y,White,10.00,KT's Clothes,ABC123,30,40,Y,5
+,Christmas Lights,Multicolor,CL-MC,String of multicolor Christmas lights for indoor/outdoor use,Lights,12913456780246,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Multicolor,10.00,KT's Clothes,ABC123,25,35,Y,5
+,Christmas Lights,LED,CL-LED,String of energy-efficient LED Christmas lights,Lights,13024567891357,Physical,,,24.99,19.99,N,Y,Y,Y,Y,LED,12.50,KT's Clothes,ABC123,20,30,Y,5
+,Christmas Wreath,Traditional,CW-TR,Traditional Christmas wreath with pine cones and berries,Wreaths,14135678902468,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Traditional,20.00,KT's Clothes,ABC123,10,15,Y,5
+,Christmas Wreath,Modern,CW-MO,Modern Christmas wreath with metallic accents,Wreaths,15246789013579,Physical,,,44.99,34.99,N,Y,Y,Y,Y,Modern,22.50,KT's Clothes,ABC123,8,12,Y,5
+,Christmas Wreath,Pre-lit,CW-PL,Pre-lit Christmas wreath with warm white LED lights,Wreaths,26357801246910,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Pre-lit,25.00,KT's Clothes,ABC123,6,10,Y,5
+,Christmas Garland,Plain,CG-PL,Plain Christmas garland for decorating mantels and stairs,Garlands,37468912358011,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Plain,15.00,KT's Clothes,ABC123,15,20,Y,5
+,Christmas Garland,Flocked,CG-FL,Flocked Christmas garland with a snowy appearance,Garlands,48579023469122,Physical,,,34.99,29.99,N,Y,Y,Y,Y,Flocked,17.50,KT's Clothes,ABC123,12,18,Y,5
+,Christmas Garland,Pre-lit,CG-PL,Pre-lit Christmas garland with warm white LED lights,Garlands,59680134570233,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Pre-lit,20.00,KT's Clothes,ABC123,10,15,Y,5
+,Christmas Stocking,Red,CS-R,Personalized Christmas stocking with embroidered name,Stockings,70791245681344,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Red,10.00,KT's Clothes,ABC123,20,30,Y,5
+,Christmas Stocking,Green,CS-G,Personalized Christmas stocking with embroidered name,Stockings,81802356792455,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Green,10.00,KT's Clothes,ABC123,18,28,Y,5
+,Christmas Stocking,White,CS-W,Personalized Christmas stocking with embroidered name,Stockings,92913467803566,Physical,,,19.99,14.99,N,Y,Y,Y,Y,White,10.00,KT's Clothes,ABC123,15,25,Y,5
+,Christmas Tree Skirt,Red,CTS-R,Christmas tree skirt with festive design,Tree Skirts,10302457891467,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Red,15.00,KT's Clothes,ABC123,12,20,Y,5
+,Christmas Tree Skirt,Green,CTS-G,Christmas tree skirt with festive design,Tree Skirts,11413568902578,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Green,15.00,KT's Clothes,ABC123,10,18,Y,5
+,Christmas Tree Skirt,White,CTS-W,Christmas tree skirt with festive design,Tree Skirts,12524679013689,Physical,,,29.99,24.99,N,Y,Y,Y,Y,White,15.00,KT's Clothes,ABC123,8,15,Y,5
+,Christmas Pillow,Santa,CP-S,Decorative Christmas pillow with Santa Claus design,Pillows,13635780124790,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Santa,10.00,KT's Clothes,ABC123,15,22,Y,5
+,Christmas Pillow,Reindeer,CP-R,Decorative Christmas pillow with reindeer design,Pillows,14746891235801,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Reindeer,10.00,KT's Clothes,ABC123,12,20,Y,5
+,Christmas Pillow,Snowflake,CP-SN,Decorative Christmas pillow with snowflake design,Pillows,15857902346912,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Snowflake,10.00,KT's Clothes,ABC123,10,18,Y,5
+,Christmas Throw Blanket,Red,CTB-R,Soft Christmas throw blanket with festive pattern,Blankets,26968034570223,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Red,20.00,KT's Clothes,ABC123,8,12,Y,5
+,Christmas Throw Blanket,Green,CTB-G,Soft Christmas throw blanket with festive pattern,Blankets,37079145681334,Physical,,,39.99,29.99,N,Y,Y,Y,Y,Green,20.00,KT's Clothes,ABC123,6,10,Y,5
+,NFL Game Day T-Shirt,Home Team,GDTS-HT-S,Show your team spirit with this comfortable game day t-shirt,NFL Apparel,1928374650123,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Small,15.00,KT's Clothes,ABC123,20,30,Y,5
+,NFL Game Day T-Shirt,Home Team,GDTS-HT-M,Show your team spirit with this comfortable game day t-shirt,NFL Apparel,2039485761234,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Medium,15.00,KT's Clothes,ABC123,25,35,Y,5
+,NFL Game Day T-Shirt,Home Team,GDTS-HT-L,Show your team spirit with this comfortable game day t-shirt,NFL Apparel,3140596872345,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Large,15.00,KT's Clothes,ABC123,22,32,Y,5
+,NFL Game Day T-Shirt,Away Team,GDTS-AT-S,Show your team spirit with this comfortable game day t-shirt,NFL Apparel,4251607983456,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Small,15.00,KT's Clothes,ABC123,18,28,Y,5
+,NFL Game Day T-Shirt,Away Team,GDTS-AT-M,Show your team spirit with this comfortable game day t-shirt,NFL Apparel,5362718094567,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Medium,15.00,KT's Clothes,ABC123,22,32,Y,5
+,NFL Game Day T-Shirt,Away Team,GDTS-AT-L,Show your team spirit with this comfortable game day t-shirt,NFL Apparel
+,Sofa,Gray,SO-GY,Comfortable 3-seater sofa with chaise lounge,Sofas,4819273654012,Physical,,,899.99,799.99,N,Y,Y,Y,Y,Gray,450.00,KT's Clothes,ABC123,3,5,Y,5
+,Sofa,Blue,
+,Backpack,Standard,BP-ST,Durable backpack with laptop compartment,Backpacks,6478901235791,Physical,,,49.99,39.99,N,Y,Y,Y,Y,Standard,25.00,KT's Clothes,ABC123,15,25,Y,5
+,Backpack,Large,BP-LG,Large backpack with multiple compartments,Backpacks,7589012346802,Physical,,,59.99,49.99,N,Y,Y,Y,Y,Large,30.00,KT's Clothes,ABC123,12,22,Y,5
+,Laptop Sleeve,13-inch,LS-13,Padded laptop sleeve for 13-inch laptops,Laptop Sleeves,8690123457913,Physical,,,24.99,19.99,N,Y,Y,Y,Y,13-inch,12.50,KT's Clothes,ABC123,20,30,Y,5
+,Laptop Sleeve,15-inch,LS-15,Padded laptop sleeve for 15-inch laptops,Laptop Sleeves,9701234568024,Physical,,,29.99,24.99,N,Y,Y,Y,Y,15-inch,15.00,KT's Clothes,ABC123,18,28,Y,5
+,Notebook Set,Lined,NS-LN,Set of lined notebooks for note-taking,Notebooks,10812345679135,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Lined,6.50,KT's Clothes,ABC123,30,40,Y,5
+,Notebook Set,Gridded,NS-GR,Set of gridded notebooks for graphs and diagrams,Notebooks,11923456780246,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Gridded,6.50,KT's Clothes,ABC123,25,35,Y,5
+,Pen Set,Black,PS-BK,Set of black pens for writing and note-taking,Pens,12034567891357,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Black,5.00,KT's Clothes,ABC123,40,50,Y,5
+,Pen Set,Blue,PS-BL,Set of blue pens for writing and note-taking,Pens,13145678902468,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Blue,5.00,KT's Clothes,ABC123,35,45,Y,5
+,Highlighter Set,Neon,HS-NE,Set of neon highlighters for highlighting text,Highlighters,14256789013579,Physical,,,7.99,5.99,N,Y,Y,Y,Y,Neon,4.00,KT's Clothes,ABC123,30,40,Y,5
+,Highlighter Set,Pastel,HS-PA,Set of pastel highlighters for highlighting text,Highlighters,15367890124680,Physical,,,7.99,5.99,N,Y,Y,Y,Y,Pastel,4.00,KT's Clothes,ABC123,25,35,Y,5
+,Desk Organizer,Wood,DO-WO,Wooden desk organizer for keeping stationery tidy,Desk Organizers,26478901235791,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Wood,12.50,KT's Clothes,ABC123,10,15,Y,5
+,Desk Organizer,Metal,DO-ME,Metal desk organizer for keeping stationery tidy,Desk Organizers,37589012346802,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Metal,15.00,KT's Clothes,ABC123,8,12,Y,5
+,Planner,Weekly,PL-WK,Weekly planner for scheduling and time management,Planners,48690123457913,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Weekly,7.50,KT's Clothes,ABC123,15,20,Y,5
+,Planner,Monthly,PL-MO,Monthly planner for scheduling and time management,Planners,59701234568024,Physical,,,19.99,17.99,N,Y,Y,Y,Y,Monthly,10.00,KT's Clothes,ABC123,12,18,Y,5
+,Water Bottle,Stainless Steel,WB-SS,Stainless steel water bottle with leak-proof lid,Water Bottles,70812345679135,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Stainless Steel,10.00,KT's Clothes,ABC123,20,30,Y,5
+,Water Bottle,Plastic,WB-PL,BPA-free plastic water bottle with straw,Water Bottles,81923456780246,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Plastic,7.50,KT's Clothes,ABC123,25,35,Y,5
+,Coffee Mug,Ceramic,CM-CE,Ceramic coffee mug with college logo,Coffee Mugs,92034567891357,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Ceramic,6.50,KT's Clothes,ABC123,18,28,Y,5
+,Coffee Mug,Travel,CM-TR,Travel coffee mug with leak-proof lid,Coffee Mugs,10314567890246,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Travel,10.00,KT's Clothes,ABC123,15,25,Y,5
+,Dorm Room Decor,Poster,DRD-PO,Motivational poster for dorm room decoration,Dorm Decor,11425678901357,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Poster,7.50,KT's Clothes,ABC123,20,30,Y,5
+,Dorm Room Decor,Fairy Lights,DRD-FL,Fairy lights for dorm room ambiance,Dorm Decor,12536789012468,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Fairy Lights,6.50,KT's Clothes,ABC123,18,28,Y,5
+,Dorm Room Decor,Wall Tapestry,DRD-WT,Wall tapestry with nature scene for dorm room decoration,Dorm Decor,13647890123579,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Wall Tapestry,15.00,KT's Clothes,ABC123,10,15,Y,5
+,Mini Fridge,Compact,MF-CO,Compact mini fridge for dorm room use,Mini Fridges,14758901234680,Physical,,,99.99,79.99,N,Y,Y,Y,Y,Compact,50.00,KT's Clothes,ABC123,5,8,Y,5
+,Mini Fridge,With Freezer,MF-WF,Mini fridge with freezer compartment for dorm room use,Mini Fridges,15869012345791,Physical,,,129.99,99.99,N,Y,Y,Y,Y,With Freezer,65.00,KT's Clothes,ABC123,3,6,Y,5
+,Shower Caddy,Plastic,SC-PL,Plastic shower caddy for carrying toiletries,Shower Caddies,16970123456802,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Plastic,6.50,KT's Clothes,ABC123,15,20,Y,5
+,Shower Caddy,Mesh,SC-ME,Mesh shower caddy for carrying toiletries,Shower Caddies,27081234567913,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Mesh,7.50,KT's Clothes,ABC123,12,18,Y,5
+,Building Blocks,Wooden,BB-WO,Set of wooden building blocks for creative play,Building Blocks,9370123456802,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Wooden,15.00,KT's Clothes,ABC123,20,30,Y,5
+,Building Blocks,Plastic,BB-PL,Set of plastic building blocks in various colors,Building Blocks,10481234567913,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Plastic,10.00,KT's Clothes,ABC123,25,35,Y,5
+,Crayon Set,Large,CR-LG,Large set of crayons in various colors,Crayons,11592345678024,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Large,6.50,KT's Clothes,ABC123,30,40,Y,5
+,Crayon Set,Washable,CR-WA,Set of washable crayons for easy cleanup,Crayons,12603456789135,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Washable,7.50,KT's Clothes,ABC123,25,35,Y,5
+,Coloring Book,Animals,CB-AN,Coloring book with animal illustrations,Coloring Books,13714567890246,Physical,,,5.99,4.99,N,Y,Y,Y,Y,Animals,3.00,KT's Clothes,ABC123,40,50,Y,5
+,Coloring Book,Vehicles,CB-VE,Coloring book with vehicle illustrations,Coloring Books,14825678901357,Physical,,,5.99,4.99,N,Y,Y,Y,Y,Vehicles,3.00,KT's Clothes,ABC123,35,45,Y,5
+,Play-Doh Set,Basic,PD-BA,Basic Play-Doh set with multiple colors,Play-Doh,15936789012468,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Basic,10.00,KT's Clothes,ABC123,20,30,Y,5
+,Play-Doh Set,Tools,PD-TO,Play-Doh set with various tools and molds,Play-Doh,16047890123579,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Tools,15.00,KT's Clothes,ABC123,15,25,Y,5
+,Puzzle,Wooden,PZ-WO,Wooden puzzle with animal shapes,Puzzles,27158901234680,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Wooden,7.50,KT's Clothes,ABC123,25,35,Y,5
+,Puzzle,Floor,PZ-FL,Large floor puzzle with colorful design,Puzzles,38269012345791,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Floor,12.50,KT's Clothes,ABC123,18,28,Y,5
+,Storybook,Hardcover,SB-HC,Hardcover storybook with classic children's tale,Storybooks,49370123456802,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Hardcover,6.50,KT's Clothes,ABC123,20,30,Y,5
+,Storybook,Board Book,SB-BB,Board book for toddlers with durable pages,Storybooks,60481234567913,Physical,,,7.99,5.99,N,Y,Y,Y,Y,Board Book,4.00,KT's Clothes,ABC123,30,40,Y,5
+,Stuffed Animal,Teddy Bear,SA-TB,Soft teddy bear stuffed animal,Stuffed Animals,71592345678024,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Teddy Bear,10.00,KT's Clothes,ABC123,15,25,Y,5
+,Stuffed Animal,Dog,SA-DG,Stuffed animal dog with floppy ears,Stuffed Animals,82603456789135,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Dog,7.50,KT's Clothes,ABC123,18,28,Y,5
+,Toy Car,Race Car,TC-RC,Toy race car with pull-back action,Toy Cars,93714567890246,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Race Car,5.00,KT's Clothes,ABC123,25,35,Y,5
+,Toy Car,Truck,TC-TR,Toy truck with moving parts,Toy Cars,10482567890135,Physical,,,12.99,9.99,N,Y,Y,Y,Y,Truck,6.50,KT's Clothes,ABC123,20,30,Y,5
+,Doll,Baby Doll,DL-BD,Baby doll with accessories,Dolls,11593678901246,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Baby Doll,15.00,KT's Clothes,ABC123,12,20,Y,5
+,Doll,Fashion Doll,DL-FD,Fashion doll with stylish clothes,Dolls,12604789012357,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Fashion Doll,20.00,KT's Clothes,ABC123,10,18,Y,5
+,Art Supplies,Paint Set,AS-PS,Paint set with various colors and brushes,Art Supplies,13715890123468,Physical,,,24.99,19.99,N,Y,Y,Y,Y,Paint Set,12.50,KT's Clothes,ABC123,15,25,Y,5
+,Art Supplies,Construction Paper,AS-CP,Construction paper in assorted colors,Art Supplies,14826901234579,Physical,,,7.99,5.99,N,Y,Y,Y,Y,Construction Paper,4.00,KT's Clothes,ABC123,20,30,Y,5
+,Educational Toys,Number Puzzle,ET-NP,Number puzzle for learning numbers and counting,Educational Toys,15937012345680,Physical,,,14.99,12.99,N,Y,Y,Y,Y,Number Puzzle,7.50,KT's Clothes,ABC123,18,28,Y,5
+,Educational Toys,Alphabet Blocks,ET-AB,Alphabet blocks for learning letters and spelling,Educational Toys,16048123456791,Physical,,,19.99,14.99,N,Y,Y,Y,Y,Alphabet Blocks,10.00,KT's Clothes,ABC123,15,25,Y,5
+,Outdoor Toys,Ball,OT-BL,Ball for outdoor play and games,Outdoor Toys,27159234567802,Physical,,,9.99,7.99,N,Y,Y,Y,Y,Ball,5.00,KT's Clothes,ABC123,25,35,Y,5
+,Outdoor Toys,Sandbox Set,OT-SB,Sandbox set with shovels and buckets,Outdoor Toys,38260345678913,Physical,,,29.99,24.99,N,Y,Y,Y,Y,Sandbox Set,15.00,KT's Clothes,ABC123,12,20,Y,5
