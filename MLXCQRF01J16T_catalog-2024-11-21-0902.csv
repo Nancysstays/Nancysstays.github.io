@@ -1,5 +1,101 @@
-,,,,,,,,,,,,,,,,,,,,,,,Instructions,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,"Fill in your catalog information below. Avoid some of the most common errors by making sure: 1) each row contains an item name; 2) an item and its variations have the same category and description; 3) GTINs are 8,12, 13, or 14 characters and contain numbers only; and 4) every item referencing an option set has both an option set name and an option value.",,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,Created by Square,Example item,Small,A12345,100% organic soft cotton t-shirt,Sales of this item will be attributed to the Reporting Category in the category sales report.,653412483659,"Physical, Prepared food and beverage, Digital, Donation, Event, Membership, Other",,Social media link title,Social media link description,24.99,20.99,Y or N,Y or N,Y or N,Y or N,Sizes,Small,12.99,KT's Clothes,ABC123,10,15,Y or N,5
-,,,,,,,,,,,,,,,,,,,,,,,Token,Item Name,Variation Name,SKU,Description,Reporting Category,GTIN,Item Type,Weight (lb),Social Media Link Title,Social Media Link Description,Price,Online Sale Price,Archived,Sellable,Stockable,Skip Detail Screen in POS,Option Name 1,Option Value 1,Default Unit Cost,Default Vendor Name,Default Vendor Code,Current Quantity Nancys,New Quantity Nancys,Stock Alert Enabled Nancys,Stock Alert Count Nancys
+Token,Item Name,Variation Name,SKU,Description,Reporting Category,GTIN,Item Type,Weight (lb),Social Media Link Title,Social Media Link Description,Price,Online Sale Price,Archived,Sellable,Stockable,Skip Detail Screen in POS,Option Name 1,Option Value 1,Default Unit Cost,Default Vendor Name,Default Vendor Code,Current Quantity Nancys,New Quantity Nancys,Stock Alert Enabled Nancys,Stock Alert Count Nancys
+TOKEN_1,Organic Cotton T-Shirt,Small,SKU_1,100% organic soft cotton t-shirt,Apparel,7894561230123,Physical,,,,,24.99,20.99,N,Y,Y,N,Sizes,Small,12.99,KT's Clothes,ABC123,10,15,Y,5
+TOKEN_2,Organic Cotton T-Shirt,Medium,SKU_2,100% organic soft cotton t-shirt,Apparel,7894561230123,Physical,,,,,24.99,20.99,N,Y,Y,N,Sizes,Medium,12.99,KT's Clothes,ABC123,12,18,Y,5
+TOKEN_3,Organic Cotton T-Shirt,Large,SKU_3,100% organic soft cotton t-shirt,Apparel,7894561230123,Physical,,,,,24.99,20.99,N,Y,Y,N,Sizes,Large,12.99,KT's Clothes,ABC123,8,12,Y,5
+TOKEN_4,Stylish Hoodie,Small,SKU_4,Stylish and comfortable hoodie,Apparel,5468791320357,Physical,1.5,,,,,49.99,,N,Y,N,Y,Sizes,Small,25.00,Fashion Store,DEF456,5,10,N,
+TOKEN_5,Stylish Hoodie,Medium,SKU_5,Stylish and comfortable hoodie,Apparel,5468791320357,Physical,1.5,,,,,49.99,,N,Y,N,Y,Sizes,Medium,25.00,Fashion Store,DEF456,8,12,N,
+TOKEN_6,Stylish Hoodie,Large,SKU_6,Stylish and comfortable hoodie,Apparel,5468791320357,Physical,1.5,,,,,49.99,,N,Y,N,Y,Sizes,Large,25.00,Fashion Store,DEF456,6,8,N,
+TOKEN_7,Canvas Tote Bag,One Size,SKU_7,Durable canvas tote bag for everyday use,Accessories,9876543210987,Physical,0.5,,,,,19.99,15.99,N,Y,Y,N,,,10.00,Bag Shop,GHI789,20,30,Y,10
+TOKEN_8,Leather Wallet,One Size,SKU_8,Genuine leather wallet with multiple compartments,Accessories,6547893210654,Physical,0.2,,,,,39.99,,N,Y,Y,N,,,20.00,Leather Goods,JKL123,15,20,Y,5
+TOKEN_9,Baseball Cap,One Size,SKU_9,Classic baseball cap with adjustable strap,Accessories,3216549870321,Physical,0.3,,,,,14.99,,N,Y,Y,N,,,7.50,Hat Store,MNO456,30,40,Y,10
+TOKEN_10,Winter Scarf,One Size,SKU_10,Warm and cozy winter scarf,Accessories,8529637410852,Physical,0.4,,,,,29.99,24.99,N,Y,Y,N,,,15.00,Winter Wear,PQR789,12,18,Y,5
+TOKEN_11,Coffee Mug,One Size,SKU_11,Ceramic coffee mug with unique design,Home Goods,7418529630741,Physical,0.8,,,,,12.99,,N,Y,Y,N,,,6.50,Mug Store,STU123,40,60,Y,15
+TOKEN_12,Scented Candle,One Size,SKU_12,Relaxing scented candle with essential oils,Home Goods,9638527410963,Physical,1.0,,,,,19.99,15.99,N,Y,Y,N,,,10.00,Candle Shop,VWX456,25,35,Y,10
+TOKEN_13,Throw Pillow,One Size,SKU_13,Soft and decorative throw pillow for couch or bed,Home Goods,2587413690258,Physical,1.2,,,,,24.99,,N,Y,Y,N,,,12.50,Pillow Store,YZA789,18,24,Y,5
+TOKEN_14,Bath Towel Set,One Size,SKU_14,Luxurious bath towel set with high absorbency,Home Goods,1478523690147,Physical,2.0,,,,,39.99,34.99,N,Y,Y,N,,,20.00,Towel Store,BCD123,10,15,Y,5
+TOKEN_15,Yoga Mat,One Size,SKU_15,Non-slip yoga mat for comfortable practice,Sports & Outdoors,3692581470369,Physical,2.5,,,,,29.99,,N,Y,N,Y,,,15.00,Yoga Store,EFG456,8,12,N,
+TOKEN_16,Resistance Bands Set,One Size,SKU_16,Set of resistance bands for strength training,Sports & Outdoors,7896541230789,Physical,1.0,,,,,19.99,15.99,N,Y,N,Y,,,10.00,Fitness Store,HIJ789,15,20,N,
+TOKEN_17,Hiking Backpack,One Size,SKU_17,Durable hiking backpack with adjustable straps,Sports & Outdoors,4563217890456,Physical,3.0,,,,,59.99,,N,Y,N,Y,,,30.00,Outdoor Store,KLM123,6,8,N,
+TOKEN_18,Bluetooth Speaker,One Size,SKU_18,Portable Bluetooth speaker with powerful sound,Electronics,9874563210987,Physical,0.5,,,,,24.99,,N,Y,Y,N,,,12.50,Speaker Store,NOP456,20,30,Y,10
+TOKEN_19,Wireless Headphones,One Size,SKU_19,Comfortable wireless headphones with noise cancellation,Electronics,6541239870654,Physical,0.3,,,,,49.99,44.99,N,Y,Y,N,,,25.00,Headphone Store,QRS789,15,20,Y,5
+TOKEN_20,Smartwatch,One Size,SKU_20,Feature-rich smartwatch with fitness tracking,Electronics,3217896540321,Physical,0.2,,,,,79.99,,N,Y,Y,N,,,40.00,Smartwatch Store,TUV123,8,12,Y,5
+TOKEN_21,E-reader,One Size,SKU_21,Lightweight e-reader with adjustable backlight,Electronics,8523697410852,Physical,0.4,,,,,99.99,89.99,N,Y,Y,N,,,50.00,E-reader Store,WXY456,12,18,Y,5
+TOKEN_22,Board Game,One Size,SKU_22,Fun and engaging board game for the whole family,Toys & Games,7412589630741,Physical,1.5,,,,,29.99,,N,Y,Y,N,,,15.00,Game Store,ZAB789,25,35,Y,10
+TOKEN_23,Puzzle,One Size,SKU_23,Challenging puzzle with beautiful artwork,Toys & Games,9635827410963,Physical,1.0,,,,,14.99,,N,Y,Y,N,,,7.50,Puzzle Store,CDE123,30,40,Y,10
+TOKEN_24,Stuffed Animal,One Size,SKU_24,Cute and cuddly stuffed animal for children,Toys & Games,2581473690258,Physical,0.5,,,,,19.99,15.99,N,Y,Y,N,,,10.00,Toy Store,FGH456,40,60,Y,15
+TOKEN_25,Building Blocks Set,One Size,SKU_25,Creative building blocks set for imaginative play,Toys & Games,1472583690147,Physical,2.0,,,,,39.99,,N,Y,Y,N,,,20.00,Block Store,IJK789,20,30,Y,10
+TOKEN_26,Women's Dress,Small,SKU_26,Elegant and stylish dress for women,Apparel,8765432109876,Physical,0.6,,,,,79.99,69.99,N,Y,Y,N,Sizes,Small,40.00,Dress Store,LMN789,10,15,Y,5
+TOKEN_27,Women's Dress,Medium,SKU_27,Elegant and stylish dress for women,Apparel,8765432109876,Physical,0.6,,,,,79.99,69.99,N,Y,Y,N,Sizes,Medium,40.00,Dress Store,LMN789,12,18,Y,5
+TOKEN_28,Women's Dress,Large,SKU_28,Elegant and stylish dress for women,Apparel,8765432109876,Physical,0.6,,,,,79.99,69.99,N,Y,Y,N,Sizes,Large,40.00,Dress Store,LMN789,8,12,Y,5
+TOKEN_29,Men's Suit Jacket,Small,SKU_29,Classic suit jacket for men,Apparel,5438769120543,Physical,1.8,,,,,129.99,,N,Y,N,Y,Sizes,Small,65.00,Suit Store,OPQ456,5,10,N,
+TOKEN_30,Men's Suit Jacket,Medium,SKU_30,Classic suit jacket for men,Apparel,5438769120543,Physical,1.8,,,,,129.99,,N,Y,N,Y,Sizes,Medium,65.00,Suit Store,OPQ456,8,12,N,
+TOKEN_31,Men's Suit Jacket,Large,SKU_31,Classic suit jacket for men,Apparel,5438769120543,Physical,1.8,,,,,129.99,,N,Y,N,Y,Sizes,Large,65.00,Suit Store,OPQ456,6,8,N,
+TOKEN_32,Women's Jeans,Small,SKU_32,Comfortable and stylish jeans for women,Apparel,9875436120987,Physical,1.0,,,,,69.99,59.99,N,Y,Y,N,Sizes,Small,35.00,Jeans Store,RST123,10,15,Y,5
+TOKEN_33,Women's Jeans,Medium,SKU_33,Comfortable and stylish jeans for women,Apparel,9875436120987,Physical,1.0,,,,,69.99,59.99,N,Y,Y,N,Sizes,Medium,35.00,Jeans Store,RST123,12,18,Y,5
+TOKEN_34,Women's Jeans,Large,SKU_34,Comfortable and stylish jeans for women,Apparel,9875436120987,Physical,1.0,,,,,69.99,59.99,N,Y,Y,N,Sizes,Large,35.00,Jeans Store,RST123,8,12,Y,5
+TOKEN_35,Men's Chinos,Small,SKU_35,Versatile chinos for men,Apparel,6549873210654,Physical,1.2,,,,,59.99,,N,Y,N,Y,Sizes,Small,30.00,Chinos Store,UVW789,5,10,N,
+TOKEN_36,Men's Chinos,Medium,SKU_36,Versatile chinos for men,Apparel,6549873210654,Physical,1.2,,,,,59.99,,N,Y,N,Y,Sizes,Medium,30.00,Chinos Store,UVW789,8,12,N,
+TOKEN_37,Men's Chinos,Large,SKU_37,Versatile chinos for men,Apparel,6549873210654,Physical,1.2,,,,,59.99,,N,Y,N,Y,Sizes,Large,30.00,Chinos Store,UVW789,6,8,N,
+TOKEN_38,Women's Blouse,Small,SKU_38,Flowy and comfortable blouse for women,Apparel,3215469870321,Physical,0.5,,,,,49.99,44.99,N,Y,Y,N,Sizes,Small,25.00,Blouse Store,XYZ456,10,15,Y,5
+TOKEN_39,Women's Blouse,Medium,SKU_39,Flowy and comfortable blouse for women,Apparel,3215469870321,Physical,0.5,,,,,49.99,44.99,N,Y,Y,N,Sizes,Medium,25.00,Blouse Store,XYZ456,12,18,Y,5
+TOKEN_40,Women's Blouse,Large,SKU_40,Flowy and comfortable blouse for women,Apparel,3215469870321,Physical,0.5,,,,,49.99,44.99,N,Y,Y,N,Sizes,Large,25.00,Blouse Store,XYZ456,8,12,Y,5
+TOKEN_41,Men's Sweater,Small,SKU_41,Warm and cozy sweater for men,Apparel,8526317410852,Physical,1.0,,,,,69.99,,N,Y,N,Y,Sizes,Small,35.00,Sweater Store,ABC789,5,10,N,
+TOKEN_42,Men's Sweater,Medium,SKU_42,Warm and cozy sweater for men,Apparel,8526317410852,Physical,1.0,,,,,69.99,,N,Y,N,Y,Sizes,Medium,35.00,Sweater Store,ABC789,8,12,N,
+TOKEN_43,Men's Sweater,Large,SKU_43,Warm and cozy sweater for men,Apparel,8526317410852,Physical,1.0,,,,,69.99,,N,Y,N,Y,Sizes,Large,35.00,Sweater Store,ABC789,6,8,N,
+TOKEN_44,Women's Skirt,Small,SKU_44,Versatile skirt for women,Apparel,7413629580741,Physical,0.4,,,,,39.99,34.99,N,Y,Y,N,Sizes,Small,20.00,Skirt Store,DEF456,10,15,Y,5
+TOKEN_45,Women's Skirt,Medium,SKU_45,Versatile skirt for women,Apparel,7413629580741,Physical,0.4,,,,,39.99,34.99,N,Y,Y,N,Sizes,Medium,20.00,Skirt Store,DEF456,12,18,Y,5
+TOKEN_46,Women's Skirt,Large,SKU_46,Versatile skirt for women,Apparel,7413629580741,Physical,0.4,,,,,39.99,34.99,N,Y,Y,N,Sizes,Large,20.00,Skirt Store,DEF456,8,12,Y,5
+TOKEN_47,Men's Shorts,Small,SKU_47,Casual shorts for men,Apparel,9637428510963,Physical,0.8,,,,,29.99,,N,Y,N,Y,Sizes,Small,15.00,Shorts Store,GHI123,5,10,N,
+TOKEN_48,Men's Shorts,Medium,SKU_48,Casual shorts for men,Apparel,9637428510963,Physical,0.8,,,,,29.99,,N,Y,N,Y,Sizes,Medium,15.00,Shorts Store,GHI123,8,12,N,
+TOKEN_49,Men's Shorts,Large,SKU_49,Casual shorts for men,Apparel,9637428510963,Physical,0.8,,,,,29.99,,N,Y,N,Y,Sizes,Large,15.00,Shorts Store,GHI123,6,8,N,
+TOKEN_50,Women's Leggings,Small,SKU_50,Comfortable and stretchy leggings for women,Apparel,2584136790258,Physical,0.5,,,,,34.99,29.99,N,Y,Y,N,Sizes,Small,17.50,Leggings Store,JKL789,10,15,Y,5
+TOKEN_51,Women's Leggings,Medium,SKU_51,Comfortable and stretchy leggings for women,Apparel,2584136790258,Physical,0.5,,,,,34.99,29.99,N,Y,Y,N,Sizes,Medium,17.50,Leggings Store,JKL789,12,18,Y,5
+TOKEN_52,Women's Leggings,Large,SKU_52,Comfortable and stretchy leggings for women,Apparel,2584136790258,Physical,0.5,,,,,34.99,29.99,N,Y,Y,N,Sizes,Large,17.50,Leggings Store,JKL789,8,12,Y,5
+TOKEN_53,Running Shoes,Men's 9,SKU_53,Lightweight running shoes for men,Footwear,1472586390147,Physical,1.0,,,,,89.99,,N,Y,Y,N,Sizes,Men's 9,45.00,Shoe Store,MNO456,10,15,Y,5
+TOKEN_54,Running Shoes,Men's 10,SKU_54,Lightweight running shoes for men,Footwear,1472586390147,Physical,1.0,,,,,89.99,,N,Y,Y,N,Sizes,Men's 10,45.00,Shoe Store,MNO456,12,18,Y,5
+TOKEN_55,Running Shoes,Men's 11,SKU_55,Lightweight running shoes for men,Footwear,1472586390147,Physical,1.0,,,,,89.99,,N,Y,Y,N,Sizes,Men's 11,45.00,Shoe Store,MNO456,8,12,Y,5
+TOKEN_56,Women's Sandals,Women's 7,SKU_56,Stylish and comfortable sandals for women,Footwear,3698521470369,Physical,0.8,,,,,49.99,44.99,N,Y,Y,N,Sizes,Women's 7,25.00,Sandal Store,PQR789,10,15,Y,5
+TOKEN_57,Women's Sandals,Women's 8,SKU_57,Stylish and comfortable sandals for women,Footwear,3698521470369,Physical,0.8,,,,,49.99,44.99,N,Y,Y,N,Sizes,Women's 8,25.00,Sandal Store,PQR789,12,18,Y,5
+TOKEN_58,Women's Sandals,Women's 9,SKU_58,Stylish and comfortable sandals for women,Footwear,3698521470369,Physical,0.8,,,,,49.99,44.99,N,Y,Y,N,Sizes,Women's 9,25.00,Sandal Store,PQR789,8,12,Y,5
+TOKEN_59,Men's Boots,Men's 9,SKU_59,Durable and stylish boots for men,Footwear,7895463210789,Physical,2.0,,,,,129.99,,N,Y,N,Y,Sizes,Men's 9,65.00,Boot Store,STU123,5,10,N,
+TOKEN_60,Men's Boots,Men's 10,SKU_60,Durable and stylish boots for men,Footwear,7895463210789,Physical,2.0,,,,,129.99,,N,Y,N,Y,Sizes,Men's 10,65.00,Boot Store,STU123,8,12,N,
+TOKEN_61,Men's Boots,Men's 11,SKU_61,Durable and stylish boots for men,Footwear,7895463210789,Physical,2.0,,,,,129.99,,N,Y,N,Y,Sizes,Men's 11,65.00,Boot Store,STU123,6,8,N,
+TOKEN_62,Women's Heels,Women's 7,SKU_62,Elegant heels for women,Footwear,4569871230456,Physical,1.2,,,,,79.99,69.99,N,Y,Y,N,Sizes,Women's 7,40.00,Heel Store,VWX789,10,15,Y,5
+TOKEN_63,Women's Heels,Women's 8,SKU_63,Elegant heels for women,Footwear,4569871230456,Physical,1.2,,,,,79.99,69.99,N,Y,Y,N,Sizes,Women's 8,40.00,Heel Store,VWX789,12,18,Y,5
+TOKEN_64,Women's Heels,Women's 9,SKU_64,Elegant heels for women,Footwear,4569871230456,Physical,1.2,,,,,79.99,69.99,N,Y,Y,N,Sizes,Women's 9,40.00,Heel Store,VWX789,8,12,Y,5
+TOKEN_65,Kids' Sneakers,Kids' 10,SKU_65,Comfortable and durable sneakers for kids,Footwear,9876543210987,Physical,0.6,,,,,39.99,,N,Y,Y,N,Sizes,Kids' 10,20.00,Kids' Shoe Store,YZA456,15,20,Y,5
+TOKEN_66,Kids' Sneakers,Kids' 11,SKU_66,Comfortable and durable sneakers for kids,Footwear,9876543210987,Physical,0.6,,,,,39.99,,N,Y,Y,N,Sizes,Kids' 11,20.00,Kids' Shoe Store,YZA456,18,24,Y,5
+TOKEN_67,Kids' Sneakers,Kids' 12,SKU_67,Comfortable and durable sneakers for kids,Footwear,9876543210987,Physical,0.6,,,,,39.99,,N,Y,Y,N,Sizes,Kids' 12,20.00,Kids' Shoe Store,YZA456,12,16,Y,5
+TOKEN_68,Backpack,One Size,SKU_68,Spacious backpack for school or travel,Bags,6547893210654,Physical,1.5,,,,,49.99,44.99,N,Y,Y,N,,,25.00,Backpack Store,BCD123,20,30,Y,10
+TOKEN_69,Laptop Bag,One Size,SKU_69,Protective laptop bag with multiple compartments,Bags,3216549870321,Physical,1.2,,,,,59.99,,N,Y,Y,N,,,30.00,Laptop Bag Store,EFG789,15,20,Y,5
+TOKEN_70,Travel Duffel Bag,One Size,SKU_70,Durable duffel bag for weekend trips,Bags,8529637410852,Physical,2.0,,,,,79.99,69.99,N,Y,Y,N,,,40.00,Duffel Bag Store,HIJ456,10,15,Y,5
+TOKEN_71,Crossbody Bag,One Size,SKU_71,Stylish crossbody bag for everyday use,Bags,7418529630741,Physical,0.5,,,,,34.99,,N,Y,Y,N,,,17.50,Crossbody Bag Store,KLM123,25,35,Y,10
+TOKEN_72,Tote Bag,One Size,SKU_72,Versatile tote bag for work or shopping,Bags,9638527410963,Physical,0.8,,,,,29.99,24.99,N,Y,Y,N,,,15.00,Tote Bag Store,NOP789,20,30,Y,10
+TOKEN_73,Clutch Bag,One Size,SKU_73,Elegant clutch bag for special occasions,Bags,2587413690258,Physical,0.3,,,,,44.99,,N,Y,Y,N,,,22.50,Clutch Bag Store,QRS456,15,20,Y,5
+TOKEN_74,Wireless Mouse,One Size,SKU_74,Ergonomic wireless mouse for comfortable use,Electronics,1478523690147,Physical,0.2,,,,,19.99,,N,Y,Y,N,,,10.00,Mouse Store,TUV123,30,40,Y,10
+TOKEN_75,Keyboard,One Size,SKU_75,Mechanical keyboard with customizable backlighting,Electronics,3692581470369,Physical,2.5,,,,,79.99,69.99,N,Y,Y,N,,,40.00,Keyboard Store,WXY789,20,30,Y,10
+TOKEN_76,Webcam,One Size,SKU_76,High-definition webcam for video calls and streaming,Electronics,7896541230789,Physical,0.3,,,,,49.99,,N,Y,Y,N,,,25.00,Webcam Store,ZAB456,15,20,Y,5
+TOKEN_77,Monitor,24 inch,SKU_77,24-inch monitor with high resolution and vibrant colors,Electronics,4563217890456,Physical,10.0,,,,,199.99,,N,Y,N,Y,Size,24 inch,100.00,Monitor Store,CDE123,8,12,N,
+TOKEN_78,Monitor,27 inch,SKU_78,27-inch monitor with high resolution and vibrant colors,Electronics,4563217890456,Physical,12.0,,,,,249.99,,N,Y,N,Y,Size,27 inch,125.00,Monitor Store,CDE123,6,8,N,
+TOKEN_79,Laptop Stand,One Size,SKU_79,Ergonomic laptop stand for improved posture,Electronics,9874563210987,Physical,1.0,,,,,29.99,,N,Y,Y,N,,,15.00,Laptop Stand Store,FGH789,20,30,Y,10
+TOKEN_80,Phone Case,iPhone 13,SKU_80,Protective phone case for iPhone 13,Electronics,6541239870654,Physical,0.1,,,,,14.99,,N,Y,Y,N,Phone Model,iPhone 13,7.50,Phone Case Store,IJK456,30,40,Y,10
+TOKEN_81,Phone Case,iPhone 14,SKU_81,Protective phone case for iPhone 14,Electronics,6541239870654,Physical,0.1,,,,,14.99,,N,Y,Y,N,Phone Model,iPhone 14,7.50,Phone Case Store,IJK456,25,35,Y,10
+TOKEN_82,Portable Charger,One Size,SKU_82,High-capacity portable charger for smartphones and tablets,Electronics,3217896540321,Physical,0.5,,,,,24.99,19.99,N,Y,Y,N,,,12.50,Charger Store,LMN123,15,20,Y,5
+TOKEN_83,Tablet Sleeve,One Size,SKU_83,Padded tablet sleeve for protection and portability,Electronics,8523697410852,Physical,0.4,,,,,19.99,,N,Y,Y,N,,,10.00,Tablet Sleeve Store,OPQ789,20,30,Y,10
+TOKEN_84,Book,Hardcover,SKU_84,Popular novel in hardcover format,Books & Media,7412589630741,Physical,1.2,,,,,24.99,,N,Y,Y,N,Format,Hardcover,12.50,Bookstore,RST456,15,20,Y,5
+TOKEN_85,Book,Paperback,SKU_85,Popular novel in paperback format,Books & Media,7412589630741,Physical,0.8,,,,,14.99,,N,Y,Y,N,Format,Paperback,7.50,Bookstore,RST456,20,30,Y,10
+TOKEN_86,Audiobook,One Size,SKU_86,Audiobook version of a popular novel,Books & Media,9635827410963,Digital,,,,,19.99,,N,Y,N,N,,,10.00,Audiobook Store,UVW123,10,15,N,
+TOKEN_87,Magazine Subscription,One Year,SKU_87,One-year subscription to a popular magazine,Books & Media,2581473690258,Other,,,,,29.99,,N,Y,N,Y,Subscription Length,One Year,15.00,Magazine Store,XYZ789,5,10,N,
+TOKEN_88,Movie,DVD,SKU_88,Action movie on DVD,Books & Media,1472583690147,Physical,0.2,,,,,14.99,,N,Y,Y,N,Format,DVD,7.50,Movie Store,ABC456,20,30,Y,10
+TOKEN_89,Movie,Blu-ray,SKU_89,Action movie on Blu-ray,Books & Media,1472583690147,Physical,0.2,,,,,19.99,,N,Y,Y,N,Format,Blu-ray,10.00,Movie Store,ABC456,15,20,Y,5
+TOKEN_90,Music Album,Digital Download,SKU_90,Music album available for digital download,Books & Media,8765432109876,Digital,,,,,9.99,,N,Y,N,N,,,5.00,Music Store,DEF123,10,15,N,
+TOKEN_91,Espresso Machine,One Size,SKU_91,High-quality espresso machine for home baristas,Kitchen Appliances,5438769120543,Physical,15.0,,,,,299.99,,N,Y,N,Y,,,150.00,Espresso Machine Store,GHI789,5,10,N,
+TOKEN_92,Blender,One Size,SKU_92,Powerful blender for smoothies and soups,Kitchen Appliances,9875436120987,Physical,8.0,,,,,99.99,89.99,N,Y,Y,N,,,50.00,Blender Store,JKL456,10,15,Y,5
+TOKEN_93,Toaster Oven,One Size,SKU_93,Compact toaster oven with multiple cooking functions,Kitchen Appliances,6549873210654,Physical,10.0,,,,,69.99,,N,Y,Y,N,,,35.00,Toaster Oven Store,MNO123,15,20,Y,5
+TOKEN_94,Coffee Grinder,One Size,SKU_94,Electric coffee grinder with adjustable settings,Kitchen Appliances,3215469870321,Physical,3.0,,,,,49.99,44.99,N,Y,Y,N,,,25.00,Coffee Grinder Store,PQR789,20,30,Y,10
+TOKEN_95,Stand Mixer,One Size,SKU_95,Versatile stand mixer with various attachments,Kitchen Appliances,8526317410852,Physical,20.0,,,,,349.99,,N,Y,N,Y,,,175.00,Stand Mixer Store,STU456,8,12,N,
+TOKEN_96,Food Processor,One Size,SKU_96,Multi-functional food processor with various blades and attachments,Kitchen Appliances,7413629580741,Physical,12.0,,,,,149.99,129.99,N,Y,Y,N,,,75.00,Food Processor Store,VWX123,10,15,Y,5
+TOKEN_97,Slow Cooker,One Size,SKU_97,Programmable slow cooker for convenient cooking,Kitchen Appliances,9637428510963,Physical,10.0,,,,,59.99,,N,Y,Y,N,,,30.00,Slow Cooker Store,YZA789,12,18,Y,5
+TOKEN_98,Rice Cooker,One Size,SKU_98,Rice cooker with keep-warm function,Kitchen Appliances,2584136790258,Physical,5.0,,,,,39.99,,N,Y,Y,N,,,20.00,Rice Cooker Store,BCD456,15,20,Y,5
+TOKEN_99,Electric Kettle,One Size,SKU_99,Fast-heating electric kettle with automatic shut-off,Kitchen Appliances,1472586390147,Physical,3.0,,,,,24.99,,N,Y,Y,N,,,12.50,Kettle Store,EFG123,20,30,Y,10
+TOKEN_100,Air Fryer,One Size,SKU_100,Air fryer for healthy and crispy fried food,Kitchen Appliances,3698521470369,Physical,10.0,,,,,99.99,89.99,N,Y,Y,N,,,50.00,Air Fryer Store,HIJ789,10,15,Y,5
