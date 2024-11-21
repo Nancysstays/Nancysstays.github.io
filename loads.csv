@@ -1,3 +1,5 @@
+
+Token	Item Name	Variation Name	SKU	Description	Reporting Category	GTIN	Item Type	Weight (lb)	Social Media Link Title	Social Media Link Description	Price	Online Sale Price	Archived	Sellable	Stockable	Skip Detail Screen in POS	Option Name 1	Option Value 1	Default Unit Cost	Default Vendor Name	Default Vendor Code	Current Quantity Nancys	New Quantity Nancys	Stock Alert Enabled Nancys	Stock Alert Count Nancys
 Nancy-1,Cozy Comfort Crewneck,Heather Gray,CC-HG-S,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789012,Physical,,,39.99,34.99,N,Y,Y,N,Size,Small,20.00,KT's Clothes,ABC123,10,15,Y,5
 Nancy-2,Cozy Comfort Crewneck,Heather Gray,CC-HG-M,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789013,Physical,,,39.99,34.99,N,Y,Y,N,Size,Medium,20.00,KT's Clothes,ABC123,12,20,Y,5
 Nancy-3,Cozy Comfort Crewneck,Heather Gray,CC-HG-L,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789014,Physical,,,39.99,34.99,N,Y,Y,N,Size,Large,20.00,KT's Clothes,ABC123,8,10,Y,5
