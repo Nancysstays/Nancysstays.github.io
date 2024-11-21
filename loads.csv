@@ -1,28 +1,2 @@
 Token,Item Name,Variation Name,SKU,Description,Reporting Category,GTIN,Item Type,Weight (lb),Social Media Link Title,Social Media Link Description,Price,Online Sale Price,Archived,Sellable,Stockable,Skip Detail Screen in POS,Option Name 1,Option Value 1,Default Unit Cost,Default Vendor Name,Default Vendor Code,Current Quantity Nancys,New Quantity Nancys,Stock Alert Enabled Nancys,Stock Alert Count Nancys
 ,Cozy Comfort Crewneck,Heather Gray,CC-HG-S,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789012,Physical,,,39.99,34.99,N,Y,Y,Y,Y,Size,Small,20.00,KT's Clothes,ABC123,10,15,Y,5
-,Cozy Comfort Crewneck,Heather Gray,CC-HG-M,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789013,Physical,,,39.99,34.99,N,Y,Y,Y,Size,Medium,20.00,KT's Clothes,ABC123,12,20,Y,5
-,Cozy Comfort Crewneck,Heather Gray,CC-HG-L,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789014,Physical,,,39.99,34.99,N,Y,Y,Y,Size,Large,20.00,KT's Clothes,ABC123,8,10,Y,5
-,Cozy Comfort Crewneck,Navy Blue,CC-NB-S,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789025,Physical,,,39.99,34.99,N,Y,Y,Y,Size,Small,20.00,KT's Clothes,ABC123,5,8,Y,5
-,Cozy Comfort Crewneck,Navy Blue,CC-NB-M,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789026,Physical,,,39.99,34.99,N,Y,Y,Y,Size,Medium,20.00,KT's Clothes,ABC123,7,12,Y,5
-,Cozy Comfort Crewneck,Navy Blue,CC-NB-L,Ultra-soft crewneck sweatshirt with a relaxed fit,Sweatshirts,8123456789027,Physical,,,39.99,34.99,N,Y,Y,Y,Size,Large,20.00,KT's Clothes,ABC123,9,15,Y,5
-,Classic Hoodie,Charcoal,CH-C-S,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210987,Physical,,,49.99,42.99,N,Y,Y,Y,Size,Small,25.00,KT's Clothes,ABC123,15,20,Y,5
-,Classic Hoodie,Charcoal,CH-C-M,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210988,Physical,,,49.99,42.99,N,Y,Y,Y,Size,Medium,25.00,KT's Clothes,ABC123,18,25,Y,5
-,Classic Hoodie,Charcoal,CH-C-L,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210989,Physical,,,49.99,42.99,N,Y,Y,Y,Size,Large,25.00,KT's Clothes,ABC123,12,15,Y,5
-,Classic Hoodie,Forest Green,CH-FG-S,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210976,Physical,,,49.99,42.99,N,Y,Y,Y,Size,Small,25.00,KT's Clothes,ABC123,8,12,Y,5
-,Classic Hoodie,Forest Green,CH-FG-M,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210977,Physical,,,49.99,42.99,N,Y,Y,Y,Size,Medium,25.00,KT's Clothes,ABC123,10,15,Y,5
-,Classic Hoodie,Forest Green,CH-FG-L,Everyday hoodie with a classic fit and kangaroo pocket,Hoodies,9876543210978,Physical,,,49.99,42.99,N,Y,Y,Y,Size,Large,25.00,KT's Clothes,ABC123,12,18,Y,5 
-,Warm Winter Scarf,Red,WWS-R,Chunky knit scarf perfect for cold weather,Scarves,1029384756123,Physical,,,24.99,19.99,N,Y,Y,N,Color,Red,12.00,KT's Clothes,ABC123,20,30,Y,5
-,Warm Winter Scarf,Gray,WWS-G,Chunky knit scarf perfect for cold weather,Scarves,1029384756124,Physical,,,24.99,19.99,N,Y,Y,N,Color,Gray,12.00,KT's Clothes,ABC123,18,25,Y,5
-,Warm Winter Scarf,Blue,WWS-B,Chunky knit scarf perfect for cold weather,Scarves,1029384756125,Physical,,,24.99,19.99,N,Y,Y,N,Color,Blue,12.00,KT's Clothes,ABC123,15,20,Y,5
-,Wool Beanie,Gray,WB-G,Wool beanie with a cozy fit,Beanies,1357924680135,Physical,,,19.99,15.99,N,Y,Y,N,Color,Gray,10.00,KT's Clothes,ABC123,25,35,Y,5
-,Wool Beanie,Black,WB-B,Wool beanie with a cozy fit,Beanies,1357924680136,Physical,,,19.99,15.99,N,Y,Y,N,Color,Black,10.00,KT's Clothes,ABC123,22,30,Y,5
-,Wool Beanie,Navy,WB-N,Wool beanie with a cozy fit,Beanies,1357924680137,Physical,,,19.99,15.99,N,Y,Y,N,Color,Navy,10.00,KT's Clothes,ABC123,20,28,Y,5
-,Fingerless Gloves,Black,FG-B,Knit fingerless gloves,Gloves,2468013579246,Physical,,,14.99,12.99,N,Y,Y,N,Color,Black,7.50,KT's Clothes,ABC123,18,25,Y,5
-,Fingerless Gloves,Gray,FG-G,Knit fingerless gloves,Gloves,2468013579247,Physical,,,14.99,12.99,N,Y,Y,N,Color,Gray,7.50,KT's Clothes,ABC123,15,22,Y,5
-,Fingerless Gloves,Brown,FG-BR,Knit fingerless gloves,Gloves,2468013579248,Physical,,,14.99,12.99,N,Y,Y,N,Color,Brown,7.50,KT's Clothes,ABC123,12,18,Y,5
-,Cozy Socks,Red,CS-R,Thick wool socks,Socks,3579246801357,Physical,,,9.99,7.99,N,Y,Y,N,Color,Red,5.00,KT's Clothes,ABC123,30,40,Y,5
-,Cozy Socks,Green,CS-G,Thick wool socks,Socks,3579246801358,Physical,,,9.99,7.99,N,Y,Y,N,Color,Green,5.00,KT's Clothes,ABC123,28,38,Y,5
-,Cozy Socks,Blue,CS-B,Thick wool socks,Socks,3579246801359,Physical,,,9.99,7.99,N,Y,Y,N,Color,Blue,5.00,KT's Clothes,ABC123,25,35,Y,5
-,Turtleneck Sweater,Cream,TS-C-S,Classic turtleneck sweater,Sweaters,4680135792468,Physical,,,59.99,49.99,N,Y,Y,N,Size,Small,30.00,KT's Clothes,ABC123,8,12,Y,5
-,Turtleneck Sweater,Cream,TS-C-M,Classic turtleneck sweater,Sweaters,4680135792469,Physical,,,59.99,49.99,N,Y,Y,N,Size,Medium,30.00,KT's Clothes,ABC123,10,15,Y,5
-,Turtleneck Sweater,Cream,TS-C-L,Classic turtleneck sweater,Sweaters,4680135792470,Physical,,,59.99,49.99,N,Y,Y,N,Size,Large,30.00,KT's Clothes,ABC123,12,18,Y,5
