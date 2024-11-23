@@ -119,9 +119,14 @@
       const X_test = data.slice(splitIndex);
       const y_test = closingPrices.slice(splitIndex + lookback);
 
-      const X_train_tensor = tf.tensor2d(X).div(1000); 
+      // Calculate the shape of the 2D tensors
+      const shapeX = [X.length, lookback]; 
+      const shapeXTest = [X_test.length, lookback];
+
+      // Convert to tensors and normalize, providing the shape argument
+      const X_train_tensor = tf.tensor2d(X, shapeX).div(1000); 
       const y_train_tensor = tf.tensor1d(y).div(1000); 
-      const X_test_tensor = tf.tensor2d(X_test).div(1000); 
+      const X_test_tensor = tf.tensor2d(X_test, shapeXTest).div(1000); 
       const y_test_tensor = tf.tensor1d(y_test).div(1000); 
 
       return { 
