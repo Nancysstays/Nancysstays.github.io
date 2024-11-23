@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Payment Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Car Payment Calculator</h1>
+        <div class="form-group">
+            <label for="carPrice">Car Price:</label>
+            <input type="number" class="form-control" id="carPrice" value="0">
+        </div>
+        <div class="form-group">
+            <label for="interestRate">Interest Rate:</label>
+            <input type="number" class="form-control" id="interestRate" value="0" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="loanTerm">Loan Term (months):</label>
+            <input type="number" class="form-control" id="loanTerm" value="60">
+        </div>
+        <div class="form-group">
+            <label for="salesTax">Sales Tax Rate:</label>
+            <input type="number" class="form-control" id="salesTax" value="0" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="downPayment">Down Payment:</label>
+            <input type="number" class="form-control" id="downPayment" value="0">
+        </div>
+        <div class="form-group">
+            <label for="tradeInValue">Trade-in Value:</label>
+            <input type="number" class="form-control" id="tradeInValue" value="0">
+        </div>
+        <div class="form-group">
+            <label for="amountOwed">Amount Owed on Trade:</label>
+            <input type="number" class="form-control" id="amountOwed" value="0">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calculatePayment()">Calculate</button>
+
+        <h2>Results</h2>
+        <div class="form-group">
+            <label for="monthlyPayment">Est. Monthly Payment:</label>
+            <input type="text" class="form-control" id="monthlyPayment" readonly>
+        </div>
+        <div class="form-group">
+            <label for="totalFinanced">Est. Total Financed:</label>
+            <input type="text" class="form-control" id="totalFinanced" readonly>
+        </div>
+        <div class="form-group">
+            <label for="totalInterest">Est. Total Interest:</label>
+            <input type="text" class="form-control" id="totalInterest" readonly>
+        </div>
+        <div class="form-group">
+            <label for="totalLoan">Est. Total Loan:</label>
+            <input type="text" class="form-control" id="totalLoan" readonly>
+        </div>
+    </div>
+
+    <script>
+        function calculatePayment() {
+            // Get input values
+            var carPrice = parseFloat(document.getElementById("carPrice").value);
+            var interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+            var loanTerm = parseInt(document.getElementById("loanTerm").value);
+            var salesTax = parseFloat(document.getElementById("salesTax").value) / 100;
+            var downPayment = parseFloat(document.getElementById("downPayment").value);
+            var tradeInValue = parseFloat(document.getElementById("tradeInValue").value);
+            var amountOwed = parseFloat(document.getElementById("amountOwed").value);
+
+            // Calculate loan amount
+            var loanAmount = (carPrice * (1 + salesTax)) - downPayment + amountOwed - tradeInValue;
+
+            // Calculate monthly interest rate
+            var monthlyInterest = interestRate / 12;
+
+            // Calculate monthly payment
+            var monthlyPayment = (loanAmount * monthlyInterest) / (1 - Math.pow(1 + monthlyInterest, -loanTerm));
+
+            // Calculate total interest
+            var totalInterest = (monthlyPayment * loanTerm) - loanAmount;
+
+            // Calculate total loan amount
+            var totalLoan = loanAmount + totalInterest;
+
+            // Display results
+            document.getElementById("monthlyPayment").value = "$" + monthlyPayment.toFixed(2) + "/month";
+            document.getElementById("totalFinanced").value = "$" + loanAmount.toFixed(2);
+            document.getElementById("totalInterest").value = "$" + totalInterest.toFixed(2);
+            document.getElementById("totalLoan").value = "$" + totalLoan.toFixed(2);
+        }
+    </script>
+</body>
+</html>
