@@ -9,6 +9,7 @@
 </head>
 <body>
   <div class="container mt-5">
+    <div id="summary"></div> 
     <div id="price-chart"></div>
     <div id="indicator-chart"></div>
   </div>
@@ -51,6 +52,13 @@
 
       // Calculate Stochastics
       const stoch = calculateStochastics(highPrices, lowPrices, closingPrices);
+
+      // Determine buy/sell signal
+      const signal = determineSignal(macd, atr, stoch);
+
+      // Display buy/sell signal
+      const summaryDiv = document.getElementById('summary');
+      summaryDiv.innerHTML = `<h2><span class="${signal === 'buy' ? 'text-success' : 'text-danger'}">${signal.toUpperCase()}</span></h2>`;
 
       // Price Chart
       const priceTrace = {
@@ -210,6 +218,22 @@
       const dValues = calculateEMA(kValues, dPeriod);
 
       return { k: kValues, d: dValues };
+    }
+
+    function determineSignal(macd, atr, stoch) {
+      // Implement your buy/sell logic here based on the indicators
+      // This is a simple example, you should adjust it to your needs
+      const lastMacd = macd.histogram[macd.histogram.length - 1];
+      const lastStochK = stoch.k[stoch.k.length - 1];
+      const lastStochD = stoch.d[stoch.d.length - 1];
+
+      if (lastMacd > 0 && lastStochK > lastStochD && lastStochK < 80) {
+        return 'buy';
+      } else if (lastMacd < 0 && lastStochK < lastStochD && lastStochK > 20) {
+        return 'sell';
+      } else {
+        return 'hold'; 
+      }
     }
 
     fetchDataAndPlot();
