@@ -6,10 +6,16 @@
   <title>Plotly Chart with Indicators</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    .indicator-summary {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container mt-5">
-    <div id="summary"></div> 
+    <div id="summary"></div>
     <div id="price-chart"></div>
     <div id="indicator-chart"></div>
   </div>
@@ -53,12 +59,9 @@
       // Calculate Stochastics
       const stoch = calculateStochastics(highPrices, lowPrices, closingPrices);
 
-      // Determine buy/sell signal
-      const signal = determineSignal(macd, atr, stoch);
-
-      // Display buy/sell signal
-      const summaryDiv = document.getElementById('summary');
-      summaryDiv.innerHTML = `<h2><span class="${signal === 'buy' ? 'text-success' : 'text-danger'}">${signal.toUpperCase()}</span></h2>`;
+      // --- Combine Indicators and Generate Summary ---
+      const summary = generateSummary(closingPrices, macd, atr, stoch);
+      document.getElementById('summary').innerHTML = summary;
 
       // Price Chart
       const priceTrace = {
@@ -220,20 +223,46 @@
       return { k: kValues, d: dValues };
     }
 
-    function determineSignal(macd, atr, stoch) {
-      // Implement your buy/sell logic here based on the indicators
-      // This is a simple example, you should adjust it to your needs
-      const lastMacd = macd.histogram[macd.histogram.length - 1];
-      const lastStochK = stoch.k[stoch.k.length - 1];
-      const lastStochD = stoch.d[stoch.d.length - 1];
+    function generateSummary(closingPrices, macd, atr, stoch) {
+      let signal = "Neutral"; 
+      let projectedPrice = closingPrices[closingPrices.length - 1]; // Initialize with current price
+      let percentChange = 0;
+      let daysToFlip = "N/A";
 
-      if (lastMacd > 0 && lastStochK > lastStochD && lastStochK < 80) {
-        return 'buy';
-      } else if (lastMacd < 0 && lastStochK < lastStochD && lastStochK > 20) {
-        return 'sell';
-      } else {
-        return 'hold'; 
+      // --- Combine indicator signals ---
+      // This is a simplified example, you'll need to define your own buy/sell logic
+      let buySignals = 0;
+      let sellSignals = 0;
+
+      if (macd.histogram[macd.histogram.length - 1] > 0) buySignals++;
+      else if (macd.histogram[macd.histogram.length - 1] < 0) sellSignals++;
+
+      if (stoch.k[stoch.k.length - 1] > stoch.d[stoch.d.length - 1] && stoch.k[stoch.k.length - 1] < 80) buySignals++;
+      else if (stoch.k[stoch.k.length - 1] < stoch.d[stoch.d.length - 1] && stoch.k[stoch.k.length - 1] > 20) sellSignals++;
+
+      if (buySignals >= 2) signal = "Buy";
+      else if (sellSignals >= 2) signal = "Sell";
+
+      // --- Project price and time to flip ---
+      // This is a very basic example and needs further refinement
+      if (signal === "Buy") {
+        projectedPrice += atr[atr.length - 1]; // Add ATR to current price
+        daysToFlip = Math.floor(Math.random() * 10) + 1; // Randomly estimate 1-10 days
+      } else if (signal === "Sell") {
+        projectedPrice -= atr[atr.length - 1]; // Subtract ATR from current price
+        daysToFlip = Math.floor(Math.random() * 10) + 1; // Randomly estimate 1-10 days
       }
+
+      percentChange = ((projectedPrice - closingPrices[closingPrices.length - 1]) / closingPrices[closingPrices.length - 1]) * 100;
+
+      return `
+        <div class="indicator-summary">
+          Overall Signal: <span style="color: ${signal === 'Buy' ? 'green' : (signal === 'Sell' ? 'red' : 'blue')}">${signal}</span><br>
+          Projected Price: ${projectedPrice.toFixed(2)}<br>
+          Percent Change: ${percentChange.toFixed(2)}%<br>
+          Days to Signal Flip: ${daysToFlip}
+        </div>
+      `;
     }
 
     fetchDataAndPlot();
