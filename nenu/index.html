@@ -1,20 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Menus with Multiple Storage</title>
+  <title>Dynamic Menus with Multiple Storage & Gemini AI</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <style>
     body {
       padding: 20px;
+      font-family: sans-serif;
+    }
+
+    .link-iframe {
+      width: 100%;
+      height: 200px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+
+    #gemini-response {
+      white-space: pre-wrap; /* Preserve line breaks in Gemini response */
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
-  <h1>Dynamic Menus</h1>
+  <h1 class="mb-4">Dynamic Menus with AI-Powered Assistance</h1>
 
   <div id="saved-menus" class="mb-3"></div>
 
@@ -26,6 +40,7 @@
   <div class="input-group mb-3">
     <input type="text" id="new-link-name" class="form-control" placeholder="Link name">
     <input type="text" id="new-link-url" class="form-control" placeholder="Link URL">
+    <input type="text" id="new-link-notes" class="form-control" placeholder="Notes (optional)">
     <div class="input-group-append">
       <button class="btn btn-primary" type="button" id="add-link">Add Link</button>
     </div>
@@ -35,6 +50,31 @@
 
   <button class="btn btn-secondary mt-3" type="button" id="load-menu">Load Menu</button>
   <button class="btn btn-success mt-3" type="button" id="save-menu">Save Menu</button>
+
+  <div class="mt-4">
+    <h2>Ask Gemini for Help</h2>
+    <p>Need ideas for links, help with notes, or just want to chat? Ask Gemini!</p>
+    <textarea id="gemini-response" class="form-control mb-2" rows="8" readonly></textarea>
+    <input type="text" id="gemini-question" class="form-control mb-2" placeholder="Enter your question">
+    <button class="btn btn-info" type="button" id="ask-gemini">Ask Gemini</button>
+  </div>
+
+  <div class="mt-4">
+    <h2>About This App</h2>
+    <p>This app allows you to create and manage dynamic menus with links, notes, and timestamps.
+      It utilizes multiple storage mechanisms (cache, localStorage, and IndexedDB) to persist your menus
+      across sessions. You can also integrate with the Gemini AI API to get assistance with your menu
+      creation and management.</p>
+    <p>Features:</p>
+    <ul>
+      <li>Create, save, and load multiple menus</li>
+      <li>Add, edit, and delete links with names, URLs, and notes</li>
+      <li>View timestamps for link creation and last click</li>
+      <li>Preview links in iframes</li>
+      <li>Integrate with Gemini AI for assistance</li>
+      <li>Persistent storage using cache, localStorage, and IndexedDB</li>
+    </ul>
+  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -49,6 +89,9 @@
   const loadMenuButton = document.getElementById('load-menu');
   const saveMenuButton = document.getElementById('save-menu');
   const savedMenusDiv = document.getElementById('saved-menus');
+  const geminiResponseTextArea = document.getElementById('gemini-response');
+  const geminiQuestionInput = document.getElementById('gemini-question');
+  const askGeminiButton = document.getElementById('ask-gemini');
 
   let db;
 
@@ -109,14 +152,23 @@
       link.lastClicked = "Never";
     }
 
+    // Add notes to the link object if it doesn't exist
+    if (!link.notes) {
+      link.notes = "";
+    }
+
     listItem.innerHTML = `
-                <a href="${link.url}" target="_blank">${link.name}</a>
-                <div class="float-right">
-                    <span class="badge badge-light mr-2">Created: ${link.created}</span>
-                    <span class="badge badge-light mr-2">Last Clicked: ${link.lastClicked}</span>
-                    <button class="btn btn-sm btn-warning edit-link">Edit</button>
-                    <button class="btn btn-sm btn-danger delete-link">Delete</button>
+                <div>
+                    <a href="${link.url}" target="_blank">${link.name}</a>
+                    <div class="float-right">
+                        <span class="badge badge-light mr-2">Created: ${link.created}</span>
+                        <span class="badge badge-light mr-2">Last Clicked: ${link.lastClicked}</span>
+                        <button class="btn btn-sm btn-warning edit-link">Edit</button>
+                        <button class="btn btn-sm btn-danger delete-link">Delete</button>
+                    </div>
                 </div>
+                <div class="link-notes">${link.notes}</div>
+                <iframe class="link-iframe" src="${link.url}"></iframe>
             `;
     menuList.appendChild(listItem);
 
@@ -125,19 +177,14 @@
     const deleteButton = listItem.querySelector('.delete-link');
     const linkElement = listItem.querySelector('a');
 
-    editButton.addEventListener('click', () => editLink(link));
+    editButton.addEventListener('click', () => editLink(link, listItem));
     deleteButton.addEventListener('click', () => deleteLink(link));
 
     // Add event listener to update lastClicked timestamp
     linkElement.addEventListener('click', (event) => {
-      // Prevent the default link behavior so the page doesn't reload
       event.preventDefault();
-
       link.lastClicked = new Date().toLocaleString();
-      // You may want to save the updated link to storage here (e.g., localStorage or IndexedDB)
       listItem.querySelector('.badge:nth-child(2)').textContent = "Last Clicked: " + link.lastClicked;
-
-      // Now open the link in a new tab
       window.open(link.url, '_blank');
     });
   }
@@ -210,7 +257,14 @@
       const linkElement = item.querySelector('a');
       const created = item.querySelector('.badge:nth-child(1)').textContent.split(': ')[1];
       const lastClicked = item.querySelector('.badge:nth-child(2)').textContent.split(': ')[1];
-      links.push({name: linkElement.textContent, url: linkElement.href, created: created, lastClicked: lastClicked});
+      const notes = item.querySelector('.link-notes').textContent;
+      links.push({
+        name: linkElement.textContent,
+        url: linkElement.href,
+        created: created,
+        lastClicked: lastClicked,
+        notes: notes
+      });
     });
 
     // Save to cache
@@ -242,28 +296,30 @@
   addLinkButton.addEventListener('click', () => {
     const name = newLinkNameInput.value;
     const url = newLinkUrlInput.value;
-    addLinkToMenu({name, url});
+    const notes = document.getElementById('new-link-notes').value;
+    addLinkToMenu({name, url, notes});
     newLinkNameInput.value = '';
     newLinkUrlInput.value = '';
+    document.getElementById('new-link-notes').value = '';
   });
 
   // Edit link
-  function editLink(link) {
+  function editLink(link, listItem) {
     const newName = prompt("Enter the new link name:", link.name);
     const newUrl = prompt("Enter the new link URL:", link.url);
+    const newNotes = prompt("Enter new notes:", link.notes);
     if (newName && newUrl) {
       link.name = newName;
       link.url = newUrl;
+      link.notes = newNotes;
       // Update the link in the UI
-      const listItem = Array.from(menuList.querySelectorAll('li')).find(item => {
-        const linkElement = item.querySelector('a');
-        return linkElement.textContent === link.name && linkElement.href === link.url;
-      });
-      if (listItem) {
-        const linkElement = listItem.querySelector('a');
-        linkElement.textContent = newName;
-        linkElement.href = newUrl;
-      }
+      const linkElement = listItem.querySelector('a');
+      linkElement.textContent = newName;
+      linkElement.href = newUrl;
+      const notesDiv = listItem.querySelector('.link-notes');
+      notesDiv.textContent = newNotes;
+      const iframe = listItem.querySelector('.link-iframe');
+      iframe.src = newUrl;
     }
   }
 
@@ -279,6 +335,37 @@
         menuList.removeChild(listItem);
       }
     }
+  }
+
+
+  askGeminiButton.addEventListener('click', () => {
+    const userQuestion = geminiQuestionInput.value;
+    if (userQuestion) {
+      askGemini(userQuestion);
+    }
+  });
+
+  function askGemini(question) {
+    // Replace with your actual Gemini API call
+    // This is a placeholder example using fetch
+    fetch('https://api.gemini.com/v1/model/chat', { // Replace with the correct Gemini API endpoint
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer AIzaSyDiS4F6RE04oMW3BpURdHXXhbtOg3n65OA' // Replace with your actual API key
+      },
+      body: JSON.stringify({
+        prompt: question
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      geminiResponseTextArea.value = data.response; // Assuming the response is in a 'response' field
+    })
+    .catch(error => {
+      console.error('Error asking Gemini:', error);
+      geminiResponseTextArea.value = "Error communicating with Gemini.";
+    });
   }
 </script>
 
