@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Texas Hold'em Poker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center my-4">Texas Hold'em Poker</h1>
+
+    <div class="game-area">
+      <div class="community-cards text-center mb-4">
+        </div>
+      <div class="player-area d-flex justify-content-around mb-4">
+        </div>
+      <div class="pot text-center mb-4">
+        Pot: <span id="pot-value">0</span>
+      </div>
+      <div class="controls text-center">
+        <button class="btn btn-success mr-2" id="start-game">Start Game</button>
+        <button class="btn btn-primary mr-2" id="check">Check</button>
+        <button class="btn btn-warning mr-2" id="fold">Fold</button>
+        <button class="btn btn-danger mr-2" id="bet">Bet</button>
+        <input type="number" id="bet-amount" value="10" min="1">
+      </div>
+      <div class="player-info mt-4">
+        </div>
+    </div>
+
+    <div class="settings-area mt-4">
+      <h2>Settings</h2>
+      <div class="form-group">
+        <label for="startingChips">Starting Chips:</label>
+        <input type="number" class="form-control" id="startingChips" value="1000">
+      </div>
+      <div class="form-group">
+        <label for="smallBlind">Small Blind:</label>
+        <input type="number" class="form-control" id="smallBlind" value="10">
+      </div>
+      <div class="form-group">
+        <label for="bigBlind">Big Blind:</label>
+        <input type="number" class="form-control" id="bigBlind" value="20">
+      </div>
+      <button class="btn btn-primary" id="saveSettings">Save Settings</button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
