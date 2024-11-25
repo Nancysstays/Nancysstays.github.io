@@ -100,27 +100,109 @@
 
         // Function to add a link to the menu list in the UI
         function addLinkToMenu(link) {
-            // ... (same as before)
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item');
+            listItem.innerHTML = `
+                <a href="${link.url}" target="_blank">${link.name}</a>
+                <div class="float-right">
+                    <button class="btn btn-sm btn-warning edit-link" data-id="${link.id}">Edit</button>
+                    <button class="btn btn-sm btn-danger delete-link" data-id="${link.id}">Delete</button>
+                </div>
+            `;
+            menuList.appendChild(listItem);
+
+            // Add event listeners for edit and delete buttons
+            const editButton = listItem.querySelector('.edit-link');
+            const deleteButton = listItem.querySelector('.delete-link');
+
+            editButton.addEventListener('click', () => editLink(link));
+            deleteButton.addEventListener('click', () => deleteLink(link));
         }
 
         // Function to load menu data (from cache, localStorage, or IndexedDB)
         function loadMenu() {
-            // ... (same as before)
+            const menuName = menuNameInput.value;
+            if (!menuName) {
+                alert('Please enter a menu name.');
+                return;
+            }
+
+            // Check cache first
+            if (caches) {
+                caches.open('menuCache').then(cache => {
+                    cache.match(menuName).then(response => {
+                        if (response) {
+                            response.json().then(menuData => {
+                                displayMenu(menuData, 'Cache');
+                            });
+                        } else {
+                            loadFromLocalStorageOrIndexedDB(menuName);
+                        }
+                    });
+                });
+            } else {
+                loadFromLocalStorageOrIndexedDB(menuName);
+            }
         }
 
         // Function to load from localStorage or IndexedDB
         function loadFromLocalStorageOrIndexedDB(menuName) {
-            // ... (same as before)
+            // Check localStorage
+            const localStorageData = localStorage.getItem(menuName);
+            if (localStorageData) {
+                displayMenu(JSON.parse(localStorageData), 'LocalStorage');
+            } else {
+                // Load from IndexedDB
+                const transaction = db.transaction(['menus'], 'readonly');
+                const objectStore = transaction.objectStore('menus');
+                const request = objectStore.get(menuName);
+
+                request.onsuccess = function (event) {
+                    if (event.target.result) {
+                        displayMenu(event.target.result.links, 'IndexedDB');
+                    } else {
+                        alert('Menu not found.');
+                    }
+                };
+            }
         }
 
         // Function to display the menu in the UI
         function displayMenu(menuData, source) {
-            // ... (same as before)
+            menuList.innerHTML = ''; // Clear the current list
+            console.log('Menu loaded from:', source); // Log the source of the data
+            menuData.forEach(link => addLinkToMenu(link));
         }
 
         // Function to save the menu (to cache, localStorage, and IndexedDB)
         function saveMenu() {
-            // ... (same as before)
+            const menuName = menuNameInput.value;
+            if (!menuName) {
+                alert('Please enter a menu name.');
+                return;
+            }
+
+            const links = [];
+            menuList.querySelectorAll('li').forEach(item => {
+                const link = item.querySelector('a');
+                links.push({name: link.textContent, url: link.href});
+            });
+
+            // Save to cache
+            if (caches) {
+                caches.open('menuCache').then(cache => {
+                    cache.put(menuName, new Response(JSON.stringify(links)));
+                });
+            }
+
+            // Save to localStorage
+            localStorage.setItem(menuName, JSON.stringify(links));
+
+            // Save to IndexedDB
+            const transaction = db.transaction(['menus'], 'readwrite');
+            const objectStore = transaction.objectStore('menus');
+            const request = objectStore.put({name: menuName, links: links});
+
             request.onsuccess = function () {
                 console.log('Menu saved successfully!');
                 displaySavedMenuNames(); // Refresh the list of saved menus
@@ -133,21 +215,34 @@
 
         // Add new link
         addLinkButton.addEventListener('click', () => {
-            // ... (same as before)
+            const name = newLinkNameInput.value;
+            const url = newLinkUrlInput.value;
+            addLinkToMenu({name, url});
+            newLinkNameInput.value = '';
+            newLinkUrlInput.value = '';
         });
 
         // Edit link
         function editLink(link) {
-            // ... (same as before)
+            const newName = prompt("Enter the new link name:", link.name);
+            const newUrl = prompt("Enter the new link URL:", link.url);
+            if (newName && newUrl) {
+                link.name = newName;
+                link.url = newUrl;
+                // Update the link in the UI
+                loadMenu(); // Reload the menu to reflect the changes
+            }
         }
 
         // Delete link
         function deleteLink(link) {
-            // ... (same as before)
+            if (confirm(`Are you sure you want to delete "${link.name}"?`)) {
+                // Remove the link from the UI
+                loadMenu(); // Reload the menu to reflect the changes
+            }
         }
     </script>
 
 </body>
 
 </html>
-
