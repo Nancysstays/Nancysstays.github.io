@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Menu with IndexedDB</title>
+    <title>Dynamic Menus with Multiple Storage</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -14,7 +14,12 @@
 <body>
 
     <div class="container">
-        <h1>Dynamic Menu</h1>
+        <h1>Dynamic Menus</h1>
+
+        <div class="form-group">
+            <label for="menu-name">Menu Name:</label>
+            <input type="text" id="menu-name" class="form-control" placeholder="Enter menu name">
+        </div>
 
         <div class="input-group mb-3">
             <input type="text" id="new-link-name" class="form-control" placeholder="Link name">
@@ -24,8 +29,10 @@
             </div>
         </div>
 
-        <ul class="list-group" id="menu-list">
-            </ul>
+        <ul class="list-group" id="menu-list"></ul>
+
+        <button class="btn btn-secondary mt-3" type="button" id="load-menu">Load Menu</button>
+        <button class="btn btn-success mt-3" type="button" id="save-menu">Save Menu</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -36,6 +43,9 @@
         const addLinkButton = document.getElementById('add-link');
         const newLinkNameInput = document.getElementById('new-link-name');
         const newLinkUrlInput = document.getElementById('new-link-url');
+        const menuNameInput = document.getElementById('menu-name');
+        const loadMenuButton = document.getElementById('load-menu');
+        const saveMenuButton = document.getElementById('save-menu');
 
         let db;
 
@@ -48,33 +58,14 @@
 
         request.onsuccess = function(event) {
             db = event.target.result;
-            loadMenu();
         };
 
         request.onupgradeneeded = function(event) {
             const db = event.target.result;
-            const objectStore = db.createObjectStore('links', { keyPath: 'id', autoIncrement: true });
-            objectStore.createIndex('name', 'name', { unique: false });
-            objectStore.createIndex('url', 'url', { unique: false });
+            db.createObjectStore('menus', { keyPath: 'name' });
         };
 
-        // Load menu from IndexedDB
-        function loadMenu() {
-            menuList.innerHTML = ''; // Clear existing list
-
-            const transaction = db.transaction(['links'], 'readonly');
-            const objectStore = transaction.objectStore('links');
-            const request = objectStore.getAll();
-
-            request.onsuccess = function(event) {
-                const links = event.target.result;
-                links.forEach(link => {
-                    addLinkToMenu(link);
-                });
-            };
-        }
-
-        // Add link to menu (both UI and IndexedDB)
+        // Function to add a link to the menu list in the UI
         function addLinkToMenu(link) {
             const listItem = document.createElement('li');
             listItem.classList.add('list-group-item');
@@ -91,62 +82,130 @@
             const editButton = listItem.querySelector('.edit-link');
             const deleteButton = listItem.querySelector('.delete-link');
 
-            editButton.addEventListener('click', () => editLink(link.id));
-            deleteButton.addEventListener('click', () => deleteLink(link.id));
+            editButton.addEventListener('click', () => editLink(link));
+            deleteButton.addEventListener('click', () => deleteLink(link));
         }
+
+        // Function to load menu data (from cache, localStorage, or IndexedDB)
+        function loadMenu() {
+            const menuName = menuNameInput.value;
+            if (!menuName) {
+                alert('Please enter a menu name.');
+                return;
+            }
+
+            // Check cache first
+            if (caches) {
+                caches.open('menuCache').then(cache => {
+                    cache.match(menuName).then(response => {
+                        if (response) {
+                            response.json().then(menuData => {
+                                displayMenu(menuData, 'Cache');
+                            });
+                        } else {
+                            loadFromLocalStorageOrIndexedDB(menuName);
+                        }
+                    });
+                });
+            } else {
+                loadFromLocalStorageOrIndexedDB(menuName);
+            }
+        }
+
+        // Function to load from localStorage or IndexedDB
+        function loadFromLocalStorageOrIndexedDB(menuName) {
+            // Check localStorage
+            const localStorageData = localStorage.getItem(menuName);
+            if (localStorageData) {
+                displayMenu(JSON.parse(localStorageData), 'LocalStorage');
+            } else {
+                // Load from IndexedDB
+                const transaction = db.transaction(['menus'], 'readonly');
+                const objectStore = transaction.objectStore('menus');
+                const request = objectStore.get(menuName);
+
+                request.onsuccess = function(event) {
+                    if (event.target.result) {
+                        displayMenu(event.target.result.links, 'IndexedDB');
+                    } else {
+                        alert('Menu not found.');
+                    }
+                };
+            }
+        }
+
+        // Function to display the menu in the UI
+        function displayMenu(menuData, source) {
+            menuList.innerHTML = ''; // Clear the current list
+            console.log('Menu loaded from:', source); // Log the source of the data
+            menuData.forEach(link => addLinkToMenu(link));
+        }
+
+        // Function to save the menu (to cache, localStorage, and IndexedDB)
+        function saveMenu() {
+            const menuName = menuNameInput.value;
+            if (!menuName) {
+                alert('Please enter a menu name.');
+                return;
+            }
+
+            const links = [];
+            menuList.querySelectorAll('li').forEach(item => {
+                const link = item.querySelector('a');
+                links.push({ name: link.textContent, url: link.href });
+            });
+
+            // Save to cache
+            if (caches) {
+                caches.open('menuCache').then(cache => {
+                    cache.put(menuName, new Response(JSON.stringify(links)));
+                });
+            }
+
+            // Save to localStorage
+            localStorage.setItem(menuName, JSON.stringify(links));
+
+            // Save to IndexedDB
+            const transaction = db.transaction(['menus'], 'readwrite');
+            const objectStore = transaction.objectStore('menus');
+            const request = objectStore.put({ name: menuName, links: links });
+
+            request.onsuccess = function() {
+                console.log('Menu saved successfully!');
+            };
+        }
+
+        // Event listeners for loading and saving menus
+        loadMenuButton.addEventListener('click', loadMenu);
+        saveMenuButton.addEventListener('click', saveMenu);
 
         // Add new link
         addLinkButton.addEventListener('click', () => {
             const name = newLinkNameInput.value;
             const url = newLinkUrlInput.value;
-
-            const transaction = db.transaction(['links'], 'readwrite');
-            const objectStore = transaction.objectStore('links');
-            const request = objectStore.add({ name, url });
-
-            request.onsuccess = function(event) {
-                const newLink = { id: event.target.result, name, url };
-                addLinkToMenu(newLink);
-                newLinkNameInput.value = '';
-                newLinkUrlInput.value = '';
-            };
+            addLinkToMenu({ name, url });
+            newLinkNameInput.value = '';
+            newLinkUrlInput.value = '';
         });
 
         // Edit link
-        function editLink(id) {
-            // Prompt the user for the new link name and URL (you can use a modal for better UX)
-            const newName = prompt("Enter the new link name:");
-            const newUrl = prompt("Enter the new link URL:");
-
+        function editLink(link) {
+            const newName = prompt("Enter the new link name:", link.name);
+            const newUrl = prompt("Enter the new link URL:", link.url);
             if (newName && newUrl) {
-                const transaction = db.transaction(['links'], 'readwrite');
-                const objectStore = transaction.objectStore('links');
-                const request = objectStore.get(id);
-
-                request.onsuccess = function(event) {
-                    const link = event.target.result;
-                    link.name = newName;
-                    link.url = newUrl;
-
-                    const updateRequest = objectStore.put(link);
-                    updateRequest.onsuccess = function() {
-                        // Update the link in the UI
-                        loadMenu(); // Simpler way to refresh the entire menu
-                    };
-                };
+                link.name = newName;
+                link.url = newUrl;
+                // Update the link in the UI
+                loadMenu(); // Reload the menu to reflect the changes
             }
         }
 
         // Delete link
-        function deleteLink(id) {
-            const transaction = db.transaction(['links'], 'readwrite');
-            const objectStore = transaction.objectStore('links');
-            const request = objectStore.delete(id);
-
-            request.onsuccess = function() {
+        function deleteLink(link) {
+            if (confirm(`Are you sure you want to delete "${link.name}"?`)) {
                 // Remove the link from the UI
-                loadMenu(); // Simpler way to refresh the entire menu
-            };
+                loadMenu(); // Reload the menu to reflect the changes
+            }
         }
     </script>
 
