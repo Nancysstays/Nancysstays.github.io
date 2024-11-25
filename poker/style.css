@@ -1,0 +1,22 @@
+/* Basic styling for the game elements (cards, buttons, etc.) */
+.card {
+  width: 70px;
+  height: 100px;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 5px;
+  text-align: center;
+  font-size: 20px;
+  background-color: #f8f9fa; /* Light background color */
+  color: #343a40; /* Dark text color for better contrast */
+}
+
+.community-cards {
+  margin-bottom: 20px;
+}
+
+.player-area {
+  display: flex;
+  justify-content: space-around;
+}
