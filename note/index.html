@@ -55,19 +55,49 @@
   const saveButton = document.getElementById('saveButton');
   const notesList = document.getElementById('notesList');
 
+  // Gemini API Key
+  const geminiApiKey = 'AIzaSyDiS4F6RE04oMW3BpURdHXXhbtOg3n65OA'; 
+
   saveButton.addEventListener('click', () => {
     const note = {
       text: noteText.value,
-      links: noteLinks.value.split('\n').filter(link => link.trim() !== ""), // Split links by line
+      links: noteLinks.value.split('\n').filter(link => link.trim() !== ""),
       summary: noteSummary.value,
       references: noteReferences.value
     };
 
-    // Store the note (you can use localStorage, IndexedDB, or send to a server)
-    // For this example, we'll use localStorage
+    // Store in localStorage
     let notes = JSON.parse(localStorage.getItem('notes')) || [];
     notes.push(note);
     localStorage.setItem('notes', JSON.stringify(notes));
+
+    // Store in cache
+    if ('caches' in window) {
+      caches.open('note-cache')
+        .then(cache => cache.put('/notes', new Response(JSON.stringify(notes))))
+        .catch(err => console.error('Error caching notes:', err));
+    }
+
+    // Use Gemini API (replace with your actual API call)
+    fetch('https://api.gemini.com/v1/notes', { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${geminiApiKey}` 
+      },
+      body: JSON.stringify(note)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Gemini API request failed');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Gemini API response:', data);
+      // You might want to update the local note with an ID or other info from the API response
+    })
+    .catch(error => console.error('Error using Gemini API:', error));
 
     // Display the saved notes
     displayNotes();
@@ -80,7 +110,7 @@
   });
 
   function displayNotes() {
-    notesList.innerHTML = ""; // Clear previous notes
+    notesList.innerHTML = ""; 
 
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
     notes.forEach((note, index) => {
@@ -92,9 +122,55 @@
         ${note.links.length > 0 ? `<p class="section-label">Links:</p><ul>${note.links.map(link => `<li><a href="${link}" target="_blank">${link}</a></li>`).join('')}</ul>` : ''}
         ${note.summary ? `<p class="section-label">Summary:</p><p>${note.summary}</p>` : ''}
         ${note.references ? `<p class="section-label">References:</p><p>${note.references}</p>` : ''}
+        <button class="btn btn-sm btn-danger deleteButton" data-index="${index}">Delete</button>
+        <button class="btn btn-sm btn-warning editButton" data-index="${index}">Edit</button>
       `;
       notesList.appendChild(noteDiv);
     });
+
+    // Add event listeners for delete and edit buttons
+    const deleteButtons = document.querySelectorAll('.deleteButton');
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const index = button.dataset.index;
+        deleteNote(index);
+      });
+    });
+
+    const editButtons = document.querySelectorAll('.editButton');
+    editButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const index = button.dataset.index;
+        editNote(index);
+      });
+    });
+  }
+
+  function deleteNote(index) {
+    let notes = JSON.parse(localStorage.getItem('notes')) || [];
+    notes.splice(index, 1);
+    localStorage.setItem('notes', JSON.stringify(notes));
+    displayNotes();
+
+    // Delete from cache (if applicable)
+    // ...
+
+    // Delete from Gemini API (replace with your actual API call)
+    // ...
+  }
+
+  function editNote(index) {
+    let notes = JSON.parse(localStorage.getItem('notes')) || [];
+    const note = notes[index];
+
+    // Populate input fields with note data
+    noteText.value = note.text;
+    noteLinks.value = note.links.join('\n');
+    noteSummary.value = note.summary;
+    noteReferences.value = note.references;
+
+    // You might want to add a "Update Note" button and handle the update logic
+    // ...
   }
 
   // Display notes on page load
