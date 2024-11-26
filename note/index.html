@@ -12,6 +12,10 @@
     .section-label {
       font-weight: bold;
     }
+    #preview {
+      margin-top: 10px;
+      max-width: 300px; 
+    }
   </style>
 </head>
 <body>
@@ -36,7 +40,13 @@
       <label for="note-references" class="form-label section-label">References:</label>
       <textarea class="form-control" id="note-references" rows="3" placeholder="Add references to related work"></textarea>
     </div>
+    <div class="mb-3">
+      <label for="note-media" class="form-label section-label">Media:</label>
+      <input type="file" class="form-control" id="note-media" accept="image/*, video/*, audio/*">
+      <div id="preview"></div> 
+    </div>
     <button id="saveButton" class="btn btn-primary">Save Note</button>
+    <button id="updateButton" class="btn btn-warning" style="display: none;">Update Note</button>
   </div>
 
   <div id="notesDisplay" class="mt-4">
@@ -52,18 +62,44 @@
   const noteLinks = document.getElementById('note-links');
   const noteSummary = document.getElementById('note-summary');
   const noteReferences = document.getElementById('note-references');
+  const noteMedia = document.getElementById('note-media');
+  const preview = document.getElementById('preview');
   const saveButton = document.getElementById('saveButton');
+  const updateButton = document.getElementById('updateButton');
   const notesList = document.getElementById('notesList');
 
   // Gemini API Key
   const geminiApiKey = 'AIzaSyDiS4F6RE04oMW3BpURdHXXhbtOg3n65OA'; 
+
+  let editingIndex = -1; 
+
+  noteMedia.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const previewContent = `
+        <p class="section-label">Media Preview:</p>
+        ${file.type.startsWith('image/') ? `<img src="${event.target.result}" alt="Preview" class="img-fluid">` : ''}
+        ${file.type.startsWith('video/') ? `<video src="${event.target.result}" controls width="100%"></video>` : ''}
+        ${file.type.startsWith('audio/') ? `<audio src="${event.target.result}" controls></audio>` : ''}
+      `;
+      preview.innerHTML = previewContent;
+    }
+
+    reader.readAsDataURL(file); 
+  });
 
   saveButton.addEventListener('click', () => {
     const note = {
       text: noteText.value,
       links: noteLinks.value.split('\n').filter(link => link.trim() !== ""),
       summary: noteSummary.value,
-      references: noteReferences.value
+      references: noteReferences.value,
+      media: noteMedia.files[0] ? {
+        type: noteMedia.files[0].type,
+        data: preview.querySelector('img, video, audio').src 
+      } : null
     };
 
     // Store in localStorage
@@ -95,7 +131,6 @@
     })
     .then(data => {
       console.log('Gemini API response:', data);
-      // You might want to update the local note with an ID or other info from the API response
     })
     .catch(error => console.error('Error using Gemini API:', error));
 
@@ -107,7 +142,48 @@
     noteLinks.value = "";
     noteSummary.value = "";
     noteReferences.value = "";
+    noteMedia.value = ""; 
+    preview.innerHTML = ""; 
   });
+
+  updateButton.addEventListener('click', () => {
+    const note = {
+      text: noteText.value,
+      links: noteLinks.value.split('\n').filter(link => link.trim() !== ""),
+      summary: noteSummary.value,
+      references: noteReferences.value,
+      media: noteMedia.files[0] ? {
+        type: noteMedia.files[0].type,
+        data: preview.querySelector('img, video, audio').src 
+      } : null
+    };
+
+    // Update in localStorage
+    let notes = JSON.parse(localStorage.getItem('notes')) || [];
+    notes[editingIndex] = note;
+    localStorage.setItem('notes', JSON.stringify(notes));
+
+    // Update in cache (if applicable)
+    // ...
+
+    // Update in Gemini API (replace with your actual API call)
+    // ...
+
+    // Display the saved notes
+    displayNotes();
+
+    // Clear input fields and hide update button
+    noteText.value = "";
+    noteLinks.value = "";
+    noteSummary.value = "";
+    noteReferences.value = "";
+    noteMedia.value = ""; 
+    preview.innerHTML = ""; 
+    saveButton.style.display = "block";
+    updateButton.style.display = "none";
+    editingIndex = -1;
+  });
+
 
   function displayNotes() {
     notesList.innerHTML = ""; 
@@ -122,6 +198,12 @@
         ${note.links.length > 0 ? `<p class="section-label">Links:</p><ul>${note.links.map(link => `<li><a href="${link}" target="_blank">${link}</a></li>`).join('')}</ul>` : ''}
         ${note.summary ? `<p class="section-label">Summary:</p><p>${note.summary}</p>` : ''}
         ${note.references ? `<p class="section-label">References:</p><p>${note.references}</p>` : ''}
+        ${note.media ? `
+          <p class="section-label">Media:</p>
+          ${note.media.type.startsWith('image/') ? `<img src="${note.media.data}" alt="Note Media" class="img-fluid">` : ''}
+          ${note.media.type.startsWith('video/') ? `<video src="${note.media.data}" controls width="100%"></video>` : ''}
+          ${note.media.type.startsWith('audio/') ? `<audio src="${note.media.data}" controls></audio>` : ''}
+        ` : ''}
         <button class="btn btn-sm btn-danger deleteButton" data-index="${index}">Delete</button>
         <button class="btn btn-sm btn-warning editButton" data-index="${index}">Edit</button>
       `;
@@ -169,8 +251,13 @@
     noteSummary.value = note.summary;
     noteReferences.value = note.references;
 
-    // You might want to add a "Update Note" button and handle the update logic
+    // If there's media, you'll need to handle populating the preview
     // ...
+
+    editingIndex = index; 
+
+    saveButton.style.display = "none";
+    updateButton.style.display = "block";
   }
 
   // Display notes on page load
