@@ -1,20 +1,39 @@
-function processLogin(username, password) {
-  // 1. Get the Google Sheet
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("UserData"); // Replace "UserData" with your sheet name
+// script.js
+$(document).ready(function() {
+  $("#loginForm").submit(function(event) {
+    event.preventDefault();
 
-  // 2. Get the user data from the sheet
-  var data = sheet.getDataRange().getValues();
+    var username = $("#username").val();
+    var password = $("#password").val();
 
-  // 3. Find the user
-  for (var i = 0; i < data.length; i++) {
-    if (data[i][0] === username && data[i][1] === password) {
-      // User found!
-      return "Login successful!"; 
-    }
+    google.script.run
+      .withSuccessHandler(handleLoginSuccess)
+      .withFailureHandler(handleLoginFailure)
+      .processLogin(username, password); 
+  });
+
+  function handleLoginSuccess(message) {
+    $("#message").text(message).css("color", "green");
+    fetchUserData(); // Fetch and display user data after successful login
   }
 
-  // 4. If user not found, add them to the sheet
-  sheet.appendRow([username, password]); 
-  return "User added and logged in!";
-}
+  function handleLoginFailure(error) {
+    $("#message").text(error.message).css("color", "red");
+  }
+
+  function fetchUserData() {
+    google.script.run.withSuccessHandler(displayUserData).getUserData();
+  }
+
+  function displayUserData(data) {
+    var tableHtml = "<table><thead><tr><th>Username</th><th>Password</th></tr></thead><tbody>";
+    for (var i = 0; i < data.length; i++) {
+      tableHtml += "<tr><td>" + data[i][0] + "</td><td>" + data[i][1] + "</td></tr>";
+    }
+    tableHtml += "</tbody></table>";
+    $("#userData").html(tableHtml);
+  }
+
+  // Fetch user data on page load
+  fetchUserData();
+});
