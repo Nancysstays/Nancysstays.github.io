@@ -99,7 +99,8 @@
       media: noteMedia.files[0] ? {
         type: noteMedia.files[0].type,
         data: preview.querySelector('img, video, audio').src 
-      } : null
+      } : null,
+						timestamp: new Date().toLocalString()
     };
 
     // Store in localStorage
@@ -155,7 +156,8 @@
       media: noteMedia.files[0] ? {
         type: noteMedia.files[0].type,
         data: preview.querySelector('img, video, audio').src 
-      } : null
+      } : null,
+						timestamp: new Date().toLocalString()
     };
 
     // Update in localStorage
@@ -205,6 +207,8 @@
           ${note.media.type.startsWith('audio/') ? `<audio src="${note.media.data}" controls></audio>` : ''}
         ` : ''}
         <button class="btn btn-sm btn-danger deleteButton" data-index="${index}">Delete</button>
+								<p class="section-label">Timestamp:</p>
+								<p>${note.timestamp}</p>
         <button class="btn btn-sm btn-warning editButton" data-index="${index}">Edit</button>
       `;
       notesList.appendChild(noteDiv);
