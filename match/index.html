@@ -46,7 +46,7 @@
       const url = urlInput.value;
       const searchText = textInput.value.toLowerCase();
 
-      fetch(url)
+      fetch(url, { mode: 'no-cors' }) 
         .then(response => response.text())
         .then(html => {
           const parser = new DOMParser();
@@ -90,7 +90,6 @@
         }
       });
 
-      // You can use a more sophisticated algorithm here if needed (e.g., using sigma squared)
       const matchPercent = (matchedWords / searchWords.length) * 100; 
       return matchPercent;
     }
