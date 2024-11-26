@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking.com Hotel Images</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <style>
+    #images {
+      margin-top: 20px;
+    }
+    .img-thumbnail {
+      max-width: 200px; 
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Booking.com Hotel Images</h5>
+            <p>This tool fetches all images from the Booking.com hotel page and displays them below.</p>
+            <button id="fetchButton" class="btn btn-primary">Fetch Images</button>
+            <div id="loader" style="display: none;" class="spinner-border text-primary mt-3" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div id="images"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script>
+    const fetchButton = document.getElementById('fetchButton');
+    const imagesDiv = document.getElementById('images');
+    const loader = document.getElementById('loader');
+
+    const url = "https://www.booking.com/hotel/us/ramada-plaza-by-wyndham.html?aid=2419971&label=metagha-link-LUUS-hotel-289335_dev-tablet_los-1_bw-48_dow-Monday_defdate-1_room-0_gstadt-2_rateid-public_aud-0_gacid-21404714286_mcid-10_ppa-1_clrid-0_ad-1_gstkid-0_checkin-20250113_ppt-_lp-2840_r-17294518127791350005&sid=fa3eb30775f80cce8a71063fef2e360e&all_sr_blocks=17354144_94083940_2_2_0&checkin=2025-01-13&checkout=2025-01-14&dest_id=20012160&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=2&highlighted_blocks=17354144_94083940_2_2_0&hpos=2&matching_block_id=17354144_94083940_2_2_0&nad_cpc=1.21&nad_id=2825e7d9-c154-4769-b0ce-2162041a8721_0&nad_track=eyJhdWN0aW9uRXBvY2giOjE3MzI2NTI1MjA4MjEsInJhbmsiOjEsImtvZGRpVHJhY2tpbmdJbmZvIjoibHl1b1VNM3VKUkh5S1VRSmd1NjV2Zm8ySFdiRGFzSFNYSFZDTHhtVWtPR25BOCs4YVFtYmRldU5icG13YWZmL3pYRGNYUEVnR1luYnJZdkQxVmNyZHc2dVFiTmFFbmRpcXB4ckpPWWNvMUxnVWtMYjhTczV0VmV1SzZJYXRUM09odVRnSDFHb2did1JIZGtxV0dFL09nZDY1eHNBazhQQkplMWhwNmVDVyt1a1FQYy83NVc1RzduSlRSaVFwckQxRzBxUFRTTkdaRVFmdms3WmkvUFRkK0Nsam5qaXc0VjV6VlRTZUxpMGpSNTZ0aHExKzFQVWZYbmlZcjlSZWhVZFMrUFRFZXlpUjJUWnpUNG1jeEd5T3M0TUJCQ2REUnNHL3VEdi9DeVRSQlRCT1A4NWFyZzZkMWk0dTdHYXgzK21vdGZ5VExMVjMvaTZtSXBHRjZBOTJOdzVFVjZoTXdYV2k0OEZ3K3FBSVpkYmt6MlNlNytaY1A4V3NHZkZTSEk2aVlvMVVkR2V0SkpYZk5pWW1OOENVdEd5aW85V1BEbDB0S0NlVnNrSkVTV3ExUnpRVXpIQUZDakg5VmpWUVJBVkJIaTM1QjNjYmhDaDhWUklIVWZvRW1OOWFFYUFTSHhnTWlpZ2tCUUl6Q2R6L0VoNmJaZ0F5eXFnRWdQdkVFVSt0aHpZTk9ndTdPdkU3aFd6djJ2Rnd0SGJldkVxV203c0JYZU1NaEVzYUdHc3dOajlkYVFseXBsbG45S1RtLzB5TEd2aW5Tb09VSUIxMnBoNXZSQVNKQk12OEJncXQ0SEtJTFd0Vi9HWFMwa0xvNGorRXNqYXV2K2hBMjFTaHZVR3pUS1JOMnJaWVNsdUl2Zk9ORHJMbWpoNzlQdkM1NVFpM3FUMXBybHVUWmZKUEg0TWRqd0tGeDB0TXBvOHVmQ0NpZEZTRlFJYVp6QURLemlhaW5vV1Vjbys4b1Z1QXhhd045b2NDdFNTcFhJR2hzTjVLbndORG9rdDBkYVMybkNOamRGQ2w3YUdjWHVkSFhRbzdVMVFpZEYzb2Z5NElrOW16U0lORmtBQUZRVWo2ajQ2NTRWTWpleWdKZzlGVHBKTEhPeEoyZng5UUV5V3ZJWWNpVXpsUk1EOE1oK3A0cngrdElnOWdyeks0SEZtWHFrbnVXUXU5UjNFdmE5U1IrMnlMdDhmWjczdnVtQmhTaktBVzBBb0d5ZHhQbFBpMnFjVEUrbnBiL3loTWRpRDEvSm9oQ0ZidUlpbWI5RnpBNEE0LzFYMjFTSlhCTjJJZkRBbUM4Ry9aK1FuWk01c0puMmJaOXRVM0krMkRGUkxFZTNBUFZ5YjZybnVyQ3JZTnY0V21RamtYUmlKVnB5UmVUa2dHQlRCcEphRVZ4ZDVLdVlBTEV0Yk5waWNoRTVDRFF0WWRwSHI1Zml4S2NyWTJDRytVYnlVYW93a2xKSmVZK21XWTBiRkFCbXZuQXZOVnc1S2xPL0NpZE5NMDQxY2dxVXA4QzRQVGdHek9jUGM5SDFMQVNSSC8rOCtSRXhOSkJNbG1FVDEyNldiTVNyMDhEZEc4Y1JFSjBxUG9sVjhUQUhLRk9rcWJibUVhWmN0clAwTjVqMTltZlcwWGNsYU5sRm5HSlBYVHhHMDdxZmNiQTZ3MGlZSjVJZ3dhcFRBeFlSTm93aGdNYmFlUndKZEl3WVBaMGJBeU44YThXZHU1Unl1ckhSR2IxcXlSNWxON3FEbHpMR2FNLzBhQnNyblVXK1N2WGtVUjRiM3lWRWhVcWkrNlFRYkI2V0xpNTlMeFJsaEVsZmVQQmVidVR6dW0xWVVDcmNoTmhyWGgwZHVTcHhDRVpoQ25DaXU5RDRjZEF0YTFuaUUzYkhrYWQrUXkxVVVqOWhrZUU0MFAwVmF2MGhSQmozN1BMT2RzcmphVDdPTnZtN0kvSnQ5U1lQNmZybGIydU1wM0pINHJ4L2cvNmM4eTU5UjJIK2ZzUFpFRGRpRjQ5RHY2akpLeHRwWlNKQ0QreDQwUEhPSVRvdnI2Tk9vaHYwYkNDYnlibWVxR3dOMHJISnNWQ2JmaitKSDZIVndwVjN4WHlRRlRuM3d3eVZsN2R0OEdNcUxSTm1IR1BBam1EUHh4aGtTL2dVNUg5T3BCem04OURETlVWQjRVWVZIbUo2SVdWRFNSOStaU0phQll6VW45QksvVWhXOGJDMU5XcksvTTltc0VEMkR4OXB1WHlsaDBwWlFYc3BWRURSdDhPa2xPU3JqMWFXR0w0Y3dOVXNOYVFxc1prMTkzR0VPMkRzSjExM3Q2SEUvZkI0Q21WbWtNYXlaOStlQlQ1TGloZm5ONkNpR0dYVFNWUGJMQW1wcmFPcWU2ZVVFL2RXNHFaMm1LRkt4WHVqRldNdzJVbGY5U04xc0lBbzV0dkMvVWdEY2MvZ1NhL2YzMCsxbFlLSjBudEdjckpZTzVDRGQyWGdvcURid2g4Q3YyTEVRazlueHVzSWNTWTVvTXdHN1MxNGZlcW5lMmpDQnd6WEpoQktHNUdFak02SzNtekVCa3lTaHdaOTFhbkh5RThKY01xcmpiOGw3N3JLampDK1BRLytML1RXRW01K01VVmpaUTdXaGE1elZjN3laRXN6L1NLM0hVd3lseHY2TUNqMVVvbmgxZVBiRWRLRHVWNVArQlBkNXdlOTBoNUN4SEp1NmpHZERUOTBOMlVCVUppaTd3WkppSUh2SUlFVzduMEIxa1pOelRTZ3NNbzhkUTZtb05aaHdYbzFCcUVsTmRxQjJ6SlRZTWR6MnIvdEVpbk5CeHZ5c1RlUFFwait2RmYxTG1rN0dIQnJOQVhWZnZ4Y0xPMEJnajRPRHRvN3U5SFRZalB2UVhBbEpYZEFJeTZqZlh3R08vdjBlVmQweGlwd1dScXE4NDFzcTJpbTk0Z1ExS3ppK2JPbFFUdy9rNmZ5NXhCYi9qczBqcTYxdmJtQ25xa3B5NlhuWWh3bUh2TE0wa3NKeUxxUUl5TlRnZHhuZHk4OWlyNHc4c2FmSTRWQ1JZQVpEVzVxc1k2M05yZmJtenhRcEc1dGRWYXowMXRkWjI2OHpQODREZ0tTWDRZMjA2dzdyNFhhVVhQYUhCWTY3SzZFZE02RWx2TlpMVUxqZUlvcm9sS1ZGLzNxYUxHN01ocTFwa3czT1hTQjZmbkdscHMvRmNsL2dueGVIMEFJTXJnREd6akxkVlUvL203alF4d3BBVVpKbWQxVnkzbElHUkk3NHVzRU1wdUJaK05MWkdYeDdGVWoxKzE2S0JDaitFZnRUMzVJT1FLWT0ifQ%3D%3D&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=17354144_94083940_2_2_0__10965&srepoch=1732652564&srpvid=90128f3424be02d2&type=total&ucfs=1&"; 
+
+    fetchButton.addEventListener('click', () => {
+      imagesDiv.innerHTML = ""; 
+      loader.style.display = "block"; 
+
+      fetch(url, { mode: 'no-cors' })
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const imageElements = doc.querySelectorAll('img'); 
+
+          imageElements.forEach(img => {
+            const imgSrc = img.src;
+            const imgElement = document.createElement('img');
+            imgElement.src = imgSrc;
+            imgElement.classList.add('img-thumbnail'); 
+            imagesDiv.appendChild(imgElement);
+          });
+
+          loader.style.display = "none"; 
+        })
+        .catch(error => {
+          console.error('Error fetching URL:', error);
+          loader.style.display = "none"; 
+          imagesDiv.innerHTML = "An error occurred while fetching the URL.";
+        });
+    });
+  </script>
+</body>
+</html>
