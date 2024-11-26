@@ -46,6 +46,14 @@
   </script>
   <style>
     /* Basic Styling - Replace with your actual CSS */
+    body {
+      margin: 0; /* Remove default body margin */
+    }
+
+    .container {
+      padding: 20px; /* Add padding to the container */
+    }
+
     .jumbotron {
       background-color: #f8f9fa; 
       padding: 3rem 2rem;
@@ -101,17 +109,17 @@
     }
   </style>
 </head>
+<body>
 
+  <div class="container"> 
     <div style="display: flex; align-items: center; justify-content: flex-end;"> 
       <img src="icons-512.png" alt="Your Logo" style="height: 40px; margin-right: 10px;"> 
       <div id="googleSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
 
     <div class="eg-widget" data-widget="search" data-program="us-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l477qW"></div>
-  </div>
-
-  <div class="container mt-5">
-    <div class="row">
+  
+    <div class="row mt-5">
       <div class="col-md-12">
         <div class="jumbotron">
           <h1 class="display-4">Welcome to Our Travel Planning Website</h1> 
@@ -133,7 +141,7 @@
         <div class="col-md-4">
           <div class="card inspiration-card">
             <a href="https://www.expedia.com/Paris-Hotels.d179817.Travel-Guide-Hotels" target="_blank">
-              <img src="https://images.unsplash.com/photo-1533452977689-276716f1e791?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+              <img src="https://images.unsplash.com/photo-1502602898657-3e91766d289d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80"
                    class="card-img-top" alt="Paris, France">
             </a>
             <div class="card-body">
@@ -146,7 +154,7 @@
         <div class="col-md-4">
           <div class="card inspiration-card">
             <a href="https://www.expedia.com/Tokyo-Hotels.d179903.Travel-Guide-Hotels" target="_blank">
-              <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+              <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
                    class="card-img-top" alt="Tokyo, Japan">
             </a>
             <div class="card-body">
@@ -159,7 +167,7 @@
         <div class="col-md-4">
           <div class="card inspiration-card">
             <a href="https://www.expedia.com/Machu-Picchu-Hotels.d6059685.Travel-Guide-Hotels" target="_blank">
-              <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+              <img src="https://images.unsplash.com/photo-1530205921991-22329ef908dd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=914&q=80"
                    class="card-img-top" alt="Machu Picchu, Peru">
             </a>
             <div class="card-body">
@@ -182,7 +190,7 @@
       <div class="col-md-6">
         <div class="blog-post">
           <a href="https://www.expedia.com/" target="_blank">
-            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
                  alt="Tips for Traveling on a Budget">
           </a>
           <h5>10 Tips for Traveling on a Budget</h5>
@@ -193,7 +201,7 @@
       <div class="col-md-6">
         <div class="blog-post">
           <a href="https://www.expedia.com/" target="_blank">
-            <img src="https://images.unsplash.com/photo-1436395088132-842c81021757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+            <img src="https://images.unsplash.com/photo-1563299796-295fa7021ad1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
                  alt="The Ultimate Packing List for Any Trip">
           </a>
           <h5>The Ultimate Packing List for Any Trip</h5>
@@ -256,6 +264,7 @@
     });
   </script>
   <script src="https://apis.google.com/js/platform.js" async defer></script> 
+
   <script>
     function onSignIn(googleUser) {
       // Useful data for your website
@@ -265,6 +274,8 @@
       console.log('Image URL: ' + profile.getImageUrl());
       console.log('Email: ' + profile.getEmail()); 
 
+      // You can use this data to personalize the user experience,
+      // for example, display their name or profile picture.
     }
   </script>
 
