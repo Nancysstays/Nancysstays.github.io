@@ -101,9 +101,12 @@
     }
   </style>
 </head>
-<body>
 
-  <div class="container mt-3">
+    <div style="display: flex; align-items: center; justify-content: flex-end;"> 
+      <img src="logo.png" alt="Your Logo" style="height: 40px; margin-right: 10px;"> 
+      <div id="googleSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
+
     <div class="eg-widget" data-widget="search" data-program="us-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l477qW"></div>
   </div>
 
@@ -252,5 +255,18 @@
       });
     });
   </script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script> 
+  <script>
+    function onSignIn(googleUser) {
+      // Useful data for your website
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); 
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); 
+
+    }
+  </script>
+
 </body>
 </html>
