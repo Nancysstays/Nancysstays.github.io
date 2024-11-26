@@ -8,37 +8,61 @@
 <h1>Local Storage Example</h1>
 
 <div>
-  <label for="textInput">Enter some text:</label>
+  <label for="textInput">Enter text:</label>
   <input type="text" id="textInput">
   <button id="saveButton">Save Text</button>
 </div>
 
 <div>
-  <h2>Stored Text:</h2>
-  <p id="storedText"></p>
-  <a href="#" id="copyLink">Copy to Clipboard</a>
+  <h2>Stored Texts:</h2>
+  <ul id="storedTexts"></ul>
 </div>
 
 <script>
   const textInput = document.getElementById('textInput');
   const saveButton = document.getElementById('saveButton');
-  const storedText = document.getElementById('storedText');
-  const copyLink = document.getElementById('copyLink');
+  const storedTextsList = document.getElementById('storedTexts');
 
-  // Load stored text on page load
-  storedText.textContent = localStorage.getItem('myText') || '';
+  // Load stored texts on page load
+  loadStoredTexts();
 
   saveButton.addEventListener('click', () => {
     const text = textInput.value;
-    localStorage.setItem('myText', text);
-    storedText.textContent = text;
+    saveText(text);
+    textInput.value = ''; // Clear input field
   });
 
-  copyLink.addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent default link behavior
+  function saveText(text) {
+    let storedTexts = JSON.parse(localStorage.getItem('storedTexts')) || [];
+    storedTexts.push(text);
+    localStorage.setItem('storedTexts', JSON.stringify(storedTexts));
+    loadStoredTexts();
+  }
 
-    const textToCopy = localStorage.getItem('myText');
-    navigator.clipboard.writeText(textToCopy)
+  function loadStoredTexts() {
+    storedTextsList.innerHTML = ''; // Clear the list
+
+    const storedTexts = JSON.parse(localStorage.getItem('storedTexts')) || [];
+    storedTexts.forEach((text, index) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = text;
+
+      // Add a "Copy" link for each stored text
+      const copyLink = document.createElement('a');
+      copyLink.href = '#';
+      copyLink.textContent = 'Copy';
+      copyLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        copyToClipboard(text);
+      });
+      listItem.appendChild(copyLink);
+
+      storedTextsList.appendChild(listItem);
+    });
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text)
       .then(() => {
         alert('Text copied to clipboard!');
       })
@@ -46,7 +70,7 @@
         console.error('Failed to copy text: ', err);
         alert('Failed to copy text. Check console for errors.');
       });
-  });
+  }
 </script>
 
 </body>
