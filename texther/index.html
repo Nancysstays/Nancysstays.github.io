@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Local Storage Example</title>
+</head>
+<body>
+
+<h1>Local Storage Example</h1>
+
+<div>
+  <label for="textInput">Enter some text:</label>
+  <input type="text" id="textInput">
+  <button id="saveButton">Save Text</button>
+</div>
+
+<div>
+  <h2>Stored Text:</h2>
+  <p id="storedText"></p>
+  <a href="#" id="copyLink">Copy to Clipboard</a>
+</div>
+
+<script>
+  const textInput = document.getElementById('textInput');
+  const saveButton = document.getElementById('saveButton');
+  const storedText = document.getElementById('storedText');
+  const copyLink = document.getElementById('copyLink');
+
+  // Load stored text on page load
+  storedText.textContent = localStorage.getItem('myText') || '';
+
+  saveButton.addEventListener('click', () => {
+    const text = textInput.value;
+    localStorage.setItem('myText', text);
+    storedText.textContent = text;
+  });
+
+  copyLink.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent default link behavior
+
+    const textToCopy = localStorage.getItem('myText');
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        alert('Text copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+        alert('Failed to copy text. Check console for errors.');
+      });
+  });
+</script>
+
+</body>
+</html>
