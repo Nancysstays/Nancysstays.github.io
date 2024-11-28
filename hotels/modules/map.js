@@ -163,3 +163,45 @@ async function handleBooking(place) {
 // ... (rest of the map.js code)
 
 
+// modules/map.js
+
+// ... (previous code)
+
+export function initMap() {
+    // ... (map and autocomplete initialization)
+
+    // Get user's location (if allowed)
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setCenter(userLocation); 
+
+                // Add a marker for the user's location
+                new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE, 
+                        scale: 8,
+                        fillColor: '#4285F4', // Google blue
+                        fillOpacity: 1,
+                        strokeColor: '#fff',
+                        strokeWeight: 2
+                    }
+                });
+            },
+            (error) => {
+                console.error("Error getting user's location:", error);
+                // ... (Handle error, e.g., use a default location)
+            }
+        );
+    } else {
+        // ... (Browser doesn't support geolocation)
+    }
+}
+
+// ... (rest of the map.js code)
