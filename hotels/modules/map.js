@@ -205,3 +205,27 @@ export function initMap() {
 }
 
 // ... (rest of the map.js code)
+
+// modules/map.js
+
+// ... (previous code)
+
+export async function searchHotels(searchTerm) {
+    showLoadingIndicator(); // Show loading indicator before fetching results
+
+    try {
+        // ... (Use Google Maps Places API to search for hotels)
+
+        // ... (Add distance from user's location)
+
+        return resultsWithDistance;
+    } catch (error) {
+        console.error("Error searching for hotels:", error);
+        // ... (Handle error, e.g., display an error message)
+    } finally {
+        hideLoadingIndicator(); // Hide loading indicator after results are fetched or error occurs
+    }
+}
+
+// ... (rest of the map.js code)
+
