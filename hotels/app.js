@@ -45,3 +45,32 @@ google.maps.event.addListener(map, 'click', function(event) {
         });
     }
 });
+
+// app.js
+
+// ... (previous code)
+
+// Initialize IndexedDB when the app starts
+openDatabase()
+    .then(() => {
+        console.log('IndexedDB initialized successfully.');
+        // ... (You can fetch and display existing bookings here)
+    })
+    .catch(error => {
+        console.error('Error initializing IndexedDB:', error);
+    });
+
+// ... (rest of the app.js code)
+
+// app.js
+
+// ... (previous code)
+
+// Fetch and display booking history when the app starts
+getAllBookings()
+    .then(bookings => {
+        displayBookingHistory(bookings);
+    });
+
+// ... (rest of the app.js code)
+
