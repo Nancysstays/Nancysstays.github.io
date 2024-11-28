@@ -275,3 +275,44 @@ function getMarkerIcon(hotel) {
 }
 
 // ... (rest of the map.js code)
+
+// modules/map.js
+
+// ... (previous code)
+
+export async function searchHotels(searchTerm, filters = {}) { // Add filters parameter
+    showLoadingIndicator();
+
+    try {
+        // ... (Use Google Maps Places API to search for hotels)
+
+        // ... (Add distance from user's location)
+
+        // Apply filters to the results
+        const filteredResults = resultsWithDistance.filter(hotel => {
+            let matchesFilters = true;
+
+            // Filter by rating
+            if (filters.rating && filters.rating.length > 0) {
+                const minRating = Math.min(...filters.rating); // Get the minimum selected rating
+                matchesFilters = matchesFilters && hotel.rating >= minRating;
+            }
+
+            // Filter by price level (assuming price level is an integer from 0 to 4)
+            if (filters.price && filters.price.length > 0) {
+                // ... (Implement price filtering logic based on your data)
+            }
+
+            return matchesFilters;
+        });
+
+        return filteredResults; 
+    } catch (error) {
+        // ... (Error handling)
+    } finally {
+        hideLoadingIndicator();
+    }
+}
+
+// ... (rest of the map.js code)
+
