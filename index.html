@@ -166,7 +166,7 @@
         </div>
         <div class="col-md-4">
           <div class="card inspiration-card">
-            <a href="https://images.unsplash.com/photo-1544427993-45ef50015067?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" target="_blank">
+            <a href="https://www.expedia.com/Machu-Picchu-Hotels.d6059685.Travel-Guide-Hotels" target="_blank"> 
               <img src="https://images.unsplash.com/photo-1530205921991-22329ef908dd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=914&q=80"
                    class="card-img-top" alt="Machu Picchu, Peru">
             </a>
@@ -268,7 +268,7 @@
   <script>
     function onSignIn(googleUser) {
       // Useful data for your website
-      var profile = googleUser.getBasicProfile();
+      var profile = googleUser.getBasic.Profile();
       console.log('ID: ' + profile.getId()); 
       console.log('Name: ' + profile.getName());
       console.log('Image URL: ' + profile.getImageUrl());
@@ -276,8 +276,24 @@
 
       // You can use this data to personalize the user experience,
       // for example, display their name or profile picture.
+
+      // Example: Display the user's name after they sign in
+      var userName = profile.getName();
+      document.getElementById('userName').innerText = 'Welcome, ' + userName + '!'; 
     }
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+  <footer class="w3-container w3-padding-32 w3-center w3-xlarge">
+    <a href="https://www.facebook.com/your_facebook_page" target="_blank"><i class="fa-brands fa-facebook-official w3-hover-opacity"></i></a>
+    <a href="https://www.instagram.com/your_instagram_profile" target="_blank"><i class="fa-brands fa-instagram w3-hover-opacity"></i></a>
+    <a href="https://www.snapchat.com/add/your_snapchat_profile" target="_blank"><i class="fa-brands fa-snapchat w3-hover-opacity"></i></a>
+    <a href="https://www.pinterest.com/your_pinterest_profile" target="_blank"><i class="fa-brands fa-pinterest-p w3-hover-opacity"></i></a>
+    <a href="https://twitter.com/your_twitter_profile" target="_blank"><i class="fa-brands fa-twitter w3-hover-opacity"></i></a>
+    <a href="https://www.linkedin.com/in/your_linkedin_profile" target="_blank"><i class="fa-brands fa-linkedin w3-hover-opacity"></i></a>
+    <p class="w3-medium">Powered by <a href="https://www.expedia.com/" target="_blank">Expedia</a></p>
+  </footer>
 
 </body>
 </html>
