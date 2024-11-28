@@ -112,3 +112,96 @@ applyFiltersButton.addEventListener('click', () => {
 });
 
 // ... (rest of the app.js code)
+
+// app.js
+
+// ... (previous code)
+
+// Add event listener for filter button
+applyFiltersButton.addEventListener('click', () => {
+    const selectedFilters = {
+        rating: [],
+        price: []
+    };
+
+    // Get selected rating filters
+    const ratingFilters = document.querySelectorAll('#filter-container input[type="checkbox"]:checked');
+    ratingFilters.forEach(filter => {
+        selectedFilters.rating.push(parseFloat(filter.value)); 
+    });
+
+    // ... (Get selected price range filters)
+
+    // Apply filters to search results
+    const searchTerm = document.getElementById('hotel-search').value; 
+    searchHotels(searchTerm, selectedFilters) 
+        .then(results => {
+            displayResults(results);
+            displayMarkers(results); // Update markers on the map
+        });
+});
+
+// ... (rest of the app.js code)
+// app.js
+
+// ... (previous code)
+
+// Display sorting options
+displaySortingOptions();
+
+// Add event listener for sorting dropdown
+const sortSelect = document.getElementById('sort-select'); 
+sortSelect.addEventListener('change', () => {
+    const sortBy = sortSelect.value; 
+    sortResults(sortBy); 
+});
+
+// Function to sort the results
+function sortResults(sortBy) {
+    const resultsContainer = document.getElementById('results-container');
+    const hotelCards = Array.from(resultsContainer.querySelectorAll('.hotel-card')); 
+
+    hotelCards.sort((a, b) => {
+        switch (sortBy) {
+            case 'rating':
+                // Assuming you have a way to access the rating from the hotel card element
+                const ratingA = parseFloat(a.querySelector('p:nth-child(3)').textContent.split(': ')[1]); 
+                const ratingB = parseFloat(b.querySelector('p:nth-child(3)').textContent.split(': ')[1]);
+                return ratingB - ratingA; // High to low
+            case 'distance':
+                // Assuming you have a way to access the distance from the hotel card element
+                const distanceA = parseFloat(a.querySelector('p:nth-child(2)').textContent.split(': ')[1]);
+                const distanceB = parseFloat(b.querySelector('p:nth-child(2)').textContent.split(': ')[1]);
+                return distanceA - distanceB; // Nearest first
+            default:
+                return 0; // Default order
+        }
+    });
+
+    // Re-append the sorted hotel cards to the results container
+    hotelCards.forEach(card => resultsContainer.appendChild(card));
+}
+
+// ... (rest of the app.js code)
+// app.js
+
+// ... (previous code)
+
+// ... (In your searchHotels function or wherever you fetch results)
+const resultsPerPage = 10; // Number of results per page
+let currentPage = 1;
+
+// ... (After fetching results)
+const totalPages = Math.ceil(results.length / resultsPerPage); 
+displayPagination(currentPage, totalPages);
+
+// ... (In the event listener for pagination links)
+pageLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        // ...
+        currentPage = page; // Update current page
+        // ... (Fetch and display results for the new page)
+    });
+});
+
+// ... (rest of the app.js code)
