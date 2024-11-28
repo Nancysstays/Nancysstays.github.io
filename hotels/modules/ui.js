@@ -131,3 +131,56 @@ export function displayBookingHistory(bookings) {
 }
 
 // ... (rest of the ui.js code)
+
+// modules/ui.js
+
+// ... (previous code)
+
+export function displayResults(results) {
+    // ... (Clear previous results)
+
+    results.forEach(hotel => {
+        const hotelCard = `
+            <div class="hotel-card">
+                <h3>${hotel.name}</h3>
+                <p>${hotel.formatted_address}</p>
+                ${hotel.distance ? `<p>Distance: ${hotel.distance.toFixed(2)} km</p>` : ''} 
+                <img src="${hotel.photos[0].getUrl()}" alt="${hotel.name}">
+            </div>
+        `;
+        resultsContainer.innerHTML += hotelCard;
+    });
+}
+
+// ... (rest of the ui.js code)
+// modules/ui.js
+
+// ... (previous code)
+
+export function displayResults(results) {
+    // ... (Clear previous results)
+
+    // Create a list element for the results
+    const resultsList = document.createElement('ul');
+    resultsList.classList.add('list-group'); // Add Bootstrap list group class
+
+    results.forEach(hotel => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item'); 
+
+        const hotelCard = `
+            <div class="hotel-card">
+                <h3>${hotel.name}</h3>
+                <p>${hotel.formatted_address}</p>
+                ${hotel.distance ? `<p>Distance: ${hotel.distance.toFixed(2)} km</p>` : ''}
+                <img src="${hotel.photos[0].getUrl()}" alt="${hotel.name}" class="img-fluid"> 
+            </div>
+        `;
+        listItem.innerHTML = hotelCard;
+        resultsList.appendChild(listItem); 
+    });
+
+    resultsContainer.appendChild(resultsList); 
+}
+
+// ... (rest of the ui.js code)
