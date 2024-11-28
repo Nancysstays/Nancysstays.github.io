@@ -74,3 +74,41 @@ getAllBookings()
 
 // ... (rest of the app.js code)
 
+// app.js
+
+// ... (previous code)
+
+// Initialize IndexedDB and then authentication
+openDatabase()
+    .then(() => {
+        // ... (IndexedDB initialized)
+        initAuth(); // Initialize Google Sign-In after IndexedDB is ready
+    })
+    .catch(error => {
+        // ... (Error handling)
+    });
+
+// ... (rest of the app.js code)
+// app.js
+
+// ... (previous code)
+
+// Display filter options
+displayFilters();
+
+// Add event listener for filter button
+const applyFiltersButton = document.getElementById('apply-filters');
+applyFiltersButton.addEventListener('click', () => {
+    const selectedFilters = { 
+        rating: [],
+        price: []
+    };
+
+    // ... (Get selected rating filters)
+    // ... (Get selected price range filters)
+
+    // Apply filters to search results or re-fetch data
+    // ...
+});
+
+// ... (rest of the app.js code)
