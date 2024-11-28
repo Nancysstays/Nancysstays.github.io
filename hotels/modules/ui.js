@@ -184,3 +184,21 @@ export function displayResults(results) {
 }
 
 // ... (rest of the ui.js code)
+
+// modules/ui.js
+
+// ... (previous code)
+
+// Function to display a loading indicator
+export function showLoadingIndicator() {
+    const resultsContainer = document.getElementById('results-container');
+    resultsContainer.innerHTML = '<div class="loading-indicator">Loading...</div>'; 
+}
+
+// Function to hide the loading indicator
+export function hideLoadingIndicator() {
+    const resultsContainer = document.getElementById('results-container');
+    resultsContainer.innerHTML = '';
+}
+
+// ... (rest of the ui.js code)
