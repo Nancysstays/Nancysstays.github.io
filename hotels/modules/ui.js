@@ -1,3 +1,81 @@
+// modules/ui.js
+
+// ... (previous code)
+
+// Function to display sorting options
+export function displaySortingOptions() {
+    const sortContainer = document.getElementById('sort-container');
+
+    const sortOptions = `
+        <select id="sort-select" class="form-select">
+            <option value="default">Default</option> 
+            <option value="rating">Rating (High to Low)</option>
+            <option value="distance">Distance (Nearest First)</option>
+            </select>
+    `;
+
+    sortContainer.innerHTML = sortOptions;
+}
+
+// ... (rest of the ui.js code)
+// modules/ui.js
+
+// ... (previous code)
+
+// Function to display pagination controls
+export function displayPagination(currentPage, totalPages) {
+    const paginationContainer = document.getElementById('pagination-container'); 
+    paginationContainer.innerHTML = ''; // Clear previous pagination
+
+    if (totalPages <= 1) {
+        return; // No need for pagination if there's only one page
+    }
+
+    const paginationList = document.createElement('ul');
+    paginationList.classList.add('pagination'); 
+
+    // Previous button
+    const prevItem = document.createElement('li');
+    prevItem.classList.add('page-item', currentPage === 1 ? 'disabled' : '');
+    prevItem.innerHTML = `
+        <a class="page-link" href="#" aria-label="Previous" data-page="${currentPage - 1}">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    `;
+    paginationList.appendChild(prevItem);
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        const pageItem = document.createElement('li');
+        pageItem.classList.add('page-item', i === currentPage ? 'active' : '');
+        pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+        paginationList.appendChild(pageItem);
+    }
+
+    // Next button
+    const nextItem = document.createElement('li');
+    nextItem.classList.add('page-item', currentPage === totalPages ? 'disabled' : '');
+    nextItem.innerHTML = `
+        <a class="page-link" href="#" aria-label="Next" data-page="${currentPage + 1}">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    `;
+    paginationList.appendChild(nextItem);
+
+    paginationContainer.appendChild(paginationList);
+
+    // Add event listeners to page links
+    const pageLinks = paginationContainer.querySelectorAll('.page-link');
+    pageLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const page = parseInt(link.dataset.page, 10);
+            // ... (Call a function to fetch and display results for the selected page)
+        });
+    });
+}
+
+// ... (rest of the ui.js code)
 export function displayResults(results) {
     const resultsContainer = document.getElementById('results-container');
     resultsContainer.innerHTML = ''; // Clear previous results
