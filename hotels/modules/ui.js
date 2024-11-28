@@ -18,3 +18,10 @@ export function displayResults(results) {
         resultsContainer.innerHTML += hotelCard;
     });
 }
+
+// ... (previous code)
+
+// Remove the previous `showHotelDetails` function from this file, 
+// as it's now in `map.js` and handles fetching details as well.
+
+// ... (Rest of the code)
