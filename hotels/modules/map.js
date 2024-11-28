@@ -112,3 +112,54 @@ export async function showHotelDetails(hotel) {
 
 // ... (Rest of the code)
 
+// modules/map.js
+
+// ... (previous code)
+
+export async function showHotelDetails(placeId) {
+    // ... (fetch place details as before)
+
+    try {
+        const place = await fetchPlaces(request, service); 
+
+        // Display the modal with hotel details
+        displayHotelDetails(place); // Call the function from ui.js
+
+        // Add a booking button click handler
+        const bookNowButton = document.querySelector('#hotelModal .btn-primary');
+        bookNowButton.onclick = () => handleBooking(place); 
+
+    } catch (error) { 
+        // ... (error handling)
+    }
+}
+
+// Function to handle the "Book Now" button click
+async function handleBooking(place) {
+    // 1. Get user information (if logged in)
+    const user = getUserProfile(); // From auth.js
+
+    // 2. Create booking data object
+    const bookingData = {
+        userId: user ? user.id : null, // Associate with user if logged in
+        hotel: {
+            placeId: place.place_id,
+            name: place.name,
+            address: place.formatted_address
+            // ... other relevant details
+        },
+        // ... (add booking date, number of guests, etc.)
+    };
+
+    // 3. Store booking data (e.g., in IndexedDB)
+    try {
+        await addBooking(bookingData); // From storage.js
+        // ... (Optionally display a success message to the user)
+    } catch (error) {
+        // ... (Handle error - e.g., display an error message)
+    }
+}
+
+// ... (rest of the map.js code)
+
+
