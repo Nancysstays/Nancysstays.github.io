@@ -82,3 +82,52 @@ export function displayHotelDetails(place) {
 }
 
 // ... (rest of the ui.js code)
+
+// modules/ui.js
+
+// ... (previous code)
+
+// Function to display booking history in a dedicated section
+export function displayBookingHistory(bookings) {
+    const historyContainer = document.getElementById('booking-history'); 
+    historyContainer.innerHTML = ''; // Clear previous bookings
+
+    if (bookings.length === 0) {
+        historyContainer.innerHTML = '<p>No bookings found.</p>';
+        return;
+    }
+
+    const bookingsList = document.createElement('ul');
+    bookings.forEach(booking => {
+        const bookingItem = `
+            <li>
+                <strong>${booking.hotel.name}</strong>
+                <p>${booking.hotel.address}</p>
+                <p>Booking ID: ${booking.id}</p> 
+                <button class="btn btn-danger btn-sm delete-booking" data-booking-id="${booking.id}">Cancel</button> 
+            </li>
+        `;
+        bookingsList.innerHTML += bookingItem;
+    });
+
+    historyContainer.appendChild(bookingsList);
+
+    // Add event listeners for "Cancel" buttons
+    const deleteButtons = document.querySelectorAll('.delete-booking');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const bookingId = button.dataset.bookingId;
+            // ... (Call a function to delete the booking from IndexedDB and update the UI)
+            deleteBooking(bookingId)
+                .then(() => {
+                    // Update the booking history display
+                    getAllBookings()
+                        .then(updatedBookings => {
+                            displayBookingHistory(updatedBookings);
+                        });
+                });
+        });
+    });
+}
+
+// ... (rest of the ui.js code)
