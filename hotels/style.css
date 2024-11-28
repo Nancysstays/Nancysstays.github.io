@@ -25,3 +25,34 @@ body {
         margin-bottom: 10px;
     }
 } 
+
+// styles.css
+
+/* ... (previous styles) */
+
+.list-group-item {
+    border: none; /* Remove default list item border */
+    padding: 0; /* Remove default padding */
+    margin-bottom: 10px; /* Add spacing between list items */
+}
+
+.hotel-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+
+.hotel-card img {
+    max-width: 100%; /* Make images responsive */
+    height: auto;
+}
+// styles.css
+
+/* ... (previous styles) */
+
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust as needed */
+    font-size: 18px;
+}
