@@ -1,0 +1,27 @@
+/* Basic Styling - Adjust as needed */
+body {
+    font-family: sans-serif;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.hotel-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) { 
+    #search-container {
+        flex-direction: column;
+    }
+
+    #map {
+        height: 300px; 
+        margin-bottom: 10px;
+    }
+} 
