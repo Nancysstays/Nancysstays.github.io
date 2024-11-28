@@ -229,3 +229,49 @@ export async function searchHotels(searchTerm) {
 
 // ... (rest of the map.js code)
 
+// modules/map.js
+
+// ... (previous code)
+
+// Function to display markers on the map with custom icons
+function displayMarkers(hotels) {
+    // Clear existing markers
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+
+    hotels.forEach(hotel => {
+        const marker = new google.maps.Marker({
+            position: hotel.geometry.location,
+            map: map,
+            title: hotel.name,
+            icon: getMarkerIcon(hotel) // Get custom icon based on hotel properties
+        });
+
+        // Add click listener to show hotel details
+        marker.addListener('click', () => {
+            showHotelDetails(hotel.place_id); 
+        });
+
+        markers.push(marker); 
+    });
+}
+
+// Function to get a custom marker icon based on hotel properties (e.g., rating)
+function getMarkerIcon(hotel) {
+    // Example: Different icons based on rating
+    let iconUrl;
+    if (hotel.rating >= 4.5) {
+        iconUrl = 'images/marker-green.png'; 
+    } else if (hotel.rating >= 3) {
+        iconUrl = 'images/marker-orange.png'; 
+    } else {
+        iconUrl = 'images/marker-red.png'; 
+    }
+
+    return {
+        url: iconUrl,
+        scaledSize: new google.maps.Size(30, 30) // Adjust size as needed
+    };
+}
+
+// ... (rest of the map.js code)
