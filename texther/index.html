@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Local Storage Example</title>
+<title>Local Storage Example with Autocomplete</title>
 </head>
 <body>
 
-<h1>Local Storage Example</h1>
+<h1>Local Storage Example with Autocomplete</h1>
 
 <div>
   <label for="textInput">Enter text:</label>
-  <input type="text" id="textInput">
+  <input type="text" id="textInput" placeholder="Start typing to search...">
   <button id="saveButton">Save Text</button>
 </div>
 
@@ -25,6 +25,23 @@
 
   // Load stored texts on page load
   loadStoredTexts();
+
+  textInput.addEventListener('input', () => {
+    const query = textInput.value.toLowerCase();
+    const storedTexts = JSON.parse(localStorage.getItem('storedTexts')) || [];
+    const filteredTexts = storedTexts.filter(text => text.toLowerCase().includes(query));
+
+    // Update the suggestions in the list
+    storedTextsList.innerHTML = '';
+    filteredTexts.forEach(text => {
+      const listItem = document.createElement('li');
+      listItem.textContent = text;
+      listItem.addEventListener('click', () => {
+        textInput.value = text;
+      });
+      storedTextsList.appendChild(listItem);
+    });
+  });
 
   saveButton.addEventListener('click', () => {
     const text = textInput.value;
