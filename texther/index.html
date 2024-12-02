@@ -1,94 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Local Storage Example with Autocomplete</title>
+  <title>Local Storage Example with CRUD</title>
 </head>
 <body>
+  <h1>Local Storage Example with CRUD</h1>
 
-<h1>Local Storage Example with Autocomplete</h1>
+  <div>
+    <label for="textInput">Enter text:</label>
+    <input type="text" id="textInput" placeholder="Start typing to search...">
+    <button id="saveButton">Save Text</button>
+  </div>
 
-<div>
-  <label for="textInput">Enter text:</label>
-  <input type="text" id="textInput" placeholder="Start typing to search...">
-  <button id="saveButton">Save Text</button>
-</div>
+  <div>
+    <h2>Stored Texts:</h2>
+    <ul id="storedTexts"></ul>
+  </div>
 
-<div>
-  <h2>Stored Texts:</h2>
-  <ul id="storedTexts"></ul>
-</div>
-
-<script>
-  const textInput = document.getElementById('textInput');
-  const saveButton = document.getElementById('saveButton');
-  const storedTextsList = document.getElementById('storedTexts');
-
-  // Load stored texts on page load
-  loadStoredTexts();
-
-  textInput.addEventListener('input', () => {
-    const query = textInput.value.toLowerCase();
-    const storedTexts = JSON.parse(localStorage.getItem('storedTexts')) || [];
-    const filteredTexts = storedTexts.filter(text => text.toLowerCase().includes(query));
-
-    // Update the suggestions in the list
-    storedTextsList.innerHTML = '';
-    filteredTexts.forEach(text => {
-      const listItem = document.createElement('li');
-      listItem.textContent = text;
-      listItem.addEventListener('click', () => {
-        textInput.value = text;
-      });
-      storedTextsList.appendChild(listItem);
-    });
-  });
-
-  saveButton.addEventListener('click', () => {
-    const text = textInput.value;
-    saveText(text);
-    textInput.value = ''; // Clear input field
-  });
-
-  function saveText(text) {
-    let storedTexts = JSON.parse(localStorage.getItem('storedTexts')) || [];
-    storedTexts.push(text);
-    localStorage.setItem('storedTexts', JSON.stringify(storedTexts));
-    loadStoredTexts();
-  }
-
-  function loadStoredTexts() {
-    storedTextsList.innerHTML = ''; // Clear the list
-
-    const storedTexts = JSON.parse(localStorage.getItem('storedTexts')) || [];
-    storedTexts.forEach((text, index) => {
-      const listItem = document.createElement('li');
-      listItem.textContent = text;
-
-      // Add a "Copy" link for each stored text
-      const copyLink = document.createElement('a');
-      copyLink.href = '#';
-      copyLink.textContent = 'Copy';
-      copyLink.addEventListener('click', (event) => {
-        event.preventDefault();
-        copyToClipboard(text);
-      });
-      listItem.appendChild(copyLink);
-
-      storedTextsList.appendChild(listItem);
-    });
-  }
-
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text)
-      .then(() => {
-        alert('Text copied to clipboard!');
-      })
-      .catch(err => {
-        console.error('Failed to copy text: ', err);
-        alert('Failed to copy text. Check console for errors.');
-      });
-  }
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
