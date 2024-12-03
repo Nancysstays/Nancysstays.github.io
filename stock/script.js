@@ -108,7 +108,7 @@ class TradingStrategy {
 }
 
 // Main execution
-const apiKey = 'YOUR_API_KEY';
+const apiKey = 'XVYHOWRTRNPN3FJA';
 const symbol = 'AAPL';
 
 const fetcher = new StockDataFetcher(apiKey, symbol);
