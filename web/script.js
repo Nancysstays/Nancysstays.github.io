@@ -8,21 +8,6 @@ class ParallaxLayer {
   }
 }
 
-class ParallaxPage {
-  constructor() {
-    this.parallaxLayers = document.querySelectorAll('.parallax-layer');
-  }
-
-  init() {
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      this.parallaxLayers.forEach(layer => {
-        new ParallaxLayer(layer).parallaxEffect(scrollY);
-      });
-    });
-  }
-}
-
 class AnalyticsTracker {
   constructor(endpoint) {
     this.endpoint = endpoint;
@@ -58,13 +43,13 @@ class AnalyticsTracker {
 class Page {
   constructor() {
     this.tracker = new AnalyticsTracker('https://your-analytics-endpoint.com/track');
+    this.parallaxLayers = document.querySelectorAll('.parallax-layer');
   }
 
   init() {
     this.trackPageView();
     this.trackButtonClicks();
-    // Initialize the parallax effect (if applicable)
-    new ParallaxPage().init();
+    this.initParallax();
   }
 
   trackPageView() {
@@ -76,6 +61,15 @@ class Page {
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         this.tracker.trackEvent('button_click');
+      });
+    });
+  }
+
+  initParallax() {
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      this.parallaxLayers.forEach(layer => {
+        new ParallaxLayer(layer).parallaxEffect(scrollY);
       });
     });
   }
