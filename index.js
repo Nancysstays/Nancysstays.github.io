@@ -293,3 +293,17 @@ function buildIWContent(place) {
 }
 
 window.initMap = initMap;
+
+function createAffiliateLink(url, partnerId, campaignId) {
+  const affiliateLink = `${url}?partnerId=${partnerId}&campaignId=${campaignId}`;
+  return affiliateLink;
+}
+
+const affiliateUrl = "https://expedia.com/affiliates/expedia-home.bHJcizS";
+const myPartnerId = "12345";
+const myCampaignId = "winterSale";
+
+const trackedLink = createAffiliateLink(affiliateUrl, myPartnerId, myCampaignId);
+
+// Use the trackedLink in your HTML, e.g.,
+// document.getElementById("myLink").href = trackedLink;
