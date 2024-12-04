@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('#data-container').html('<p>Scraping Google Finance is not recommended. Please use authorized APIs.</p>');
 
     // **Uncomment the below code if you still want to demonstrate scraping (for informational purposes only)**
-    /*
+
     $.ajax({
         url: url,
         dataType: 'html',
@@ -33,5 +33,4 @@ $(document).ready(function() {
             $('#data-container').html('<p>Error fetching data. Please try again later.</p>');
         }
     });
-    */
 });
