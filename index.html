@@ -107,15 +107,32 @@
     .section-heading h2 {
       font-weight: 600; 
     }
+.header-container {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Divide into two columns: auto-sized for logo, 1fr for sign-in */
+  align-items: center; /* Vertically center items within columns */
+  padding: 20px; /* Add padding for spacing */
+  background-color: #f0f0f0; /* Optional: Add background color */
+}
+
+.logo-container {
+  margin-right: 20px; /* Add spacing between logo and sign-in button */
+}
+
   </style>
 </head>
 <body>
 
   <div class="container"> 
-    <div style="display: flex; align-items: center; justify-content: flex-end;"> 
-      <img src="icons-512.png" alt="Your Logo" style="height: 40px; margin-right: 10px;"> 
-      <div id="googleSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
-    </div>
+    <header class="header-container">
+  <div class="logo-container">
+    <img src="icons-512.png" alt="Your Logo" style="height: 40px;">
+  </div>
+  <div class="sign-in-container">
+    <div id="googleSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+  </div>
+</header>
+
 
     <div class="eg-widget" data-widget="search" data-program="us-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l477qW"></div>
   
