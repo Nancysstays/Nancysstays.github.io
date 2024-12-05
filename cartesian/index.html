@@ -50,15 +50,15 @@
             <button id="drawLineButton" class="btn btn-primary">Draw Line</button>
             <button id="clearCanvasButton" class="btn btn-secondary">Clear Canvas</button>
             <hr>
-            <div class="form-group">
-              <label for="saveName">Save Name:</label>
-              <input type="text" class="form-control" id="saveName">
-              <button id="saveButton" class="btn btn-success">Save</button>
+            <div class="card-header">
+              <h5 class="card-title">Saved Designs</h5>
             </div>
-            <div class="form-group">
-              <label for="loadName">Load Name:</label>
-              <input type="text" class="form-control" id="loadName">
-              <button id="loadButton" class="btn btn-info">Load</button>
+            <div class="card-body">
+              <ul class="list-group" id="savedDesignsList"></ul>
+              <div class="input-group mt-2">
+                <input type="text" class="form-control" id="newDesignName" placeholder="Enter design name">
+                <button type="button" class="btn btn-primary" id="addDesignButton">Add Design</button>
+              </div>
             </div>
           </div>
         </div>
