@@ -13,6 +13,7 @@ const saveNameInput = document.getElementById('saveName');
 const loadNameInput = document.getElementById('loadName');
 const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
+const savedDesignsList = document.getElementById('savedDesignsList');
 
 function drawLine(x1, y1, x2, y2) {
   ctx.beginPath();
@@ -26,9 +27,11 @@ function clearCanvas() {
 }
 
 function saveCanvas() {
-  const canvasData = canvas.toDataURL();
   const saveName = saveNameInput.value;
+  const canvasData = canvas.toDataURL();
   localStorage.setItem(saveName, canvasData);
+  loadSavedDesigns(); // Reload the list to display the new design
+  newDesignNameInput.value = '';
 }
 
 function loadCanvas() {
@@ -41,6 +44,36 @@ function loadCanvas() {
       ctx.drawImage(image, 0, 0);
     };
   }
+}
+
+function loadSavedDesigns() {
+  savedDesignsList.innerHTML = ''; // Clear the list
+  const savedDesigns = Object.keys(localStorage);
+  savedDesigns.forEach(designName => {
+    const listItem = document.createElement('li');
+    listItem.classList.add('list-group-item');
+    listItem.textContent = designName;
+
+    // Add delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('btn', 'btn-danger', 'btn-sm', 'float-end');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => {
+      localStorage.removeItem(designName);
+      loadSavedDesigns(); // Reload the list to update the display
+    });
+    listItem.appendChild(deleteButton);
+
+    listItem.addEventListener('click', () => {
+      const canvasData = localStorage.getItem(designName);
+      const image = new Image();
+      image.src = canvasData;
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0);
+      };
+    });
+    savedDesignsList.appendChild(listItem);
+  });
 }
 
 drawLineButton.addEventListener('click', () => {
@@ -60,3 +93,5 @@ drawLineButton.addEventListener('click', () => {
 clearCanvasButton.addEventListener('click', clearCanvas);
 saveButton.addEventListener('click', saveCanvas);
 loadButton.addEventListener('click', loadCanvas);
+
+loadSavedDesigns(); // Initial load of saved designs
