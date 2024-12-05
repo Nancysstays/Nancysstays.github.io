@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Cartesian Coordinate System</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     #canvas {
       border: 1px solid black;
@@ -16,40 +17,50 @@
         <canvas id="canvas" width="500" height="500"></canvas>
       </div>
       <div class="col-md-6">
-        <div class="form-group">
-          <label for="coordinateSystem">Coordinate System:</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="coordinateSystem" id="xyCoordinateSystem" value="xy" checked>
-            <label class="form-check-label" for="xyCoordinateSystem">
-              XY Coordinates
-            </label>
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Coordinate System</h5>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="coordinateSystem" id="dxdyCoordinateSystem" value="dxdy">
-            <label class="form-check-label" for="dxdyCoordinateSystem">
-              DX, DY Coordinates
-            </label>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="coordinateSystem">Coordinate System:</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="coordinateSystem" id="xyCoordinateSystem" value="xy" checked>
+                <label class="form-check-label" for="xyCoordinateSystem">
+                  XY Coordinates
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="coordinateSystem" id="dxdyCoordinateSystem" value="dxdy">
+                <label class="form-check-label" for="dxdyCoordinateSystem">
+                  DX, DY Coordinates
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="x1">X1:</label>
+              <input type="number" class="form-control" id="x1">
+              <label for="y1">Y1:</label>
+              <input type="number" class="form-control" id="y1">
+              <label for="x2">X2:</label>
+              <input type="number" class="form-control" id="x2">
+              <label for="y2">Y2:</label>
+              <input type="number" class="form-control" id="y2">
+            </div>
+            <button id="drawLineButton" class="btn btn-primary">Draw Line</button>
+            <button id="clearCanvasButton" class="btn btn-secondary">Clear Canvas</button>
+            <hr>
+            <div class="form-group">
+              <label for="saveName">Save Name:</label>
+              <input type="text" class="form-control" id="saveName">
+              <button id="saveButton" class="btn btn-success">Save</button>
+            </div>
+            <div class="form-group">
+              <label for="loadName">Load Name:</label>
+              <input type="text" class="form-control" id="loadName">
+              <button id="loadButton" class="btn btn-info">Load</button>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="x1">X1:</label>
-          <input type="number" class="form-control" id="x1">
-          <label for="y1">Y1:</label>
-          <input type="number" class="form-control" id="y1">
-          <label for="x2">X2:</label>
-          <input type="number" class="form-control" id="x2">
-          <label for="y2">Y2:</label>
-          <input type="number" class="form-control" id="y2">
-        </div>
-        <button id="drawLineButton" class="btn btn-primary">Draw Line</button>
-        <button id="clearCanvasButton" class="btn btn-secondary">Clear Canvas</button>
-        <div class="form-group">
-          <label for="saveName">Save Name:</label>
-          <input type="text" class="form-control" id="saveName">
-          <button id="saveButton" class="btn btn-success">Save</button>
-          <label for="loadName">Load Name:</label>
-          <input type="text" class="form-control" id="loadName">
-          <button id="loadButton" class="btn btn-info">Load</button>
         </div>
       </div>
     </div>
