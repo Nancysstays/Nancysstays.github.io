@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    const url = 'https://example.com';  // Replace with actual URL (use with caution)
+    const url = 'https://www.google.com/finance/';  // Replace with actual URL (use with caution)
 
     function fetchData() {
         $.ajax({
