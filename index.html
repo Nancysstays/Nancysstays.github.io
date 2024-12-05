@@ -26,7 +26,7 @@
   <div class="w3-container w3-margin-top">
     <div class="w3-card">
       <div class="w3-container">
-        <input type="text" class="w3-input" placeholder="Enter your search text">
+        <input type="text" id="pac-input" class="w3-input" placeholder="Enter your search text">
         <button class="w3-button w3-teal w3-right">Search</button>
       </div>
     </div>
@@ -37,6 +37,10 @@
       <div id="map" class="w3-card-4"></div>
     </div>
     <div class="w3-col s12 m6">
+      <div id="infowindow-content">
+        <span id="place-name" class="title"></span><br>
+        <span id="place-address"></span>
+      </div>
       <ul class="w3-ul w3-card-4">
         <li class="w3-hover-text-black">Result 1</li>
         <li class="w3-hover-text-black">Result 2</li>
@@ -51,7 +55,7 @@
     <a href="#" class="w3-bar-item w3-button w3-right w3-mobile">Account</a>
   </div>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQrSmRiGSdgD50wdDypG5z7MTWDRNVl1k&libraries=places&callback=initMap"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap"></script>
   <script src="script.js"></script>
 </body>
 </html>
