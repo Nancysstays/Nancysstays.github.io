@@ -32,12 +32,19 @@ class DataFetcher {
 }
 
 // Usage example:
-const dataFetcher = new DataFetcher('https://www.google.com/finance/'); // Replace with your desired URL
+const dataFetcher = new DataFetcher('https://www.example.com');
 
 dataFetcher.fetchData()
   .then(data => {
-    console.log(data);
+    const dataContainer = document.getElementById('data-container');
+    dataContainer.innerHTML = `
+      <h2>Fetched Data</h2>
+      <ul>
+        ${data.map(item => `<li>${item}</li>`).join('')}
+      </ul>
+    `;
   })
   .catch(error => {
-    console.error('Error:', error);
+    const dataContainer = document.getElementById('data-container');
+    dataContainer.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
   });
