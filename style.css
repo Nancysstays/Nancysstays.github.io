@@ -1,147 +1,38 @@
-/* 
- * Always set the map height explicitly to define the size of the div element
- * that contains the map. 
- */
-#map {
-  height: 100%;
+#offer-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
+    transition: bottom 0.3s ease-in-out;
 }
 
-/* 
- * Optional: Makes the sample page fill the window. 
- */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+.hidden {
+    bottom: -100%;
 }
 
-body {
-  padding: 0 !important;
+.offer-content {
+    padding: 20px;
+    text-align: center;
 }
 
-table {
-  font-size: 12px;
+.download-button, .close-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.hotel-search {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 440px;
-  z-index: 1;
+.download-button {
+    background-color: #007bff;
+    color: #fff;
 }
 
-#map {
-  margin-top: 40px;
-  width: 440px;
-}
-
-#listing {
-  position: absolute;
-  width: 200px;
-  height: 470px;
-  overflow: auto;
-  left: 442px;
-  top: 0px;
-  cursor: pointer;
-  overflow-x: hidden;
-}
-
-#findhotels {
-  font-size: 14px;
-}
-
-#locationField {
-  -webkit-box-flex: 1 1 190px;
-  -ms-flex: 1 1 190px;
-  flex: 1 1 190px;
-  margin: 0 8px;
-}
-
-#controls {
-  -webkit-box-flex: 1 1 140px;
-  -ms-flex: 1 1 140px;
-  flex: 1 1 140px;
-}
-
-#autocomplete {
-  width: 100%;
-}
-
-#country {
-  width: 100%;
-}
-
-.placeIcon {
-  width: 20px;
-  height: 34px;
-  margin: 4px;
-}
-
-.hotelIcon {
-  width: 24px;
-  height: 24px;
-}
-
-#resultsTable {
-  border-collapse: collapse;
-  width: 240px;
-}
-
-#rating {
-  font-size: 13px;
-  font-family: Arial Unicode MS;
-}
-
-.iw_table_row {
-  height: 18px;
-}
-
-.iw_attribute_name {
-  font-weight: bold;
-  text-align: right;
-}
-
-.iw_table_icon {
-  text-align: right;
-}
-
-.ajax-popup {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000; 
-}
-
-.ajax-popup-content {
-  text-align: center;
-}
-
-.ajax-popup-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff; 
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.ajax-popup-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
+.close-button {
+    background-color: #ccc;
+    color: #333;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
