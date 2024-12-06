@@ -14,11 +14,31 @@ class InteractionTracker {
   track(interaction) {
     if (interaction instanceof VisitorInteraction) {
       this.interactions.push(interaction);
-      // Send interaction data to server (e.g., using AJAX)
-      console.log('Interaction tracked:', interaction); // For demonstration
+      this.saveToCSV(interaction);
+      this.saveToJSON(this.interactions); // Save all interactions periodically
     } else {
       console.error('Invalid interaction object provided.');
     }
+  }
+
+  saveToCSV(interaction) {
+    const csvData = `${interaction.type},${interaction.element},${interaction.timestamp}\n`;
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = URL.createObjectURL(new Blob([csvData], { type: 'text/csv' }));
+    hiddenElement.download = `interaction-${Date.now()}.csv`;
+    document.body.appendChild(hiddenElement);
+    hiddenElement.click();
+    document.body.removeChild(hiddenElement);
+  }
+
+  saveToJSON(interactions) {
+    const jsonData = JSON.stringify(interactions, null, 2); // Pretty-printed JSON
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = URL.createObjectURL(new Blob([jsonData], { type: 'application/json' }));
+    hiddenElement.download = `interactions-${Date.now()}.json`;
+    document.body.appendChild(hiddenElement);
+    hiddenElement.click();
+    document.body.removeChild(hiddenElement);
   }
 }
 
