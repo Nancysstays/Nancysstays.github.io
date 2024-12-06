@@ -25,5 +25,5 @@ form.addEventListener('submit', (event) => {
   console.log('Generated Expedia URL:', url);
 
   // Optionally, redirect the user to the generated URL
-  // window.location.href = url;
+  window.location.href = url;
 });
