@@ -9,48 +9,58 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         body {
-            padding-top: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .search-form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-form h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-form .form-group {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="search-form">
         <h1>Hotel Search</h1>
-        <p>Find the perfect hotel for your stay.</p>
         <form id="hotelSearchForm">
-            <div class="row mb-3">
-                <label for="destination" class="col-sm-2 col-form-label">Destination:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="destination" name="destination" readonly>
-                </div>
+            <div class="form-group">
+                <label for="destination">Destination:</label>
+                <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter city, state, or country">
             </div>
-            <div class="row mb-3">
-                <label for="checkInDate" class="col-sm-2 col-form-label">Check-in Date:</label>
-                <div class="col-sm-10">
-                    <input type="date" class="form-control" id="checkInDate" name="checkInDate">
-                </div>
+            <div class="form-group">
+                <label for="checkInDate">Check-in Date:</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate">
             </div>
-            <div class="row mb-3">
-                <label for="checkOutDate" class="col-sm-2 col-form-label">Check-out Date:</label>
-                <div class="col-sm-10">
-                    <input type="date" class="form-control" id="checkOutDate" name="checkOutDate">
-                </div>
+            <div class="form-group">
+                <label for="checkOutDate">Check-out Date:</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate">
             </div>
-            <div class="row mb-3">
-                <label for="guests" class="col-sm-2 col-form-label">Guests:</label>
-                <div class="col-sm-10">
-                    <select class="form-select" id="guests" name="guests">
-                        <option selected value="2">2 Adults</option>
-                        <option value="3">3 Adults</option>
-                        <option value="4">4 Adults</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="guests">Guests:</label>
+                <select class="form-select" id="guests" name="guests">
+                    <option selected value="2">2 Adults</option>
+                    <option value="3">3 Adults</option>
+                    <option value="4">4 Adults</option>
+                </select>
             </div>
-            <div class="row mb-3">
-                <div class="col-sm-12 text-center">
-                    <button type="submit" class="btn btn-primary">Search Expedia</button>
-                </div>
-            </div>
+            <button type="submit" class="btn btn-primary btn-block">Search Expedia</button>
         </form>
     </div>
 
@@ -86,6 +96,12 @@
 
                     $('#checkInDate').val(checkInDate.toISOString().split('T')[0]);
                     $('#checkOutDate').val(checkOutDate.toISOString().split('T')[0]);
+
+                    // Check if user data is stored in local storage
+                    var storedDestination = localStorage.getItem('destination');
+                    if (storedDestination) {
+                        $('#destination').val(storedDestination);
+                    }
                 }
             });
         }
@@ -99,6 +115,9 @@
 
             // Display a message to the user, informing them that they will be redirected to Expedia
             alert('You will be redirected to Expedia to view hotel search results.');
+
+            // Store user input in local storage
+            localStorage.setItem('destination', $('#destination').val());
 
             // Redirect the user to the Expedia user input version of the site
             const destination = document.getElementById('destination').value;
