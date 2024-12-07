@@ -1,13 +1,46 @@
-/* Base button styles */
-.btn-primary {
-    font-size: 16px;
-    padding: 10px 20px;
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("../1733349677562.jpg"); /* Set your background image path */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
-/* Responsive design for larger screens */
-@media (min-width: 768px) {
-    .btn-primary {
-        font-size: 18px;
-        padding: 15px 30px;
-    }
+.search-form {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    transform: translateY(-100%); /* Initial position off-screen */
+    transition: transform 0.5s ease-in-out;
+}
+
+.search-form h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-form.active {
+    transform: translateY(0); /* Animate form to center of screen */
+}
+
+.search-form .form-group {
+    margin-bottom: 20px;
+}
+
+.url-and-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* Parallax effect */
+.parallax-element {
+    transform: translateY(0);
+    transition: transform 1s;
 }
