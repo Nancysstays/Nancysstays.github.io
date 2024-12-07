@@ -85,3 +85,20 @@ document.getElementById('hotelSearchForm').addEventListener('submit', (event) =>
   event.preventDefault();
   triggerExpediaSearch();
 });
+
+// ... (rest of your JavaScript code)
+
+// Trigger search on Expedia widget
+function triggerExpediaSearch() {
+  const iframe = document.getElementById('expedia-iframe');
+
+  // Wait for the Expedia widget to load before focusing on the input
+  const intervalId = setInterval(() => {
+    const inputElement = iframe.contentDocument.querySelector('.expedia-input'); // Replace '.expedia-input' with the actual class or ID of the input element
+
+    if (inputElement) {
+      clearInterval(intervalId);
+      inputElement.focus();
+    }
+  }, 100); // Adjust the interval as needed
+}
