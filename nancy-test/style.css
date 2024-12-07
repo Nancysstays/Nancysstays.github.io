@@ -1,0 +1,13 @@
+/* Base button styles */
+.btn-primary {
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+/* Responsive design for larger screens */
+@media (min-width: 768px) {
+    .btn-primary {
+        font-size: 18px;
+        padding: 15px 30px;
+    }
+}
