@@ -257,3 +257,7 @@ html, body {
 
 /* W3.CSS and Bootstrap integration */
 /* ... (Your W3.CSS and Bootstrap classes and overrides here) */
+
+.eg-widget {
+  width: 100%;
+}
