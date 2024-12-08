@@ -36,4 +36,4 @@ function showNextImage() {
 
 }
 
-setInterval(showNextImage, 5000); // Change image every 5 seconds
+setInterval(showNextImage, 1000); // Change image every 5 seconds
