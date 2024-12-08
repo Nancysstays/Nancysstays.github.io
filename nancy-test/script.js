@@ -41,24 +41,35 @@ function showPosition(position) {
 
 getLocation();
 
-// Form submission handler (avoid scraping or directly linking to Expedia results)
+// Form submission handler (updated to include affiliate parameters)
 const form = document.getElementById('hotelSearchForm');
 form.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    // Display a message to the user, informing them that they will be redirected to Expedia
-    alert('You will be redirected to Expedia to view hotel search results.');
-
-    // Store user input in local storage
-    localStorage.setItem('destination', $('#destination').val());
-
-    // Redirect the user to the Expedia user input version of the site
+    // Get form values
     const destination = document.getElementById('destination').value;
     const checkInDate = document.getElementById('checkInDate').value;
     const checkOutDate = document.getElementById('checkOutDate').value;
     const guests = document.getElementById('guests').value;
 
-    const expediaUrl = `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(destination)}&flexibility=0_DAY&d1=${checkInDate}&startDate=${checkInDate}&d2=${checkOutDate}&endDate=${checkOutDate}&adults=${guests}&rooms=1&theme=&userIntent=&semdtl=&useRewards=true&sort=RECOMMENDED`;
+    // Construct Expedia URL with tracking parameters
+    let expediaUrl = 'https://www.expedia.com/Hotel-Search?';
+    expediaUrl += `destination=${encodeURIComponent(destination)}`;
+    expediaUrl += `&d1=${checkInDate}`;
+    expediaUrl += `&d2=${checkOutDate}`;
+    expediaUrl += `&adults=${guests}`;
+    expediaUrl += `&rooms=1`; //Adding rooms parameter for completeness
+
+    // Add your affiliate tracking parameters here - REPLACE THESE WITH YOUR ACTUAL VALUES
+    expediaUrl += '&siteid=1';
+    expediaUrl += '&langid=1033';
+    expediaUrl += '&clickref=1101lA2bbumV';  //Replace with your actual clickref
+    expediaUrl += '&affcid=US.DIRECT.PHG.1101l373826.1100l68075'; //Replace with your actual affcid
+    expediaUrl += '&ref_id=1101lA2bbumV';   //Replace with your actual ref_id
+    expediaUrl += '&my_ad=AFF.US.DIRECT.PHG.1101l373826.1100l68075';  //Replace with your actual my_ad
+    expediaUrl += '&afflid=1101lA2bbumV';   //Replace with your actual afflid
+    expediaUrl += '&affdtl=PHG.1101lA2bbumV.PZJpXVFXvB'; //Replace with your actual affdtl
+
 
     window.location.href = expediaUrl;
 });
@@ -70,21 +81,21 @@ window.addEventListener('scroll', function() {
     parallaxElement.style.transform = 'translateY(' + scrollY * 0.5 + 'px)';
 });
 
-// Trigger search on Expedia widget
-function triggerExpediaSearch() {
-  // Assuming the Expedia widget is in an iframe with id 'expedia-iframe'
-  const iframe = document.getElementById('expedia-iframe');
-
-  // You might need to adjust the selector and event type based on the widget's structure
-  const submitButton = iframe.contentDocument.querySelector('.submit-button'); // Replace '.submit-button' with the actual selector
-  submitButton.click();
-}
-
-// Trigger the search when the user clicks the "Search Expedia" button
-document.getElementById('hotelSearchForm').addEventListener('submit', (event) => {
-  event.preventDefault();
-  triggerExpediaSearch();
-});
+// // Trigger search on Expedia widget
+// function triggerExpediaSearch() {
+//   // Assuming the Expedia widget is in an iframe with id 'expedia-iframe'
+//   const iframe = document.getElementById('expedia-iframe');
+// 
+//   // You might need to adjust the selector and event type based on the widget's structure
+//   const submitButton = iframe.contentDocument.querySelector('.submit-button'); // Replace '.submit-button' with the actual selector
+//   submitButton.click();
+// }
+// 
+// // Trigger the search when the user clicks the "Search Expedia" button
+// document.getElementById('hotelSearchForm').addEventListener('submit', (event) => {
+//   event.preventDefault();
+//   triggerExpediaSearch();
+// });
 
 // ... (rest of your JavaScript code)
 
