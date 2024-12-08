@@ -113,3 +113,75 @@ function triggerExpediaSearch() {
     }
   }, 100); // Adjust the interval as needed
 }
+
+// ... (Your existing JavaScript code) ...
+
+const images = [
+  '../20241203_231605.jpg',
+  '../1733558426775.jpg',
+  '../1733349677562.jpg'
+  // Add more image paths as needed
+];
+
+let currentImageIndex = 0;
+const slideshow = document.querySelector('.background-slideshow');
+
+function showNextImage() {
+    const currentImage = slideshow.querySelector('img.active');
+    if (currentImage) {
+        currentImage.classList.remove('active');
+    }
+
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    const nextImage = document.createElement('img');
+    nextImage.src = images[currentImageIndex];
+    nextImage.alt = 'Background Image';
+    nextImage.classList.add('active');
+    
+    const randomXOffset = Math.random() * 20 - 10; //Offset between -10 and 10 pixels
+    const randomYOffset = Math.random() * 20 - 10;
+    nextImage.style.transform = `translate(${randomXOffset}px, ${randomYOffset}px)`;
+
+
+    slideshow.appendChild(nextImage);
+    
+    setTimeout(() => {
+      const oldestImage = slideshow.querySelector('img:not(.active)');
+        if(oldestImage){
+            slideshow.removeChild(oldestImage);
+        }
+    }, 1000);
+
+}
+/*
+function showNextImage() {
+  const slideshow = document.querySelector('.background-slideshow');
+  const allImages = slideshow.querySelectorAll('img');
+
+  // Hide the current image
+  allImages[currentImageIndex].classList.remove('active');
+
+  // Update the index (loop back to 0 if it goes beyond the last image)
+  currentImageIndex = (currentImageIndex + 1) % images.length;
+
+  // Show the next image
+  allImages[currentImageIndex].classList.add('active');
+}
+
+// Add images to the slideshow container dynamically
+const slideshow = document.createElement('div');
+slideshow.classList.add('background-slideshow');
+images.forEach(imagePath => {
+  const img = document.createElement('img');
+  img.src = imagePath;
+  img.alt = `Background Image`;
+  slideshow.appendChild(img);
+});
+document.body.insertBefore(slideshow, document.body.firstChild);
+
+// Start the slideshow
+showNextImage();
+
+*/
+// Set an interval to change images automatically (adjust as needed)
+setInterval(showNextImage, 5000); // Change image every 5 seconds
