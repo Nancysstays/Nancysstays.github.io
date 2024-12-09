@@ -4,48 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Search</title>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.css">
-    <script type="module" src=""js/router.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-</head>
+    <script type="module" src="js/router.js" defer></script> </head>
 
 <body>
-    <div class="search-form parallax-element">
-        <h1>Hotel Search</h1>
-        <form id="hotelSearchForm">
-            <div class="form-group">
-                <label for="destination">Destination:</label>
-                <input type="text" class="form-control" id="destination" name="destination"
-                    placeholder="Enter city, state, or country">
-            </div>
-            <div class="form-group">
-                <label for="checkInDate">Check-in Date:</label>
-                <input type="date" class="form-control" id="checkInDate" name="checkInDate">
-            </div>
-            <div class="form-group">
-                <label for="checkOutDate">Check-out Date:</label>
-                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate">
-            </div>
-            <div class="form-group">
-                <label for="guests">Guests:</label>
-                <select class="form-select" id="guests" name="guests">
-                    <option value="1">1 Adult</option>
-                    <option selected value="2">2 Adults</option>
-                    <option value="3">3 Adults</option>
-                    <option value="4">4 Adults</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Search Expedia</button>
-        </form>
-    </div>
-
-    <!-- div class="url-and-tabs">
-        <div class="eg-widget" data-widget="search" data-program="us-expedia" data-lobs="stays,flights" data-network="pz" data-camref="1100l477qW"></div>
-        <script class="eg-widgets-script" src="https://affiliates.expediagroup.com/products/widgets/assets/eg-widgets.js"></script>
-    </div -->
-
-    <!-- script src="script.js"></script -->
+    <div id="app"></div>
 </body>
+
 </html>
