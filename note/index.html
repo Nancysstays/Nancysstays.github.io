@@ -10,31 +10,39 @@
         <h1>Comprehensive Note-Taking Tool</h1>
         <div id="note-form">
             <div class="mb-3">
+                <button id="paragraphButton" class="btn btn-secondary active" data-format="p">Paragraph</button>
+                <button id="bulletButton" class="btn btn-secondary" data-format="ul">Bullets</button>
+                <button id="numberButton" class="btn btn-secondary" data-format="ol">Numbers</button>
+            </div>
+            <div class="mb-3">
                 <label for="note-text" class="form-label">Notes:</label>
                 <textarea class="form-control" id="note-text" rows="5" placeholder="Enter your notes here"></textarea>
+            </div>
             </div>
             <div class="mb-3">
                 <label for="note-links" class="form-label">Links:</label>
                 <textarea class="form-control" id="note-links" rows="3"
                     placeholder="Enter relevant links (one per line)"></textarea>
             </div>
+            <!-- rest of your form remains the same -->
             <div class="mb-3">
-                <label for="note-summary" class="form-label">Summary:</label>
-                <textarea class="form-control" id="note-summary" rows="3"
-                    placeholder="Summarize your notes"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="note-references" class="form-label">References:</label>
-                <textarea class="form-control" id="note-references" rows="3"
-                    placeholder="Add references to related work"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="note-media" class="form-label">Media:</label>
-                <input type="file" class="form-control" id="note-media" accept="image/*, video/*, audio/*">
-                <div id="preview"></div>
-            </div>
-            <button id="saveButton" class="btn btn-primary">Save Note</button>
-            <button id="updateButton" class="btn btn-warning" style="display: none;">Update Note</button>
+              <label for="note-summary" class="form-label">Summary:</label>
+              <textarea class="form-control" id="note-summary" rows="3"
+                  placeholder="Summarize your notes"></textarea>
+          </div>
+          <div class="mb-3">
+              <label for="note-references" class="form-label">References:</label>
+              <textarea class="form-control" id="note-references" rows="3"
+                  placeholder="Add references to related work"></textarea>
+          </div>
+          <div class="mb-3">
+              <label for="note-media" class="form-label">Media:</label>
+              <input type="file" class="form-control" id="note-media" accept="image/*, video/*, audio/*">
+              <div id="preview"></div>
+          </div>
+          <button id="saveButton" class="btn btn-primary">Save Note</button>
+          <button id="updateButton" class="btn btn-warning" style="display: none;">Update Note</button>
+          <button id="deleteButton" class="btn btn-danger" style="display: none;">Delete Note</button>
         </div>
 
         <div id="notesDisplay" class="mt-4">
@@ -48,3 +56,4 @@
 </body>
 
 </html>
+
