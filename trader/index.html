@@ -46,44 +46,49 @@
         .then(response => response.json())
         .then(data => data['Time Series (Daily)']);
 
-      const djiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DJI&apikey=${apiKey}`;
-      const djiData = await fetch(djiUrl)
-        .then(response => response.json())
-        .then(data => data['Time Series (Daily)']);
-
       const { macd, signal, histogram } = calculateMACD(dailyData);
       const stochastics = calculateStochastic(dailyData);
-      const standardDeviation = calculateStandardDeviation(dailyData);
-      const covariance = calculateCovariance(dailyData, djiData);
+      const stdev = calculateStandardDeviation(dailyData)
+      // const variance = calculateCovariance()
 
-      // ... (rest of the code, including analysis)
-
-      const analysisDiv = document.getElementById('analysis');
-      analysisDiv.innerHTML = `
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">${symbol} Analysis</h5>
-            <p class="card-text">MACD: ${macd.slice(-1)[0]}</p>
-            <p class="card-text">Signal: ${signal.slice(-1)[0]}</p>
-            <p class="card-text">Histogram: ${histogram.slice(-1)[0]}</p>
-            <p class="card-text">Stochastic K: ${stochastics.slice(-1)[0].k}</p>
-            <p class="card-text">Stochastic D: ${stochastics.slice(-1)[0].d}</p>
-            <p class="card-text">Standard Deviation: ${standardDeviation}</p>
-            <p class="card-text">Covariance with DJI: ${covariance}</p>
-          </div>
-        </div>
-      `;
+      const analysis = generateEntryExitSignals(macd, signal, histogram, stochastics, dailyData, stdev);
 
       // Prepare data for Plotly chart
       const dates = Object.keys(dailyData);
       const prices = Object.values(dailyData).map(data => data['4. close']);
-
-      const trace1 = {
+      const macdLine = {
         x: dates,
-        y: prices,
+        y: macd,
         type: 'scatter',
-        mode: 'lines+markers',
-        name: symbol
+        mode: 'lines',
+        name: 'MACD'
+      };
+      const signalLine = {
+        x: dates,
+        y: signal,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Signal'
+      };
+      const histogramTrace = {
+        x: dates,
+        y: histogram,
+        type: 'bar',
+        name: 'Histogram'
+      };
+      const stochK = {
+        x: dates,
+        y: stochastics.map(s => s.k),
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Stochastic K'
+      };
+      const stochD = {
+        x: dates,
+        y: stochastics.map(s => s.d),
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Stochastic D'
       };
 
       const layout = {
@@ -96,7 +101,20 @@
         }
       };
 
-      Plotly.newPlot('myPlot', [trace1], layout);
+      Plotly.newPlot('myPlot', [macdLine, signalLine, histogramTrace, stochK, stochD], layout);
+
+      const analysisDiv = document.getElementById('analysis');
+      analysisDiv.innerHTML = `
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">${symbol} Analysis</h5>
+            ${analysis.map(entry => `
+              <p class="card-text">Entry: ${entry.date} - Price: ${entry.price} - Signal: ${entry.signal}</p>
+              <p class="card-text">Exit: ${entry.exitDate ? entry.exitDate + ' - Price: ' + entry.exitPrice : 'N/A'}</p>
+            `).join('')}
+          </div>
+        </div>
+      `;
     }
 
     // Function to calculate MACD
@@ -142,6 +160,45 @@
 
       return stochastics;
     }
+
+function generateEntryExitSignals(macd, signal, histogram, stochastics, dailyData, stdev) {
+  const entries = [];
+  let inPosition = false;
+  let trailingStop = null;
+
+  for (let i = 0; i < macd.length; i++) {
+    const date = Object.keys(dailyData)[i];
+    const price = parseFloat(dailyData[date]['4. close']);
+    const currentMACD = macd[i];
+    const currentSignal = signal[i];
+    const currentHistogram = histogram[i];
+    const currentStochK = stochastics[i].k;
+    const currentStochD = stochastics[i].d;
+    const currentStDev = stdev[i]; // Assuming stdev is an array of standard deviation values
+
+    // Buy signal (MACD crossover above signal line and Stochastic K crosses above D with K > 70, and low volatility)
+    if (!inPosition && currentMACD > currentSignal && currentStochK > currentStochD && currentStochK > 70 && currentStDev < thresholdStDev) {
+      entries.push({ date, price, signal: 'Buy' });
+      inPosition = true;
+      trailingStop = price - currentStDev * 2; // Adjust trailing stop loss based on standard deviation
+    }
+
+    // Sell signal (MACD crossover below signal line or Stochastic K crosses below D with K < 30, or high volatility)
+    if (inPosition && (currentMACD < currentSignal || currentStochK < currentStochD && currentStochK < 30 || currentStDev > thresholdStDev)) {
+      entries[entries.length - 1].exitDate = date;
+      entries[entries.length - 1].exitPrice = price;
+      inPosition = false;
+      trailingStop = null;
+    }
+
+    // Trailing stop loss
+    if (inPosition && price > trailingStop) {
+      trailingStop = Math.max(trailingStop, price - currentStDev * 2);
+    }
+  }
+
+  return entries;
+}
 
     // Function to calculate Standard Deviation
     function calculateStandardDeviation(data) {
