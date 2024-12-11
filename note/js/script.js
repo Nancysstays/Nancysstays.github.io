@@ -9,7 +9,7 @@ const updateButton = document.getElementById('updateButton');
 const notesList = document.getElementById('notesList');
 
 // Gemini API Key (REPLACE WITH YOUR ACTUAL KEY)
-const geminiApiKey = 'YOUR_GEMINI_API_KEY';
+const geminiApiKey = 'AIzaSyDiS4F6RE04oMW3BpURdHXXhbtOg3n65OA';
 
 let editingIndex = -1;
 
