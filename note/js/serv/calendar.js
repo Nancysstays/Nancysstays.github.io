@@ -114,3 +114,64 @@ class CalendarApp {
 }
 
 // ... (rest of the code for handleAuthClick, initClient, loadEvents, and form submission) ... 
+
+// Function to handle the authorization click
+function handleAuthClick() {
+    // Include the Google API Client Library
+    gapi.load('client:auth2', initClient);
+}
+
+async function initClient() {
+    await CalendarApp.init();
+    gapi.client.init({
+        apiKey: apiKey,
+        clientId: clientId,
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+        scope: 'https://www.googleapis.com/auth/calendar'
+    }).then(function () {
+        gapi.auth2.getAuthInstance().signIn().then(loadEvents);
+    });
+}
+
+// Function to load events from the calendar
+function loadEvents() {
+  const app = new CalendarApp();
+  app.listUpcomingEvents().then(events => {
+      const eventList = document.getElementById('event-list');
+      eventList.innerHTML = ''; // Clear previous events
+
+      if (events.length > 0) {
+          events.forEach(event => {
+              const eventItem = document.createElement('li');
+              eventItem.classList.add('event-item');
+              eventItem.innerHTML = `<strong>${event.summary}</strong> - ${event.start.dateTime || event.start.date}`;
+              eventList.appendChild(eventItem);
+          });
+      } else {
+          const noEventsItem = document.createElement('li');
+          noEventsItem.textContent = 'No upcoming events found.';
+          eventList.appendChild(noEventsItem);
+      }
+  });
+}
+
+// Handle form submission for creating new events
+const newEventForm = document.getElementById('new-event-form');
+newEventForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const app = new CalendarApp();
+    const summary = document.getElementById('event-summary').value;
+    const start = document.getElementById('event-start').value;
+    const end = document.getElementById('event-end').value;
+
+    const newEvent = {
+        summary: summary,
+        start: { dateTime: start },
+        end: { dateTime: end }
+    };
+
+    app.createEvent(newEvent).then(() => {
+        loadEvents(); // Reload events after creating
+        newEventForm.reset(); // Clear the form
+    });
+});
