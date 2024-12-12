@@ -65,7 +65,7 @@ function loadStoredTexts() {
     // Add a "Copy" link for each stored text
     const copyLink = document.createElement('a');
     copyLink.href = '#';
-    copyLink.textContent = 'Copy';
+    copyLink.textContent = 'Copy ';
     copyLink.addEventListener('click', (event) => {
       event.preventDefault();
       copyToClipboard(text);
@@ -75,7 +75,7 @@ function loadStoredTexts() {
     // Add a "Delete" link for each stored text
     const deleteLink = document.createElement('a');
     deleteLink.href = '#';
-    deleteLink.textContent = 'Delete';
+    deleteLink.textContent = ' Delete';
     deleteLink.addEventListener('click', () => {
       deleteText(index);
     });
@@ -95,10 +95,10 @@ function deleteText(index) {
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text)
     .then(() => {
-      alert('Text copied to clipboard!');
+     // alert('Text copied to clipboard!');
     })
     .catch(err => {
       console.error('Failed to copy text: ', err);
-      alert('Failed to copy text. Check console for errors.');
+      // alert('Failed to copy text. Check console for errors.');
     });
 }
