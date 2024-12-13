@@ -27,7 +27,7 @@
       <input type="text" class="form-control" id="symbolInput" placeholder="Enter stock symbol (e.g., IBM)">
       <button class="btn btn-primary" onclick="StockAnalyzer.analyze()">Analyze</button> 
     </div>
-
+    <div id="error-message" style="color: red;">
     <div id="analysis"></div>
     <div class="chart-container">
       <div id="myChart"></div> 
@@ -58,11 +58,13 @@
               analyzer.displayAnalysis();
               analyzer.renderChart();
             } catch (error) {
-              StockAnalyzer.log('Error: ' + error);
+              StockAnalyzer.showError(error.message); // Show error in DOM
+              // StockAnalyzer.log('Error: ' + error);
             }
           })
           .catch(error => {
-            StockAnalyzer.log('Fetch error: ' + error);
+            StockAnalyzer.showError(error.message); // Show error in DOM
+            // StockAnalyzer.log('Fetch error: ' + error);
           });
       }
 
@@ -254,9 +256,50 @@
         Plotly.newPlot('myChart', data, layout);
       }
 
-      static log(message) { 
-        console.log(message);
+      static showError(message) { // Method to display errors in the DOM
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.textContent = message; 
       }
+
+      static log(message) {
+        console.log(message); 
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  </head>
+<body>
+  <div class="container">
+  </div>
+
+  <script>
+    class StockAnalyzer {
+      // ... (rest of the class code) ...
+
+      static analyze() { 
+        // ... 
+
+        analyzer.fetchData()
+          .then(() => {
+            try {
+              // ...
+            } catch (error) {
+              StockAnalyzer.showError(error.message); // Show error in DOM
+            }
+          })
+          .catch(error => {
+            StockAnalyzer.showError(error.message); // Show error in DOM
+          });
+      }
+
+      // ... (rest of the class code) ...
+
     }
   </script>
 </body>
