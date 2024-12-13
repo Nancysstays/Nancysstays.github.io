@@ -1,23 +1,263 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Alpha Vantage Stock Analysis</title>
-    <link rel="stylesheet" href="style.css">
+<title>Alpha Vantage Stock Analysis</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
+<style>
+  body {
+    font-family: 'Amatic SC', cursive;
+    margin: 20px;
+  }
+  #analysis {
+    margin-top: 20px;
+  }
+  .chart-container {
+    margin-top: 20px;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1 style="font-family: 'Amatic SC', cursive;">Alpha Vantage Stock Analysis</h1>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" id="symbolInput" placeholder="Enter stock symbol (e.g., IBM)">
-            <button class="btn btn-primary" onclick="analyzeStock()">Analyze</button>
-        </div>
-
-        <div id="analysis"></div>
-        <div class="chart-container">
-            <div id="myPlot"></div>
-        </div>
+  <div class="container">
+    <h1 style="font-family: 'Amatic SC', cursive;">Alpha Vantage Stock Analysis</h1>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" id="symbolInput" placeholder="Enter stock symbol (e.g., IBM)">
+      <button class="btn btn-primary" onclick="StockAnalyzer.analyze()">Analyze</button> 
     </div>
 
-    <script src="script.js"></script>
+    <div id="analysis"></div>
+    <div class="chart-container">
+      <div id="myChart"></div> 
+    </div>
+  </div>
+
+  <script>
+    class StockAnalyzer {
+      static #apiKey = 'XVYHOWRTRNPN3FJA'; // Replace with your actual API key
+
+      constructor(symbol) {
+        this.symbol = symbol;
+        this._data = null; 
+        this.djiData = null; 
+      }
+
+      static analyze() { 
+        const symbol = document.getElementById('symbolInput').value;
+        const analyzer = new StockAnalyzer(symbol);
+
+        StockAnalyzer.log('Starting analysis for ' + symbol);
+
+        analyzer.fetchData()
+          .then(() => {
+            try {
+              StockAnalyzer.log('Calculating data...');
+              analyzer.calculateIndicators();
+              analyzer.displayAnalysis();
+              analyzer.renderChart();
+            } catch (error) {
+              StockAnalyzer.log('Error: ' + error);
+            }
+          })
+          .catch(error => {
+            StockAnalyzer.log('Fetch error: ' + error);
+          });
+      }
+
+      async fetchData() {  
+        const timeSeriesUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.symbol}&apikey=${StockAnalyzer.#apiKey}`;
+        const djiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DJI&apikey=${StockAnalyzer.#apiKey}`;
+
+        try {
+          const response = await fetch(timeSeriesUrl);
+          const data = await response.json();
+          this._data = data['Time Series (Daily)']; 
+
+          const djiResponse = await fetch(djiUrl);
+          const djiData = await djiResponse.json();
+          this.djiData = djiData['Time Series (Daily)'];
+        } catch (error) {
+          throw new Error('Error fetching data: ' + error); 
+        }
+      }
+
+      calculateIndicators() { 
+        if (!this._data || !this.djiData) {
+          throw new Error("Data not loaded. Call fetchData() first.");
+        }
+
+        this.dates = Object.keys(this._data).reverse(); 
+        this.closingPrices = this.dates.map(date => parseFloat(this._data[date]['4. close']));
+
+        this.macd = this._calculateMACD();
+        this.stochastics = this._calculateStochastic();
+        this.standardDeviation = this._calculateStandardDeviation(); 
+        this.covariance = this._calculateCovariance();
+      }
+
+      _calculateMACD() {
+        const period1 = 12;
+        const period2 = 26;
+        const periodSignal = 9;
+
+        let ema12 = this.closingPrices.slice(0, period1).reduce((a, b) => a + b, 0) / period1;
+        let ema26 = this.closingPrices.slice(0, period2).reduce((a, b) => a + b, 0) / period2;
+
+        const macdLine = [];
+        const signalLine = [];
+        const histogram = [];
+
+        for (let i = period2; i < this.closingPrices.length; i++) {
+          ema12 = (this.closingPrices[i] * (2 / (period1 + 1))) + (ema12 * (1 - (2 / (period1 + 1))));
+          ema26 = (this.closingPrices[i] * (2 / (period2 + 1))) + (ema26 * (1 - (2 / (period2 + 1))));
+
+          const macd = ema12 - ema26;
+          macdLine.push(macd);
+
+          if (macdLine.length >= periodSignal) {
+            const signal = macdLine.slice(-periodSignal).reduce((a, b) => a + b, 0) / periodSignal;
+            signalLine.push(signal);
+            histogram.push(macd - signal);
+          }
+        }
+
+        return { macd: macdLine, signal: signalLine, histogram: histogram };
+      }
+
+      _calculateStochastic() {
+        const kPeriod = 14; 
+        const dPeriod = 3;  
+
+        const stochK = [];
+        const stochD = [];
+
+        for (let i = kPeriod - 1; i < this.closingPrices.length; i++) {
+          const periodHigh = Math.max(...this.closingPrices.slice(i - kPeriod + 1, i + 1));
+          const periodLow = Math.min(...this.closingPrices.slice(i - kPeriod + 1, i + 1));
+          const k = ((this.closingPrices[i] - periodLow) / (periodHigh - periodLow)) * 100;
+          stochK.push(k);
+
+          if (stochK.length >= dPeriod) {
+            const d = stochK.slice(-dPeriod).reduce((a, b) => a + b, 0) / dPeriod;
+            stochD.push(d);
+          }
+        }
+
+        return stochK.map((k, i) => ({ k, d: stochD[i] || null })); 
+      }
+
+      _calculateStandardDeviation() {
+        const mean = this.closingPrices.reduce((a, b) => a + b, 0) / this.closingPrices.length;
+        const variance = this.closingPrices.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / this.closingPrices.length;
+        return Math.sqrt(variance);
+      }
+
+      _calculateCovariance() {
+        const djiClosingPrices = this.dates.map(date => parseFloat(this.djiData[date]['4. close']));
+
+        const meanStock = this.closingPrices.reduce((a, b) => a + b, 0) / this.closingPrices.length;
+        const meanDJI = djiClosingPrices.reduce((a, b) => a + b, 0) / djiClosingPrices.length;
+
+        let covariance = 0;
+        for (let i = 0; i < this.closingPrices.length; i++) {
+          covariance += (this.closingPrices[i] - meanStock) * (djiClosingPrices[i] - meanDJI);
+        }
+        return covariance / (this.closingPrices.length - 1);
+      }
+
+      // ... other methods ...
+
+      displayAnalysis() { 
+        const analysisDiv = document.getElementById('analysis');
+        analysisDiv.innerHTML = `
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${this.symbol} Analysis</h5>
+              <p class="card-text">MACD: ${this.macd.macd.slice(-1)[0].toFixed(2)}</p>
+              <p class="card-text">Signal: ${this.macd.signal.slice(-1)[0].toFixed(2)}</p>
+              <p class="card-text">Histogram: ${this.macd.histogram.slice(-1)[0].toFixed(2)}</p>
+              <p class="card-text">Stochastic K: ${this.stochastics.slice(-1)[0].k.toFixed(2)}</p>
+              <p class="card-text">Stochastic D: ${this.stochastics.slice(-1)[0].d.toFixed(2)}</p>
+              <p class="card-text">Standard Deviation: ${this.standardDeviation.toFixed(2)}</p>
+              <p class="card-text">Covariance with DJI: ${this.covariance.toFixed(2)}</p> 
+            </div>
+          </div>
+        `;
+      }
+
+      renderChart() { 
+        StockAnalyzer.log('Rendering chart...');
+
+        const trace1 = {
+          x: this.dates,
+          y: this.closingPrices,
+          type: 'scatter',
+          mode: 'lines',
+          name: this.symbol + ' Closing Price'
+        };
+
+        const trace2 = {
+          x: this.dates.slice(26), 
+          y: this.macd.macd,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'MACD'
+        };
+
+        const trace3 = {
+          x: this.dates.slice(26 + 9 - 1), 
+          y: this.macd.signal,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Signal'
+        };
+
+        const trace4 = {
+          x: this.dates.slice(26), 
+          y: this.macd.histogram,
+          type: 'bar',
+          name: 'Histogram'
+        };
+
+        const trace5 = {
+          x: this.dates.slice(14 - 1), 
+          y: this.stochastics.map(s => s.k),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Stochastic %K',
+          yaxis: 'y2' 
+        };
+
+        const trace6 = {
+          x: this.dates.slice(14 + 3 - 2),  
+          y: this.stochastics.map(s => s.d).filter(d => d !== null),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Stochastic %D',
+          yaxis: 'y2' 
+        };
+
+        const layout = {
+          title: this.symbol + ' Stock Analysis',
+          yaxis: { title: 'Price' },
+          yaxis2: { 
+            title: 'Stochastic', 
+            overlaying: 'y', 
+            side: 'right' 
+          }
+        };
+
+        const data = [trace1, trace2, trace3, trace4, trace5, trace6];
+
+        Plotly.newPlot('myChart', data, layout);
+      }
+
+      static log(message) { 
+        console.log(message);
+      }
+    }
+  </script>
 </body>
 </html>
