@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Nancy's Gen</title>
+  <title>Generic Search</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     .container {
@@ -35,24 +35,29 @@
       const response = await fetch(url);
       const html = await response.text();
 
-      // Extract search results using DOMParser
+      // Use DOMParser to parse the HTML content
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
-      const searchResults = doc.querySelectorAll('#search .g');
 
-      // Display search results
-      resultsDiv.innerHTML = ''; // Clear previous results
-      searchResults.forEach(result => {
-        const title = result.querySelector('h3').textContent;
-        const snippet = result.querySelector('.IsZvec').textContent;
-        const link = result.querySelector('a').href;
-        const resultHTML = `
-          <div class="result">
-            <h3><a href="${link}">${title}</a></h3>
-            <p>${snippet}</p>
-          </div>
-        `;
-        resultsDiv.innerHTML += resultHTML;
+      // Wait for the DOM to fully load
+      doc.addEventListener('DOMContentLoaded', () => {
+        // Now, extract the search results
+        const searchResults = doc.querySelectorAll('#search .g');
+
+        // Display search results
+        resultsDiv.innerHTML = ''; // Clear previous results
+        searchResults.forEach(result => {
+          const title = result.querySelector('h3').textContent;
+          const snippet = result.querySelector('.IsZvec').textContent;
+          const link = result.querySelector('a').href;
+          const resultHTML = `
+            <div class="result">
+              <h3><a href="${link}">${title}</a></h3>
+              <p>${snippet}</p>
+            </div>
+          `;
+          resultsDiv.innerHTML += resultHTML;
+        });
       });
     });
   </script>
