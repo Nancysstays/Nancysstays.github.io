@@ -1,193 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Nancys Notes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    /* ... (Previous CSS styles) ... */
-
-    /* Styling for the buttons */
-    .btn-secondary {
-      background-color: #6c757d;
-      /* Customize secondary button color */
-      border-color: #6c757d;
-    }
-
-    .btn-secondary:hover {
-      background-color: #5a6268;
-      border-color: #545b62;
-    }
-
-    .btn-secondary.active {
-      background-color: #545b62;
-      border-color: #4e555b;
-    }
-
-    /* Styling for the preview area */
-    #preview {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    #preview img,
-    #preview video {
-      max-width: 200px;
-      max-height: 150px;
-      margin-right: 10px;
-      margin-bottom: 10px;
-      object-fit: cover;
-    }
-
-    /* Styling for larger screens */
-    @media (min-width: 768px) {
-      #note-form {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      #note-form .mb-3 {
-        flex: 1 0 40%;
-        /* Adjust the width of form groups */
-      }
-
-      #note-form textarea {
-        min-height: 150px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Nancys Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Custom CSS to style the calendar */
+        .calendar-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .event-list {
+            list-style: none;
+            padding: 0;
+        }
+        .event-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container mt-5">
-    <h1>Comprehensive Note-Taking Tool</h1>
-    <div id="note-form">
-      <div class="mb-3">
-        <button id="paragraphButton" class="btn btn-secondary active" data-format="p">
-          <i class="material-icons">format_align_left</i> Paragraph
-        </button>
-        <button id="bulletButton" class="btn btn-secondary" data-format="ul">
-          <i class="material-icons">format_list_bulleted</i> Bullets
-        </button>
-        <button id="numberButton" class="btn btn-secondary" data-format="ol">
-          <i class="material-icons">format_list_numbered</i> Numbers
-        </button>
-      </div>
-      <div class="mb-3">
-        <label for="note-text" class="form-label">Notes:</label>
-        <textarea class="form-control" id="note-text" rows="5" placeholder="Enter your notes here"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="note-links" class="form-label">Links:</label>
-        <textarea class="form-control" id="note-links" rows="3"
-          placeholder="Enter relevant links (one per line)"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="note-summary" class="form-label">Summary:</label>
-        <textarea class="form-control" id="note-summary" rows="3" placeholder="Summarize your notes"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="note-references" class="form-label">References:</label>
-        <textarea class="form-control" id="note-references" rows="3"
-          placeholder="Add references to related work"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="note-media" class="form-label">Media:</label>
-        <input type="file" class="form-control" id="note-media" accept="image/*, video/*, audio/*" multiple>
-        <div id="preview"></div>
-      </div>
-      <button id="saveButton" class="btn btn-primary">
-        <i class="material-icons">save</i> Save Note
-      </button>
-      <button id="updateButton" class="btn btn-warning" style="display: none;">
-        <i class="material-icons">edit</i> Update Note
-      </button>
-      <button id="deleteButton" class="btn btn-danger" style="display: none;">
-        <i class="material-icons">delete</i> Delete Note
-      </button>
+    <div class="container mt-5">
+        <h1>Comprehensive Note-Taking Tool</h1>
+        <div id="note-form">
+            <div class="mb-3">
+                <button id="paragraphButton" class="btn btn-secondary active" data-format="p">Paragraph</button>
+                <button id="bulletButton" class="btn btn-secondary" data-format="ul">Bullets</button>
+                <button id="numberButton" class="btn btn-secondary" data-format="ol">Numbers</button>
+            </div>
+            <div class="mb-3">
+                <label for="note-text" class="form-label">Notes:</label>
+                <textarea class="form-control" id="note-text" rows="5" placeholder="Enter your notes here"></textarea>
+            </div>
+            </div>
+            <div class="mb-3">
+                <label for="note-links" class="form-label">Links:</label>
+                <textarea class="form-control" id="note-links" rows="3"
+                    placeholder="Enter relevant links (one per line)"></textarea>
+            </div>
+            <!-- rest of your form remains the same -->
+            <div class="mb-3">
+              <label for="note-summary" class="form-label">Summary:</label>
+              <textarea class="form-control" id="note-summary" rows="3"
+                  placeholder="Summarize your notes"></textarea>
+          </div>
+          <div class="mb-3">
+              <label for="note-references" class="form-label">References:</label>
+              <textarea class="form-control" id="note-references" rows="3"
+                  placeholder="Add references to related work"></textarea>
+          </div>
+          <div class="mb-3">
+              <label for="note-media" class="form-label">Media:</label>
+              <input type="file" class="form-control" id="note-media" accept="image/*, video/*, audio/*">
+              <div id="preview"></div>
+          </div>
+          <button id="saveButton" class="btn btn-primary">Save Note</button>
+          <button id="updateButton" class="btn btn-warning" style="display: none;">Update Note</button>
+          <button id="deleteButton" class="btn btn-danger" style="display: none;">Delete Note</button>
+        </div>
+<div class="container calendar-container">
+    <h1>Calendar App</h1>
+
+    <div id="auth-button">
+        <button class="btn btn-primary" onclick="handleAuthClick()">Authorize with Google</button>
     </div>
 
-    <div class="container calendar-container">
-      <h1>Calendar App</h1>
-
-      <div id="auth-button">
-        <button class="btn btn-primary" onclick="handleAuthClick()">
-          <i class="material-icons">account_circle</i> Authorize with Google
-        </button>
-      </div>
-
-      <div id="calendar-events">
+    <div id="calendar-events">
         <h2>Upcoming Events</h2>
         <ul class="event-list" id="event-list">
         </ul>
-      </div>
-
-      <h2>Create New Event</h2>
-      <form id="new-event-form">
-        <div class="form-group">
-          <label for="event-summary">Summary:</label>
-          <input type="text" class="form-control" id="event-summary" required>
-        </div>
-        <div class="form-group">
-          <label for="event-start">Start Date and Time:</label>
-          <input type="datetime-local" class="form-control" id="event-start" required>
-        </div>
-        <div class="form-group">
-          <label for="event-end">End Date and Time:</label>
-          <input type="datetime-local" class="form-control" id="event-end" required>
-        </div>
-        <button type="submit" class="btn btn-primary">
-          <i class="material-icons">add</i> Create Event
-        </button>
-      </form>
     </div>
 
-    <div id="notesDisplay" class="mt-4">
-      <h2>Saved Notes</h2>
-      <div id="notesList"></div>
+    <h2>Create New Event</h2>
+    <form id="new-event-form">
+        <div class="form-group">
+            <label for="event-summary">Summary:</label>
+            <input type="text" class="form-control" id="event-summary" required>
+        </div>
+        <div class="form-group">
+            <label for="event-start">Start Date and Time:</label>
+            <input type="datetime-local" class="form-control" id="event-start" required>
+        </div>
+        <div class="form-group">
+            <label for="event-end">End Date and Time:</label>
+            <input type="datetime-local" class="form-control" id="event-end" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+    </form>
+</div>
+        <div id="notesDisplay" class="mt-4">
+            <h2>Saved Notes</h2>
+            <div id="notesList"></div>
+        </div>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://apis.google.com/js/api.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="js/serv/calendar.js"></script>
-  <script type="module" src="js/script.js"></script>
-  <script>
-    // JavaScript to handle media preview
-    const mediaInput = document.getElementById('note-media');
-    const previewContainer = document.getElementById('preview');
 
-    mediaInput.addEventListener('change', () => {
-      previewContainer.innerHTML = ''; // Clear previous previews
-      const files = mediaInput.files;
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-
-        reader.onload = (event) => {
-          const previewElement = document.createElement(file.type.startsWith('image') ? 'img' : 'video');
-          previewElement.src = event.target.result;
-          previewElement.alt = file.name;
-          if (file.type.startsWith('video')) {
-            previewElement.controls = true;
-          }
-          previewContainer.appendChild(previewElement);
-        };
-
-        reader.readAsDataURL(file);
-      }
-    });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://apis.google.com/js/api.js"></script> <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/serv/calendar.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 
 </html>
