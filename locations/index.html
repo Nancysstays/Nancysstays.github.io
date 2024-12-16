@@ -38,6 +38,12 @@ button {
 <label for="yr">Yearly Cost:</label>
 <input type="number" id="yr" value="36000">
 
+<label for="monthly">Monthly Cost:</label>
+<input type="number" id="monthly" value="">
+
+<label for="sfyr">SF/YR:</label>
+<input type="number" id="sfyr" value="">
+
 <button onclick="calculate()">Calculate</button>
 
 <div id="results"></div>
@@ -46,14 +52,31 @@ button {
 function calculate() {
   var sf = document.getElementById("sf").value;
   var yr = document.getElementById("yr").value;
+  var monthly = document.getElementById("monthly").value;
+  var sfyr = document.getElementById("sfyr").value;
 
-  var monthlyRent = yr / 12;
+  if (sf && yr && !monthly) { 
+    monthly = yr / 12;
+    document.getElementById("monthly").value = monthly.toFixed(2);
+  } else if (sf && monthly && !yr) {
+    yr = monthly * 12;
+    document.getElementById("yr").value = yr.toFixed(2);
+  } else if (yr && monthly && !sf) {
+    sf = yr / (monthly * 12); 
+    document.getElementById("sf").value = sf.toFixed(2);
+  } else if (sfyr && sf && !yr) {
+    yr = sfyr * sf;
+    document.getElementById("yr").value = yr.toFixed(2);
+    monthly = yr / 12;
+    document.getElementById("monthly").value = monthly.toFixed(2);
+  }
+
   var pricePerSf = yr / sf;
-  var estimatedMortgage = (pricePerSf * sf * 0.005) + (monthlyRent / 12); 
+  var estimatedMortgage = (pricePerSf * sf * 0.005) + (monthly / 12); 
 
   var results = document.getElementById("results");
   results.innerHTML = 
-    "Monthly Rent: $" + monthlyRent.toFixed(2) + "<br>" +
+    "Monthly Rent: $" + monthly.toFixed(2) + "<br>" +
     "Price per Square Foot: $" + pricePerSf.toFixed(2) + "<br>" +
     "Estimated Monthly Mortgage: $" + estimatedMortgage.toFixed(2);
 }
