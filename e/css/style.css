@@ -1,0 +1,167 @@
+/* General styles for the page */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+#container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    color: #333;
+}
+
+header p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Navigation styles */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+nav li {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+nav a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Settings section styles */
+#settings {
+    margin-bottom: 20px;
+}
+
+#settings h2 {
+    color: #333;
+}
+
+#settings ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#settings li {
+    margin: 5px;
+    padding: 8px 12px;
+    background-color: #eee;
+    border-radius: 3px;
+}
+
+#analyze-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+/* Loading indicator styles */
+#loading {
+    text-align: center;
+    display: none; /* Initially hidden */
+    margin-top: 20px;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Results section styles */
+#results {
+    margin-bottom: 20px;
+}
+
+.symbol-results {
+    margin-bottom: 30px;
+}
+
+.symbol-results h2 {
+    color: #333;
+}
+
+.interval-results {
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Plotly chart styles */
+.js-plotly-plot {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Reasoning section styles */
+.reasoning {
+    margin-top: 20px;
+}
+
+.reasoning h3 {
+    color: #333;
+}
+
+/* About section styles */
+#about {
+    margin-bottom: 20px;
+}
+
+#about h2 {
+    color: #333;
+}
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+}
