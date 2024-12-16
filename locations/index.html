@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SF/YR to Monthly Mortgage/Rent Estimator</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+input[type="number"] {
+  width: 100px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+#results {
+  margin-top: 20px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>SF/YR to Monthly Mortgage/Rent Estimator</h1>
+
+<label for="sf">Square Footage:</label>
+<input type="number" id="sf" value="1000">
+
+<label for="yr">Yearly Cost:</label>
+<input type="number" id="yr" value="36000">
+
+<button onclick="calculate()">Calculate</button>
+
+<div id="results"></div>
+
+<script>
+function calculate() {
+  var sf = document.getElementById("sf").value;
+  var yr = document.getElementById("yr").value;
+
+  var monthlyRent = yr / 12;
+  var pricePerSf = yr / sf;
+  var estimatedMortgage = (pricePerSf * sf * 0.005) + (monthlyRent / 12); 
+
+  var results = document.getElementById("results");
+  results.innerHTML = 
+    "Monthly Rent: $" + monthlyRent.toFixed(2) + "<br>" +
+    "Price per Square Foot: $" + pricePerSf.toFixed(2) + "<br>" +
+    "Estimated Monthly Mortgage: $" + estimatedMortgage.toFixed(2);
+}
+</script>
+
+</body>
+</html>
