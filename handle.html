@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trigger Workflow</title>
+  <title>Visitor Tracker</title>
 </head>
 <body>
-  <h1>Trigger Visitor Tracker Workflow</h1>
+  <h1>Visitor Tracker</h1>
+
+  <button onclick="triggerWorkflow()">Track Visit</button>
+
+  <div id="results"></div>
 
   <script>
     async function triggerWorkflow() {
       const apiUrl = 'https://api.github.com/repos/nancysstays/nancysstays.github.io/dispatches';
-      // Get the token from the environment variable (set in the workflow)
-      const token = process.env.GITHUB_TOKEN; 
+      const token = process.env.JITHUB_TOKEN; 
 
       const requestOptions = {
         method: 'POST',
@@ -26,6 +29,8 @@
         const response = await fetch(apiUrl, requestOptions);
         if (response.ok) {
           console.log('Workflow triggered successfully!');
+          // Fetch and display results
+          fetchResults();
         } else {
           console.error('Failed to trigger workflow:', response.status);
         }
@@ -34,8 +39,26 @@
       }
     }
 
-    // Trigger the workflow on page load
-    window.onload = triggerWorkflow;
+    async function fetchResults() {
+      try {
+        const response = await fetch('results.json'); // Assuming results are in results.json
+        const data = await response.json();
+        
+        // Format the results as a table
+        let resultsHtml = "<table><thead><tr><th>Timestamp</th><th>IP Address</th></tr></thead><tbody>";
+        data.forEach(visit => {
+          resultsHtml += `<tr><td>${visit.timestamp}</td><td>${visit.ip_address}</td></tr>`;
+        });
+        resultsHtml += "</tbody></table>";
+
+        document.getElementById('results').innerHTML = resultsHtml;
+      } catch (error) {
+        console.error('Error fetching results:', error);
+      }
+    }
+
+    // Trigger the workflow on page load (optional)
+    // window.onload = triggerWorkflow; 
   </script>
 </body>
 </html>
