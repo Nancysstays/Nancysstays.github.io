@@ -1,6 +1,6 @@
 # adder.py
 
-def add(x, y):
+def add(x = 5, y = 2):
   """
   This function adds two numbers together.
 
