@@ -25,4 +25,4 @@ jobs:
           echo "NUM2=10" >> $GITHUB_ENV
 
       - name: Run adder script
-        run: python adder.py
+        run: python cpython.py
