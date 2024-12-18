@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trigger Workflow</title>
+</head>
+<body>
+  <h1>Trigger Visitor Tracker Workflow</h1>
+
+  <script>
+    async function triggerWorkflow() {
+      const apiUrl = 'https://api.github.com/repos/nancysstays/nancysstays.github.io/dispatches';
+      const token = '{your_github_token}'; // Replace with your GitHub token
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ event_type: 'visitor_visited' })
+      };
+
+      try {
+        const response = await fetch(apiUrl, requestOptions);
+        if (response.ok) {
+          console.log('Workflow triggered successfully!');
+        } else {
+          console.error('Failed to trigger workflow:', response.status);
+        }
+      } catch (error) {
+        console.error('Error triggering workflow:', error);
+      }
+    }
+
+    // Trigger the workflow on page load
+    window.onload = triggerWorkflow;
+  </script>
+</body>
+</html>
