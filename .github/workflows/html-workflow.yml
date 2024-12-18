@@ -1,0 +1,26 @@
+name: Visitor Tracker Workflow
+
+on:
+  repository_dispatch:
+    types: [visitor_visited]
+
+jobs:
+  track_visitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run visitor tracker script
+        run: python visitor_tracker.py
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
