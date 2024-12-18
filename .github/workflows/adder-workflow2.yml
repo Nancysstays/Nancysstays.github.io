@@ -1,0 +1,28 @@
+# .github/workflows/adder-workflow.yml
+
+name: Python Adder Workflow with Database
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  add-numbers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Set environment variables
+        run: |
+          echo "NUM1=5" >> $GITHUB_ENV
+          echo "NUM2=10" >> $GITHUB_ENV
+
+      - name: Run adder script
+        run: python adder.py
