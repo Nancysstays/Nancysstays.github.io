@@ -8,7 +8,7 @@ jobs:
   track_visitor:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Define the environment variable
+      GITHUB_TOKEN: ${{ secrets.JITHUB_TOKEN }} # Define the environment variable
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
