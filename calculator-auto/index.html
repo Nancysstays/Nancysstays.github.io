@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Loan Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Auto Loan Calculator</h1>
+        <form id="loan-form">
+            <div class="form-group">
+                <label for="loan-amount">Loan Amount:</label>
+                <input type="number" class="form-control" id="loan-amount" placeholder="Enter loan amount">
+            </div>
+            <div class="form-group">
+                <label for="interest-rate">Interest Rate (%):</label>
+                <input type="number" class="form-control" id="interest-rate" placeholder="Enter interest rate">
+            </div>
+            <div class="form-group">
+                <label for="loan-term">Loan Term (years):</label>
+                <input type="number" class="form-control" id="loan-term" placeholder="Enter loan term">
+            </div>
+            <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <div id="results"></div>
+        <div id="repayment-schedule"></div>
+        <div id="plotly-chart"></div>
+    </div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

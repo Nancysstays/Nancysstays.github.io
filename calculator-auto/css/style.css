@@ -1,0 +1,34 @@
+body {
+    font-family: sans-serif;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+#results {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+#repayment-schedule {
+    margin-top: 20px;
+}
+
+#repayment-schedule table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#repayment-schedule th,
+#repayment-schedule td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#plotly-chart {
+    margin-top: 20px;
+    width: 100%;
+    height: 400px;
+}
