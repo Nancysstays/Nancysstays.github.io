@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scientific Calculator</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>
+    /* style.css */
+    body {
+      font-family: sans-serif;
+    }
+
+    .container {
+      margin-top: 20px;
+      max-width: 400px;
+      /* Adjust as needed */
+    }
+
+    #calculator {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .btn {
+      width: 100%;
+      /* Make buttons fill the width */
+      margin-bottom: 5px;
+    }
+
+    #display {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 18px;
+      text-align: right;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div id="calculator">
+    <input type="text" id="display" readonly>
+    <div class="row">
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('sin(')">sin</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('cos(')">cos</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('tan(')">tan</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('^')">^</button></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('7')">7</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('8')">8</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('9')">9</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('/')">/</button></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('4')">4</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('5')">5</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('6')">6</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('*')">*</button></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('1')">1</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('2')">2</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('3')">3</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('-')">-</button></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('0')">0</button></div>
+      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('.')">.</button></div>
+      <div class="col-3"><button class="btn btn-primary" onclick="calculate()">=</button></div>
+      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('+')">+</button></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><button class="btn btn-danger" onclick="clearDisplay()">C</button></div>
+      <div class="col-3"><button class="btn btn-warning" onclick="backspace()">DEL</button></div>
+      <div class="col-3"><button class="btn btn-success" onclick="recallVariable()">Recall</button></div>
+      <div class="col-3"><button class="btn btn-info" onclick="showStoredCalculations()">Show</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+<script>
+  const display = document.getElementById('display');
+  let currentExpression = '';
+  let storedCalculations = {};
+
+  function appendToDisplay(value) {
+    currentExpression += value;
+    display.value = currentExpression;
+  }
+
+  function clearDisplay() {
+    currentExpression = '';
+    display.value = '';
+  }
+
+  function backspace() {
+    currentExpression = currentExpression.slice(0, -1);
+    display.value = currentExpression;
+  }
+
+  function calculate() {
+    try {
+      const result = math.evaluate(currentExpression); 
+      display.value = result;
+
+      let varName = prompt("Enter a variable name to store this calculation (leave blank to skip):", "");
+      if (varName === null) {
+        varName = ""; 
+      }
+      if (varName !== "") { 
+        storedCalculations[varName] = {
+          expression: currentExpression,
+          result: result
+        };
+      }
+
+      currentExpression = result.toString(); 
+    } catch (error) {
+      display.value = 'Error';
+      currentExpression = '';
+    }
+  }
+
+  function recallVariable() {
+    const varName = prompt("Enter the variable name to recall:");
+    if (varName && storedCalculations[varName]) {
+      appendToDisplay(storedCalculations[varName].result.toString());
+    } else {
+      alert("Variable not found!");
+    }
+  }
+
+  function showStoredCalculations() {
+    let message = "Stored Calculations:\n";
+    for (const varName in storedCalculations) {
+      message += `${varName} = ${storedCalculations[varName].result}\n`;
+    }
+    if (message === "Stored Calculations:\n") {
+      message += "None\n";
+    }
+    alert(message);
+  }
+
+  function updateCalculation(varName, newExpression) {
+    try {
+      const newResult = math.evaluate(newExpression);
+      storedCalculations[varName] = {
+        expression: newExpression,
+        result: newResult
+      };
+      return true; // Success
+    } catch (error) {
+      return false; // Error
+    }
+  }
+
+  function deleteCalculation(varName) {
+    if (storedCalculations[varName]) {
+      delete storedCalculations[varName];
+      return true; // Success
+    } else {
+      return false; // Not found
+    }
+  }
+
+</script>
+
+</body>
+</html>
