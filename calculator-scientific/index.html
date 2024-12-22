@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
 
     .container {
       margin-top: 20px;
-      max-width: 400px;
+      max-width: 500px;
       /* Adjust as needed */
     }
 
@@ -39,137 +40,183 @@
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <div id="calculator">
-    <input type="text" id="display" readonly>
-    <div class="row">
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('sin(')">sin</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('cos(')">cos</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('tan(')">tan</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('^')">^</button></div>
-    </div>
-    <div class="row">
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('7')">7</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('8')">8</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('9')">9</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('/')">/</button></div>
-    </div>
-    <div class="row">
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('4')">4</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('5')">5</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('6')">6</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('*')">*</button></div>
-    </div>
-    <div class="row">
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('1')">1</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('2')">2</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('3')">3</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('-')">-</button></div>
-    </div>
-    <div class="row">
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('0')">0</button></div>
-      <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('.')">.</button></div>
-      <div class="col-3"><button class="btn btn-primary" onclick="calculate()">=</button></div>
-      <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('+')">+</button></div>
-    </div>
-    <div class="row">
-      <div class="col-3"><button class="btn btn-danger" onclick="clearDisplay()">C</button></div>
-      <div class="col-3"><button class="btn btn-warning" onclick="backspace()">DEL</button></div>
-      <div class="col-3"><button class="btn btn-success" onclick="recallVariable()">Recall</button></div>
-      <div class="col-3"><button class="btn btn-info" onclick="showStoredCalculations()">Show</button></div>
+  <div class="container">
+    <div id="calculator">
+      <input type="text" id="display" readonly>
+      <div class="row">
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('sin(')">sin</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('cos(')">cos</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('tan(')">tan</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('^')">^</button></div>
+      </div>
+      <div class="row">
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('7')">7</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('8')">8</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('9')">9</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('/')">/</button></div>
+      </div>
+      <div class="row">
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('4')">4</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('5')">5</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('6')">6</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('*')">*</button></div>
+      </div>
+      <div class="row">
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('1')">1</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('2')">2</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('3')">3</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('-')">-</button></div>
+      </div>
+      <div class="row">
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('0')">0</button></div>
+        <div class="col-3"><button class="btn btn-light" onclick="appendToDisplay('.')">.</button></div>
+        <div class="col-3"><button class="btn btn-primary" onclick="calculate()">=</button></div>
+        <div class="col-3"><button class="btn btn-secondary" onclick="appendToDisplay('+')">+</button></div>
+      </div>
+      <div class="row">
+        <div class="col-3"><button class="btn btn-danger" onclick="clearDisplay()">C</button></div>
+        <div class="col-3"><button class="btn btn-warning" onclick="backspace()">DEL</button></div>
+        <div class="col-3"><button class="btn btn-success" onclick="recallVariable()">Recall</button></div>
+        <div class="col-3"><button class="btn btn-info" onclick="showStoredCalculations()">Show</button></div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-6">
+          <button class="btn btn-secondary" onclick="saveCalculations()">Save</button>
+        </div>
+        <div class="col-6">
+          <button class="btn btn-secondary" onclick="loadCalculations()">Load</button>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <input type="text" id="unitInput" placeholder="Enter value with units (e.g., 10 cm)">
+          <button class="btn btn-secondary" onclick="convertUnits()">Convert</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
-<script>
-  const display = document.getElementById('display');
-  let currentExpression = '';
-  let storedCalculations = {};
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  <script>
+    const display = document.getElementById('display');
+    const unitInput = document.getElementById('unitInput');
+    let currentExpression = '';
+    let storedCalculations = {};
 
-  function appendToDisplay(value) {
-    currentExpression += value;
-    display.value = currentExpression;
-  }
+    function appendToDisplay(value) {
+      currentExpression += value;
+      display.value = currentExpression;
+    }
 
-  function clearDisplay() {
-    currentExpression = '';
-    display.value = '';
-  }
-
-  function backspace() {
-    currentExpression = currentExpression.slice(0, -1);
-    display.value = currentExpression;
-  }
-
-  function calculate() {
-    try {
-      const result = math.evaluate(currentExpression); 
-      display.value = result;
-
-      let varName = prompt("Enter a variable name to store this calculation (leave blank to skip):", "");
-      if (varName === null) {
-        varName = ""; 
-      }
-      if (varName !== "") { 
-        storedCalculations[varName] = {
-          expression: currentExpression,
-          result: result
-        };
-      }
-
-      currentExpression = result.toString(); 
-    } catch (error) {
-      display.value = 'Error';
+    function clearDisplay() {
       currentExpression = '';
+      display.value = '';
     }
-  }
 
-  function recallVariable() {
-    const varName = prompt("Enter the variable name to recall:");
-    if (varName && storedCalculations[varName]) {
-      appendToDisplay(storedCalculations[varName].result.toString());
-    } else {
-      alert("Variable not found!");
+    function backspace() {
+      currentExpression = currentExpression.slice(0, -1);
+      display.value = currentExpression;
     }
-  }
 
-  function showStoredCalculations() {
-    let message = "Stored Calculations:\n";
-    for (const varName in storedCalculations) {
-      message += `${varName} = ${storedCalculations[varName].result}\n`;
-    }
-    if (message === "Stored Calculations:\n") {
-      message += "None\n";
-    }
-    alert(message);
-  }
+    function calculate() {
+      try {
+        const result = math.evaluate(currentExpression);
+        display.value = result;
 
-  function updateCalculation(varName, newExpression) {
-    try {
-      const newResult = math.evaluate(newExpression);
-      storedCalculations[varName] = {
-        expression: newExpression,
-        result: newResult
-      };
-      return true; // Success
-    } catch (error) {
-      return false; // Error
-    }
-  }
+        let varName = prompt("Enter a variable name to store this calculation (leave blank to skip):", "");
+        if (varName === null) {
+          varName = "";
+        }
+        if (varName !== "") {
+          storedCalculations[varName] = {
+            expression: currentExpression,
+            result: result
+          };
+        }
 
-  function deleteCalculation(varName) {
-    if (storedCalculations[varName]) {
-      delete storedCalculations[varName];
-      return true; // Success
-    } else {
-      return false; // Not found
+        currentExpression = result.toString();
+      } catch (error) {
+        display.value = 'Error';
+        currentExpression = '';
+      }
     }
-  }
 
-</script>
+    function recallVariable() {
+      const varName = prompt("Enter the variable name to recall:");
+      if (varName && storedCalculations[varName]) {
+        appendToDisplay(storedCalculations[varName].result.toString());
+      } else {
+        alert("Variable not found!");
+      }
+    }
+
+    function showStoredCalculations() {
+      let message = "Stored Calculations:\n";
+      for (const varName in storedCalculations) {
+        message += `${varName} = ${storedCalculations[varName].result}\n`;
+      }
+      if (message === "Stored Calculations:\n") {
+        message += "None\n";
+      }
+      alert(message);
+    }
+
+    function updateCalculation(varName, newExpression) {
+      try {
+        const newResult = math.evaluate(newExpression);
+        storedCalculations[varName] = {
+          expression: newExpression,
+          result: newResult
+        };
+        return true; // Success
+      } catch (error) {
+        return false; // Error
+      }
+    }
+
+    function deleteCalculation(varName) {
+      if (storedCalculations[varName]) {
+        delete storedCalculations[varName];
+        return true; // Success
+      } else {
+        return false; // Not found
+      }
+    }
+
+    function saveCalculations() {
+      const folderName = prompt("Enter a folder name to save calculations:", "default");
+      if (folderName) {
+        localStorage.setItem(folderName, JSON.stringify(storedCalculations));
+      }
+    }
+
+    function loadCalculations() {
+      const folderName = prompt("Enter the folder name to load calculations:", "default");
+      if (folderName) {
+        const savedData = localStorage.getItem(folderName);
+        if (savedData) {
+          storedCalculations = JSON.parse(savedData);
+          alert("Calculations loaded successfully!");
+        } else {
+          alert("No saved calculations found for this folder.");
+        }
+      }
+    }
+
+    function convertUnits() {
+      const input = unitInput.value;
+      try {
+        const result = math.unit(input).toString();
+        display.value = result;
+      } catch (error) {
+        display.value = "Invalid unit conversion";
+      }
+    }
+  </script>
 
 </body>
+
 </html>
