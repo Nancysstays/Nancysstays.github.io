@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compound Interest Calculator</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Compound Interest Calculator</h1>
+    <div class="form-group">
+      <label for="principal">Principal Amount:</label>
+      <input type="number" class="form-control" id="principal" value="1000">
+    </div>
+    <div class="form-group">
+      <label for="dailyReturn">Daily Return (%):</label>
+      <input type="number" class="form-control" id="dailyReturn" value="1">
+    </div>
+    <div class="form-group">
+      <label for="margin">Margin (%):</label>
+      <input type="number" class="form-control" id="margin" value="35">
+    </div>
+    <div class="form-group">
+      <label for="days">Number of Days:</label>
+      <input type="number" class="form-control" id="days" value="30">
+    </div>
+    <div class="form-group">
+      <label for="algorithm">Algorithm:</label>
+      <select class="form-control" id="algorithm">
+        <option value="simple">Simple Compound Interest</option>
+        <option value="variableReturn">Variable Daily Return</option>
+        <option value="fees">Fees and Taxes</option>
+      </select>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="calculateReturns()">Calculate</button>
+    <div id="plot"></div>
+  </div>
+
+  <script>
+    function calculateReturns() {
+      var principal = parseFloat(document.getElementById("principal").value);
+      var dailyReturn = parseFloat(document.getElementById("dailyReturn").value) / 100;
+      var margin = parseFloat(document.getElementById("margin").value) / 100;
+      var days = parseInt(document.getElementById("days").value);
+      var algorithm = document.getElementById("algorithm").value;
+
+      var returns = [];
+      var currentPrincipal = principal;
+
+      switch (algorithm) {
+        case "simple":
+          for (var i = 0; i < days; i++) {
+            var dailyProfit = currentPrincipal * dailyReturn;
+            var marginAmount = dailyProfit * margin;
+            var netProfit = dailyProfit - marginAmount;
+            currentPrincipal += netProfit;
+            returns.push(currentPrincipal);
+          }
+          break;
+
+        case "variableReturn":
+          for (var i = 0; i < days; i++) {
+            // Simulate variable daily return (between 0.5% and 1.5% in this example)
+            var variableDailyReturn = (Math.random() * 1 + 0.5) / 100; 
+            var dailyProfit = currentPrincipal * variableDailyReturn;
+            var marginAmount = dailyProfit * margin;
+            var netProfit = dailyProfit - marginAmount;
+            currentPrincipal += netProfit;
+            returns.push(currentPrincipal);
+          }
+          break;
+
+        case "fees":
+          var feeRate = 0.01; // 1% fee per day
+          var taxRate = 0.1; // 10% tax on profit
+          for (var i = 0; i < days; i++) {
+            var dailyProfit = currentPrincipal * dailyReturn;
+            var marginAmount = dailyProfit * margin;
+            var feeAmount = currentPrincipal * feeRate; // Calculate fee
+            var profitBeforeTax = dailyProfit - marginAmount - feeAmount;
+            var taxAmount = profitBeforeTax * taxRate; // Calculate tax
+            var netProfit = profitBeforeTax - taxAmount;
+            currentPrincipal += netProfit;
+            returns.push(currentPrincipal);
+          }
+          break;
+      }
+
+      var x = Array.from({length: days}, (_, i) => i + 1);
+
+      var trace = {
+        x: x,
+        y: returns,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Returns'
+      };
+
+      var layout = {
+        title: 'Compound Interest with ' + algorithm,
+        xaxis: {title: 'Days'},
+        yaxis: {title: 'Returns'}
+      };
+
+      Plotly.newPlot('plot', [trace], layout);
+    }
+  </script>
+</body>
+</html>
