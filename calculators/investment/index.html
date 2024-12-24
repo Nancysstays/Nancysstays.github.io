@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compound Interest Calculator</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    /* Style for the modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Compound Interest Calculator</h1>
@@ -34,61 +72,93 @@
         <option value="fees">Fees and Taxes</option>
       </select>
     </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="weekdaysOnly">
+      <label class="form-check-label" for="weekdaysOnly">Weekdays Only</label>
+    </div>
     <button type="button" class="btn btn-primary" onclick="calculateReturns()">Calculate</button>
+    <button type="button" class="btn btn-secondary" onclick="saveWork()">Save Work</button>
+    <button type="button" class="btn btn-info" onclick="loadWork()">Load Work</button>
     <div id="plot"></div>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Saved Work</h2>
+        <ul id="workList"></ul>
+      </div>
+    </div>
   </div>
 
   <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+    var workList = document.getElementById("workList");
+
+    // Close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
     function calculateReturns() {
       var principal = parseFloat(document.getElementById("principal").value);
       var dailyReturn = parseFloat(document.getElementById("dailyReturn").value) / 100;
       var margin = parseFloat(document.getElementById("margin").value) / 100;
       var days = parseInt(document.getElementById("days").value);
       var algorithm = document.getElementById("algorithm").value;
+      var weekdaysOnly = document.getElementById("weekdaysOnly").checked;
 
       var returns = [];
       var currentPrincipal = principal;
+      var currentDay = 0;
 
-      switch (algorithm) {
-        case "simple":
-          for (var i = 0; i < days; i++) {
-            var dailyProfit = currentPrincipal * dailyReturn;
-            var marginAmount = dailyProfit * margin;
-            var netProfit = dailyProfit - marginAmount;
-            currentPrincipal += netProfit;
-            returns.push(currentPrincipal);
-          }
-          break;
+      while (currentDay < days) {
+        var date = new Date(new Date().setDate(new Date().getDate() + currentDay));
+        if (!weekdaysOnly || (date.getDay() !== 0 && date.getDay() !== 6)) { // Check if it's a weekday
+          switch (algorithm) {
+            case "simple":
+              var dailyProfit = currentPrincipal * dailyReturn;
+              var marginAmount = dailyProfit * margin;
+              var netProfit = dailyProfit - marginAmount;
+              currentPrincipal += netProfit;
+              returns.push(currentPrincipal);
+              break;
 
-        case "variableReturn":
-          for (var i = 0; i < days; i++) {
-            // Simulate variable daily return (between 0.5% and 1.5% in this example)
-            var variableDailyReturn = (Math.random() * 1 + 0.5) / 100; 
-            var dailyProfit = currentPrincipal * variableDailyReturn;
-            var marginAmount = dailyProfit * margin;
-            var netProfit = dailyProfit - marginAmount;
-            currentPrincipal += netProfit;
-            returns.push(currentPrincipal);
-          }
-          break;
+            case "variableReturn":
+              var variableDailyReturn = (Math.random() * 1 + 0.5) / 100;
+              var dailyProfit = currentPrincipal * variableDailyReturn;
+              var marginAmount = dailyProfit * margin;
+              var netProfit = dailyProfit - marginAmount;
+              currentPrincipal += netProfit;
+              returns.push(currentPrincipal);
+              break;
 
-        case "fees":
-          var feeRate = 0.01; // 1% fee per day
-          var taxRate = 0.1; // 10% tax on profit
-          for (var i = 0; i < days; i++) {
-            var dailyProfit = currentPrincipal * dailyReturn;
-            var marginAmount = dailyProfit * margin;
-            var feeAmount = currentPrincipal * feeRate; // Calculate fee
-            var profitBeforeTax = dailyProfit - marginAmount - feeAmount;
-            var taxAmount = profitBeforeTax * taxRate; // Calculate tax
-            var netProfit = profitBeforeTax - taxAmount;
-            currentPrincipal += netProfit;
-            returns.push(currentPrincipal);
+            case "fees":
+              var feeRate = 0.01;
+              var taxRate = 0.1;
+              var dailyProfit = currentPrincipal * dailyReturn;
+              var marginAmount = dailyProfit * margin;
+              var feeAmount = currentPrincipal * feeRate;
+              var profitBeforeTax = dailyProfit - marginAmount - feeAmount;
+              var taxAmount = profitBeforeTax * taxRate;
+              var netProfit = profitBeforeTax - taxAmount;
+              currentPrincipal += netProfit;
+              returns.push(currentPrincipal);
+              break;
           }
-          break;
+        }
+        currentDay++;
       }
 
-      var x = Array.from({length: days}, (_, i) => i + 1);
+      var x = Array.from({ length: returns.length }, (_, i) => i + 1);
 
       var trace = {
         x: x,
@@ -100,12 +170,82 @@
 
       var layout = {
         title: 'Compound Interest with ' + algorithm,
-        xaxis: {title: 'Days'},
-        yaxis: {title: 'Returns'}
+        xaxis: { title: 'Days' },
+        yaxis: { title: 'Returns' }
       };
 
       Plotly.newPlot('plot', [trace], layout);
     }
+
+    function saveWork() {
+      var work = {
+        principal: parseFloat(document.getElementById("principal").value),
+        dailyReturn: parseFloat(document.getElementById("dailyReturn").value),
+        margin: parseFloat(document.getElementById("margin").value),
+        days: parseInt(document.getElementById("days").value),
+        algorithm: document.getElementById("algorithm").value,
+        weekdaysOnly: document.getElementById("weekdaysOnly").checked
+      };
+
+      var savedWork = JSON.parse(localStorage.getItem("savedWork")) || [];
+      savedWork.push(work);
+      localStorage.setItem("savedWork", JSON.stringify(savedWork));
+    }
+
+    function loadWork() {
+      var savedWork = JSON.parse(localStorage.getItem("savedWork")) || [];
+      workList.innerHTML = ""; // Clear the list
+
+      if (savedWork.length === 0) {
+        workList.innerHTML = "<li>No saved work found.</li>";
+      } else {
+        savedWork.forEach(function (work, index) {
+          var listItem = document.createElement("li");
+          listItem.innerHTML = `Principal: ${work.principal}, Daily Return: ${work.dailyReturn}%, Margin: ${work.margin}%, Days: ${work.days}, Algorithm: ${work.algorithm}, Weekdays Only: ${work.weekdaysOnly ? 'Yes' : 'No'}`;
+
+          // Add buttons for CRUD operations
+          var loadButton = document.createElement("button");
+          loadButton.textContent = "Load";
+          loadButton.onclick = function () {
+            loadSavedWork(index);
+          };
+          listItem.appendChild(loadButton);
+
+          var deleteButton = document.createElement("button");
+          deleteButton.textContent = "Delete";
+          deleteButton.onclick = function () {
+            deleteSavedWork(index);
+          };
+          listItem.appendChild(deleteButton);
+
+          workList.appendChild(listItem);
+        });
+      }
+
+      modal.style.display = "block";
+    }
+
+    function loadSavedWork(index) {
+      var savedWork = JSON.parse(localStorage.getItem("savedWork")) || [];
+      var work = savedWork[index];
+
+      document.getElementById("principal").value = work.principal;
+      document.getElementById("dailyReturn").value = work.dailyReturn;
+      document.getElementById("margin").value = work.margin;
+      document.getElementById("days").value = work.days;
+      document.getElementById("algorithm").value = work.algorithm;
+      document.getElementById("weekdaysOnly").checked = work.weekdaysOnly;
+
+      modal.style.display = "none";
+    }
+
+    function deleteSavedWork(index) {
+      var savedWork = JSON.parse(localStorage.getItem("savedWork")) || [];
+      savedWork.splice(index, 1);
+      localStorage.setItem("savedWork", JSON.stringify(savedWork));
+      loadWork(); // Refresh the list
+    }
   </script>
 </body>
+
 </html>
