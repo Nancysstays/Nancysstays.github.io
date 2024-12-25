@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Product 1",
+    "imageUrl": "../../1735107804050.jpg",
+    "description": "Product description goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.",
+    "price": 199.99
+  },
+  {
+    "name": "Product 2",
+    "imageUrl": "https://via.placeholder.com/500",
+    "description": "Another product description.",
+    "price": 29.99
+  }
+]
