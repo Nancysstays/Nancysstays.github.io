@@ -97,6 +97,71 @@ function downloadDecorator(target, name, descriptor) {
 class DJIStockData extends StockData {
   constructor(apiUrl) {
     super(apiUrl, 'DJI');
+  createChart(data) {
+    const dates = Object.keys(data).reverse();
+    const openPrices = dates.map(date => parseFloat(data[date]['1. open']));
+    const highPrices = dates.map(date => parseFloat(data[date]['2. high']));
+    const lowPrices = dates.map(date => parseFloat(data[date]['3. low']));
+    const closePrices = dates.map(date => parseFloat(data[date]['4. close']));
+
+    const trace1 = {
+      x: dates,
+      close: closePrices,
+      high: highPrices,
+      low: lowPrices,
+      open: openPrices,
+      increasing: { line: { color: 'green' } },
+      decreasing: { line: { color: 'red' } },
+      type: 'candlestick',
+      name: 'DJI',
+      hollowcandle: true // Enable hollow candles
+    };
+
+    const macd = this.calculateMACD(closePrices);
+
+    const trace2 = {
+      x: dates,
+      y: macd.macd,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'MACD',
+      yaxis: 'y2'
+    };
+
+    const trace3 = {
+      x: dates,
+      y: macd.signal,
+      type: 'scatter',
+      mode: 'lines',
+      name: 'Signal',
+      yaxis: 'y2'
+    };
+
+    const trace4 = {
+      x: dates,
+      y: macd.histogram,
+      type: 'bar',
+      name: 'Histogram',
+      yaxis: 'y2',
+      marker: {
+        color: macd.histogram.map(value => value >= 0 ? 'green' : 'red'),
+      }
+    };
+
+    const data = [trace1, trace2, trace3, trace4];
+
+    const layout = {
+      title: 'DJI Stock Data with Indicators',
+      yaxis: { title: 'Price' },
+      yaxis2: {
+        title: 'MACD',
+        overlaying: 'y',
+        side: 'right'
+      }
+    };
+
+    Plotly.newPlot('chart', data, layout);
+  }
   }
 
   // Polymorphism: Overriding the createDownloadLink method
