@@ -114,7 +114,7 @@ class DJIStockData extends StockData {
 }
 
 const djiDownloader = new DJIStockData(
-  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=DJI&interval=1min&outputsize=full&apikey=XVYHOWRTRNPN3FJA&datatype=csv'
+  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=TSLA&interval=1min&outputsize=full&apikey=XVYHOWRTRNPN3FJA&datatype=csv'
 );
 
 djiDownloader.downloadData();
