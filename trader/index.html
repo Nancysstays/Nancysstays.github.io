@@ -52,9 +52,54 @@
       "allow_symbol_change": true,
       "details": true,
       "hotlist": true,
-      "calendar": false,
+      "calendar": true,
+      "studies_overrides": {},
+      "container_id": "tradingview_3b3b4",
+      "loading_screen": { "backgroundColor": "#f4f7f9" },
+      "width": "100%",
+      "height": "100%",
       "studies": [
         "STD;MACD",
+        "STD;Stochastic",
+        "STD;BollingerBands",
+        "STD;RSI",
+        "STD;ADX",
+        "STD;ATR",
+        "STD;CCI",
+        "STD;ROC",
+        "STD;OBV",
+        "STD;VWAP",
+        "STD;UltimateOscillator",
+        "STD;TRIX",
+        "STD;DMI",
+        "STD;EMA",
+        "STD;SMMA",
+        "STD;VWMA",
+        "STD;HMA",
+        "STD;TEMA",
+        "STD;WPR",
+        "STD;AroonOscillator",
+        "STD;StochasticRSI",
+        "STD;WilliamsR",
+        "STD;Aroon",
+        "STD;Chaikin",
+        "STD;ChaikinVolatility",
+        "STD;Chande",
+        "STD;CMF",
+        "STD;Donchian",
+        "STD;ElderRay",
+        "STD;FractalChaosBands",
+        "STD;FractalChaosOscillator",
+        "STD;GopalakrishnanRangeIndex",
+        "STD;HighLowBands",
+        "STD;MAEnvelopes",
+        "STD;MESA",
+        "STD;Momentum",
+        "STD;PriceVolumeTrend",
+        "STD;RateOfChange",
+        "STD;SMA",
+        "STD;StochasticFast",
+        "STD;StochasticSlow",
         "STD;Multi-Time%Period%Charts"
       ],
       "support_host": "https://www.tradingview.com"
@@ -114,11 +159,23 @@
 
         try {
           const response = await fetch(timeSeriesUrl);
+          if (!response.ok) {
+            throw new Error('Error fetching stock data: ' + response.statusText);
+          }
           const data = await response.json();
+          if (!data['Time Series (Daily)']) {
+            throw new Error('Invalid stock data received');
+          }
           this._data = data['Time Series (Daily)']; 
 
           const djiResponse = await fetch(djiUrl);
+          if (!djiResponse.ok) {
+            throw new Error('Error fetching DJI data: ' + djiResponse.statusText);
+          }
           const djiData = await djiResponse.json();
+          if (!djiData['Time Series (Daily)']) {
+            throw new Error('Invalid DJI data received');
+          }
           this.djiData = djiData['Time Series (Daily)'];
         } catch (error) {
           throw new Error('Error fetching data: ' + error); 
@@ -210,7 +267,243 @@
       }
 
       // ... other methods ...
+      _calculateRSI() {
+        const period = 14;
+        const changes = this.closingPrices.slice(1).map((price, i) => price - this.closingPrices[i]);
+        const gains = changes.map(change => change > 0 ? change : 0);
+        const losses = changes.map(change => change < 0 ? Math.abs(change) : 0);
 
+        let rsi = [];
+        let avgGain = gains.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        let avgLoss = losses.slice(0, period).reduce((a, b) => a + b, 0) / period;
+
+        for (let i = period; i < changes.length; i++) {
+          avgGain = (avgGain * (period - 1) + gains[i]) / period;
+          avgLoss = (avgLoss * (period - 1) + losses[i]) / period;
+
+          const rs = avgGain / avgLoss;
+          rsi.push(100 - (100 / (1 + rs)));
+        }
+
+        return rsi;
+      }
+
+      _calculateBollingerBands() {
+        const period = 20;
+        const stdDev = 2;
+
+        const sma = this.closingPrices.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        const stdDeviation = this.closingPrices.slice(0, period).reduce((sum, value) => sum + Math.pow(value - sma, 2), 0) / period;
+        const upperBand = sma + stdDeviation * stdDev;
+        const lowerBand = sma - stdDeviation * stdDev;
+
+        return { upperBand, lowerBand };
+      }
+
+      _calculateADX() {
+        const period = 14;
+        const tr = this.closingPrices.slice(1).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          return Math.max(high - low, Math.abs(high - this.closingPrices[i]), Math.abs(low - this.closingPrices[i]));
+        });
+
+        const dmPlus = this.closingPrices.slice(1).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const highPrev = parseFloat(this._data[this.dates[i - 1]]['2. high']);
+          return high - highPrev > highPrev - this.closingPrices[i] ? Math.max(high - highPrev, 0) : 0;
+        });
+
+        const dmMinus = this.closingPrices.slice(1).map((price, i) => {
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          const lowPrev = parseFloat(this._data[this.dates[i - 1]]['3. low']);
+          return lowPrev - low > this.closingPrices[i] - lowPrev ? Math.max(lowPrev - low, 0) : 0;
+        });
+
+        const atr = tr.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        const diPlus = dmPlus.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        const diMinus = dmMinus.slice(0, period).reduce((a, b) => a + b, 0) / period;
+
+        const dx = 100 * Math.abs(diPlus - diMinus) / (diPlus + diMinus);
+        const adx = dx;
+
+        return adx;
+      }
+
+      _calculateLinearRegression() {
+        const period = 14;
+        const x = this.closingPrices.slice(0, period).map((price, i) => i);
+        const y = this.closingPrices.slice(0, period);
+
+        const n = period;
+        const sumX = x.reduce((a, b) => a + b, 0);
+        const sumY = y.reduce((a, b) => a + b, 0);
+        const sumXY = x.reduce((sum, value, i) => sum + value * y[i], 0);
+        const sumX2 = x.reduce((sum, value) => sum + value * value, 0);
+
+        const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+
+        return { slope, intercept };
+      }
+
+      _calculateLogisticRegression() {
+        const period = 14;
+        const x = this.closingPrices.slice(0, period).map((price, i) => i);
+        const y = this.closingPrices.slice(0, period);
+
+        const n = period;
+        const sumX = x.reduce((a, b) => a + b, 0);
+        const sumY = y.reduce((a, b) => a + b, 0);
+        const sumXY = x.reduce((sum, value, i) => sum + value * y[i], 0);
+        const sumX2 = x.reduce((sum, value) => sum + value * value, 0);
+        const sumY2 = y.reduce((sum, value) => sum + value * value, 0);
+
+        const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+
+        const a = Math.exp(intercept);
+        const b = slope;
+
+        return { a, b };
+      }
+
+      _calculateATR() {
+        const period = 14;
+        const tr = this.closingPrices.slice(1).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          return Math.max(high - low, Math.abs(high - this.closingPrices[i]), Math.abs(low - this.closingPrices[i]));
+        });
+
+        const atr = tr.slice(0, period).reduce((a, b) => a + b, 0) / period;
+
+        return atr;
+      }
+
+      _calculateCCI() {
+        const period = 20;
+        const typicalPrices = this.closingPrices.slice(0, period).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          const close = this.closingPrices[i];
+          return (high + low + close) / 3;
+        });
+
+        const mean = typicalPrices.reduce((a, b) => a + b, 0) / period;
+        const meanDeviation = typicalPrices.reduce((sum, value) => sum + Math.abs(value - mean), 0) / period;
+
+        const cci = (typicalPrices[period - 1] - mean) / (0.015 * meanDeviation);
+
+        return cci;
+      }
+
+      _calculateROC() {
+        const period = 14;
+        const roc = (this.closingPrices[period - 1] - this.closingPrices[0]) / this.closingPrices[0] * 100;
+
+        return roc;
+      }
+
+      _calculateOBV() {
+        const obv = this.closingPrices.slice(1).reduce((sum, price, i) => {
+          const prevPrice = this.closingPrices[i];
+          return sum + (price > prevPrice ? 1 : price < prevPrice ? -1 : 0);
+        }, 0);
+
+        return obv;
+      }
+
+      _calculateVWAP() {
+        const period = 14;
+        const vwap = this.closingPrices.slice(0, period).reduce((sum, price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          const close = this.closingPrices[i];
+          const volume = parseFloat(this._data[this.dates[i]]['5. volume']);
+          return sum + ((high + low + close) / 3) * volume;
+        }, 0) / this.closingPrices.slice(0, period).reduce((sum, price, i) => {
+          return sum + parseFloat(this._data[this.dates[i]]['5. volume']);
+        }, 0);
+
+        return vwap;
+      }
+
+      _calculateUltimateOscillator() {
+        const period1 = 7;
+        const period2 = 14;
+        const period3 = 28;
+
+        const bp = this.closingPrices.slice(1).map((price, i) => {
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          const prevClose = this.closingPrices[i];
+          return price - Math.min(low, prevClose);
+        });
+
+        const tr = this.closingPrices.slice(1).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          const prevClose = this.closingPrices[i];
+          return Math.max(high - low, Math.abs(high - prevClose), Math.abs(low - prevClose));
+        });
+
+        const avg1 = bp.slice(0, period1).reduce((a, b) => a + b, 0) / tr.slice(0, period1).reduce((a, b) => a + b, 0);
+        const avg2 = bp.slice(0, period2).reduce((a, b) => a + b, 0) / tr.slice(0, period2).reduce((a, b) => a + b, 0);
+        const avg3 = bp.slice(0, period3).reduce((a, b) => a + b, 0) / tr.slice(0, period3).reduce((a, b) => a + b, 0);
+
+        const uo = 100 * ((4 * avg1) + (2 * avg2) + avg3) / (4 + 2 + 1);
+
+        return uo;
+      }
+
+      _calculateTRIX() {
+        const period = 14;
+        const ema1 = this.closingPrices.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        const ema2 = this.closingPrices.slice(0, period * 2).reduce((a, b) => a + b, 0) / (period * 2);
+        const ema3 = this.closingPrices.slice(0, period * 3).reduce((a, b) => a + b, 0) / (period * 3);
+
+        const trix = 100 * (ema3 - ema2) / ema2;
+
+        return trix;
+      }
+
+      _calculateDMI() {
+        const period = 14;
+        const tr = this.closingPrices.slice(1).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          return Math.max(high - low, Math.abs(high - this.closingPrices[i]), Math.abs(low - this.closingPrices[i]));
+        });
+
+        const dmPlus = this.closingPrices.slice(1).map((price, i) => {
+          const high = parseFloat(this._data[this.dates[i]]['2. high']);
+          const highPrev = parseFloat(this._data[this.dates[i - 1]]['2. high']);
+          return high - highPrev > highPrev - this.closingPrices[i] ? Math.max(high - highPrev, 0) : 0;
+        });
+
+        const dmMinus = this.closingPrices.slice(1).map((price, i) => {
+          const low = parseFloat(this._data[this.dates[i]]['3. low']);
+          const lowPrev = parseFloat(this._data[this.dates[i - 1]]['3. low']);
+          return lowPrev - low > this.closingPrices[i] - lowPrev ? Math.max(lowPrev - low, 0) : 0;
+        });
+
+        const diPlus = dmPlus.slice(0, period).reduce((a, b) => a + b, 0) / tr.slice(0, period).reduce((a, b) => a + b, 0);
+        const diMinus = dmMinus.slice(0, period).reduce((a, b) => a + b, 0) / tr.slice(0, period).reduce((a, b) => a + b, 0);
+
+        const dx = 100 * Math.abs(diPlus - diMinus) / (diPlus + diMinus);
+        const adx = dx;
+
+        return adx;
+      }
+
+      _calculateEMA() {
+        const period = 14;
+        const ema = this.closingPrices.slice(0, period).reduce((a, b) => a + b, 0) / period;
+
+        return ema;
+      }
+
+      
       displayAnalysis() { 
         const analysisDiv = document.getElementById('analysis');
         analysisDiv.innerHTML = `
