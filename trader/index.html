@@ -194,6 +194,19 @@
         this.stochastics = this._calculateStochastic();
         this.standardDeviation = this._calculateStandardDeviation(); 
         this.covariance = this._calculateCovariance();
+        this.rsi = this._calculateRSI();
+        this.bollingerBands = this._calculateBollingerBands();
+        this.adx = this._calculateADX();
+        this.linearRegression = this._calculateLinearRegression();
+        this.logisticRegression = this._calculateLogisticRegression();
+        this.atr = this._calculateATR();
+        this.cci = this._calculateCCI();
+        this.roc = this._calculateROC();
+        this.obv = this._calculateOBV();
+        this.vwap = this._calculateVWAP();
+        this.ultimateOscillator = this._calculateUltimateOscillator();
+        this.trix = this._calculateTRIX();
+        this.dmi = this._calculateDMI();
       }
 
       _calculateMACD() {
@@ -503,7 +516,7 @@
         return ema;
       }
 
-      
+
       displayAnalysis() { 
         const analysisDiv = document.getElementById('analysis');
         analysisDiv.innerHTML = `
@@ -516,7 +529,20 @@
               <p class="card-text">Stochastic K: ${this.stochastics.slice(-1)[0].k.toFixed(2)}</p>
               <p class="card-text">Stochastic D: ${this.stochastics.slice(-1)[0].d.toFixed(2)}</p>
               <p class="card-text">Standard Deviation: ${this.standardDeviation.toFixed(2)}</p>
-              <p class="card-text">Covariance with DJI: ${this.covariance.toFixed(2)}</p> 
+              <p class="card-text">Covariance with DJI: ${this.covariance.toFixed(2)}</p>
+              <p class="card-text">RSI: ${this.rsi.slice(-1)[0].toFixed(2)}</p>
+              <p class="card-text">Bollinger Bands: ${this.bollingerBands.upperBand.toFixed(2)} / ${this.bollingerBands.lowerBand.toFixed(2)}</p>
+              <p class="card-text">ADX: ${this.adx.toFixed(2)}</p>
+              <p class="card-text">Linear Regression: Slope ${this.linearRegression.slope.toFixed(2)}, Intercept ${this.linearRegression.intercept.toFixed(2)}</p>
+              <p class="card-text">Logistic Regression: a ${this.logisticRegression.a.toFixed(2)}, b ${this.logisticRegression.b.toFixed(2)}</p>
+              <p class="card-text">ATR: ${this.atr.toFixed(2)}</p>
+              <p class="card-text">CCI: ${this.cci.toFixed(2)}</p>
+              <p class="card-text">ROC: ${this.roc.toFixed(2)}</p>
+              <p class="card-text">OBV: ${this.obv.toFixed(2)}</p>
+              <p class="card-text">VWAP: ${this.vwap.toFixed(2)}</p>
+              <p class="card-text">Ultimate Oscillator: ${this.ultimateOscillator.toFixed(2)}</p>
+              <p class="card-text">TRIX: ${this.trix.toFixed(2)}</p>
+              <p class="card-text">DMI: ${this.dmi.toFixed(2)}</p>
             </div>
           </div>
         `;
@@ -597,42 +623,6 @@
       static log(message) {
         console.log(message); 
       }
-    }
-  </script>
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html>
-<head>
-  </head>
-<body>
-  <div class="container">
-  </div>
-
-  <script>
-    class StockAnalyzer {
-      // ... (rest of the class code) ...
-
-      static analyze() { 
-        // ... 
-
-        analyzer.fetchData()
-          .then(() => {
-            try {
-              // ...
-            } catch (error) {
-              StockAnalyzer.showError(error.message); // Show error in DOM
-            }
-          })
-          .catch(error => {
-            StockAnalyzer.showError(error.message); // Show error in DOM
-          });
-      }
-
-      // ... (rest of the class code) ...
-
     }
   </script>
 </body>
