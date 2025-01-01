@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
+    /* ... CSS styles (no changes needed) ... */
     html,
     body {
       height: 100%;
@@ -151,23 +152,24 @@
     <p>&copy; 2023 nAincy Storyteller</p>
   </footer>
 
-  <script type="importmap">
-    {
-      "imports": {
-        "@google/generative-ai": "https://esm.run/@google/generative-ai"
-      }
-    }
-  </script>
   <script type="module">
-    import { GoogleGenerativeAI } from "@google/generative-ai";
+    import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai"; // Import directly from esm.run
 
     const API_KEY = "AIzasydQrSmRiGSdgD50wdDypG5z7MTWDRNVl1k"; // Replace with your actual API key
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" }); // Use gemini-pro for text generation
 
     const chatColumns = document.querySelectorAll(".chat-column");
 
-    chatColumns.forEach((column) => {
+    // Load chat history from localStorage or initialize an empty object
+    let chatHistories = loadChatHistories();
+
+    // Display loaded chat history on page load
+    chatColumns.forEach((column, index) => {
+      displayChatHistory(column, index);
+    });
+
+    chatColumns.forEach((column, index) => {
       const promptInput = column.querySelector(".prompt-input");
       const generateBtn = column.querySelector(".generate-btn");
       const chatContainer = column.querySelector(".chat-container");
@@ -181,14 +183,30 @@
         promptInput.value = "";
         showLoadingSpinner(loadingSpinner);
 
+        // Add user message to chat history
+        chatHistories[index].push({ role: "user", parts: prompt });
+
         try {
-          const result = await model.generateContent({
-            prompt: prompt,
-            temperature: 0.7,
-            maxChars: 500
+          const chat = model.startChat({
+            history: chatHistories[index],
+            generationConfig: {
+              temperature: 0.9,
+              topK: 32,
+              topP: 1,
+              maxOutputTokens: 8192,
+            },
           });
-          const story = result.response.text();
+
+          const result = await chat.sendMessage(prompt);
+          const response = result.response;
+          const story = response.text();
           displayMessage(chatContainer, "ai", story);
+
+          // Add Gemini response to chat history
+          chatHistories[index].push({ role: "model", parts: story });
+
+          // Save updated chat history to localStorage
+          saveChatHistories();
         } catch (error) {
           console.error("Error generating story:", error);
           displayMessage(chatContainer, "ai", "Sorry, there was an error. Please try again later.");
@@ -212,6 +230,25 @@
 
     function hideLoadingSpinner(spinner) {
       spinner.style.display = "none";
+    }
+
+    // Function to save chat histories to localStorage
+    function saveChatHistories() {
+      localStorage.setItem("chatHistories", JSON.stringify(chatHistories));
+    }
+
+    // Function to load chat histories from localStorage
+    function loadChatHistories() {
+      const storedHistories = localStorage.getItem("chatHistories");
+      return storedHistories ? JSON.parse(storedHistories) : [ [], [], [], [] ];
+    }
+
+    // Display chat history for a specific column
+    function displayChatHistory(column, index) {
+      const chatContainer = column.querySelector(".chat-container");
+      chatHistories[index].forEach(msg => {
+        displayMessage(chatContainer, msg.role === "user" ? "user" : "ai", msg.parts);
+      });
     }
   </script>
 </body>
