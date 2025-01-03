@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Countdown</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: #000; /* Black background */
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        #countdown-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 10em;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        #fireworks-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Make it non-interactive */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: yellow;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(10);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="countdown-container">10</div>
+    <div id="fireworks-container"></div>
+
+    <script>
+        const countdownContainer = document.getElementById('countdown-container');
+        const fireworksContainer = document.getElementById('fireworks-container');
+        let count = 10;
+
+        function updateCountdown() {
+            countdownContainer.textContent = count;
+            count--;
+
+            if (count < 0) {
+                clearInterval(countdownInterval);
+                countdownContainer.style.display = 'none';
+                showFireworks();
+            }
+        }
+
+        function showFireworks() {
+            fireworksContainer.style.opacity = 1;
+            const numberOfFireworks = 50; // Adjust as needed
+
+            for (let i = 0; i < numberOfFireworks; i++) {
+                createFirework();
+            }
+        }
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            const xPos = Math.random() * 100; // Random horizontal position
+            const yPos = Math.random() * 100; // Random vertical position
+            const color = getRandomColor();
+
+            firework.style.left = `${xPos}vw`;
+            firework.style.top = `${yPos}vh`;
+            firework.style.backgroundColor = color;
+
+            fireworksContainer.appendChild(firework);
+
+            // Remove the firework element after the animation
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
