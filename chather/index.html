@@ -1,85 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Broadcasting App</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    /* Add your custom CSS here */
-    body {
-      font-family: sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatHer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="root"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
-
-  <script type="text/babel">
-    // Your React code will go here
-    const socket = io();
-
-    function App() {
-      const [rooms, setRooms] = React.useState([]); // State to store available rooms
-      const [roomName, setRoomName] = React.useState(''); // State for the new room name input
-
-      React.useEffect(() => {
-        // Fetch initial room list when the component mounts
-        fetch('/rooms')
-          .then(res => res.json())
-          .then(data => setRooms(data));
-
-        // Listen for room updates (new room created)
-        socket.on('room created', (newRoomName) => {
-          setRooms([...rooms, newRoomName]);
-        });
-      }, []); // Empty dependency array ensures this runs only once on mount
-
-      const handleInputChange = (event) => {
-        setRoomName(event.target.value);
-      };
-
-      const createRoom = () => {
-        if (roomName.trim()) {
-          socket.emit('create room', roomName.trim());
-          setRoomName('');
-        } else {
-          alert('Please enter a valid room name.');
-        }
-      };
-
-      return (
-        <div className="container">
-          <h1>Create a Room</h1>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              value={roomName}
-              onChange={handleInputChange}
-              placeholder="Room Name"
-              required
-            />
-          </div>
-          <button onClick={createRoom} className="btn btn-primary">Create</button>
-
-          <h1>Available Rooms</h1>
-          <ul className="list-group">
-            {rooms.map((room) => (
-              <li key={room} className="list-group-item">
-                <a href={`/cast/${room}`}>{room}</a>
-              </li>
-            ))}
-          </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <iframe id="mainIframe" src="" frameborder="0"></iframe>
+            </div>
+            <div class="col-md-4">
+                <div class="filter-section">
+                    <h5>Filter Results</h5>
+                    <input type="text" id="filterInput" placeholder="Search by username...">
+                </div>
+                <div class="online-users">
+                    <h5>Online Users</h5>
+                    <div id="onlineUsers" class="scrollable-list">
+                        </div>
+                </div>
+                <div class="previous-users">
+                    <h5>Previous Users</h5>
+                    <div id="previousUsers" class="scrollable-list">
+                        </div>
+                </div>
+                <iframe id="secondaryIframe" src="https://nancysstays.github.io/texther" frameborder="0"></iframe>
+            </div>
         </div>
-      );
-    }
+    </div>
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
