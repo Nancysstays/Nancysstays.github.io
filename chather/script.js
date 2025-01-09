@@ -141,14 +141,50 @@ class ChaturbateAPI {
             }
         }
     }
+// ... (other parts of the ChaturbateAPI class)
 
-    loadStoredData() {
-        // ... (same as before)
+loadStoredData() {
+    const removedUsers = localStorage.getItem("removedUsers");
+    if (removedUsers) {
+        try {
+            const removedUsersArray = JSON.parse(removedUsers);
+            removedUsersArray.forEach(username => {
+                delete this.onlineUsers[username];
+            });
+        } catch (error) {
+            console.error("Error parsing removed users from localStorage:", error);
+        }
     }
 
-    storeData(key, value) {
-        // ... (same as before)
+    const previousUsers = sessionStorage.getItem("previousUsers");
+    if (previousUsers) {
+        try {
+            this.previousUsers = JSON.parse(previousUsers);
+        } catch (error) {
+            console.error("Error parsing previous users from sessionStorage:", error);
+        }
     }
+}
+
+storeData(key, value) {
+    if (key === "removedUsers") {
+        let removedUsersArray = [];
+        const storedUsers = localStorage.getItem("removedUsers");
+        if (storedUsers) {
+            try {
+                removedUsersArray = JSON.parse(storedUsers);
+            } catch (error) {
+                console.error("Error parsing removed users from localStorage:", error);
+            }
+        }
+        removedUsersArray.push(value);
+        localStorage.setItem("removedUsers", JSON.stringify(removedUsersArray));
+    } else if (key === "previousUsers") {
+        sessionStorage.setItem("previousUsers", JSON.stringify(value));
+    }
+}
+
+// ... (other parts of the ChaturbateAPI class)
 }
 
 const chaturbate = new ChaturbateAPI();
