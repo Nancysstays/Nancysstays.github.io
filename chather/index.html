@@ -1,41 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatHer</title>
+    <title>Chaturbate Viewer</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8">
-                <iframe id="mainIframe" src="" frameborder="0"></iframe>
+    <div class="container">
+        <h1>Chaturbate Online Rooms</h1>
+
+        <div class="filters">
+            <input type="text" id="filterInput" placeholder="Filter by username" class="form-control">
+            <select id="genderFilter" class="form-control">
+                <option value="">All Genders</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="couple">Couple</option>
+                <option value="trans">Trans</option>
+            </select>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="number" id="ageFilterMin" placeholder="Min Age" class="form-control">
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="number" id="ageFilterMax" placeholder="Max Age" class="form-control">
+                </div>
             </div>
-            <div class="col-md-4">
-                <div class="filter-section">
-                    <h5>Filter Results</h5>
-                    <input type="text" id="filterInput" placeholder="Search by username...">
+            <input type="text" id="tagsFilter" placeholder="Filter by tags" class="form-control">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="number" id="numUsersFilterMin" placeholder="Min Users" class="form-control">
                 </div>
-                <div class="online-users">
-                    <h5>Online Users</h5>
-                    <div id="onlineUsers" class="scrollable-list">
-                        </div>
+                <div class="form-group col-md-6">
+                    <input type="number" id="numUsersFilterMax" placeholder="Max Users" class="form-control">
                 </div>
-                <div class="previous-users">
-                    <h5>Previous Users</h5>
-                    <div id="previousUsers" class="scrollable-list">
-                        </div>
-                </div>
-                <iframe id="secondaryIframe" src="https://nancysstays.github.io/texther" frameborder="0"></iframe>
             </div>
         </div>
+
+        <h2>Online Users</h2>
+        <div id="onlineUsers" class="scrollable-list"></div>
+
+        <h2>Previous Users</h2>
+        <div id="previousUsers" class="scrollable-list"></div>
+
+        <iframe id="mainIframe" src="" frameborder="0" scrolling="no"></iframe> 
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js"></script> 
 </body>
 </html>
