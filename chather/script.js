@@ -4,7 +4,7 @@ class ChaturbateAPI {
         this.onlineUsers = {};
         this.previousUsers = {};
         this.currentPage = 1;
-        this.usersPerPage = 10; // Adjust as needed
+        this.usersPerPage = 25; // Adjust as needed
     }
 
     async fetchData() {
