@@ -1,10 +1,10 @@
 class ChaturbateAPI {
     constructor() {
-        this.apiUrl = "https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=9cg6A&gender=f&client_ip=request_ip";
+        this.apiUrl = "https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=9cg6A&tour=dU9X&gender=f&client_ip=request_ip";
         this.onlineUsers = {};
         this.previousUsers = {};
         this.currentPage = 1;
-        this.usersPerPage = 100;
+        this.usersPerPage = 500;
         this.iframeSrcBase = "https://chaturbate.com/in/?tour=dU9X&campaign=9cg6A&track=embed&bgcolor=white"; 
     }
 
