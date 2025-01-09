@@ -4,7 +4,7 @@ class ChaturbateAPI {
         this.onlineUsers = {};
         this.previousUsers = {};
         this.currentPage = 1;
-        this.usersPerPage = 25;
+        this.usersPerPage = 100;
         this.iframeSrcBase = "https://chaturbate.com/in/?tour=Jrvi&campaign=9cg6A&track=embed&bgcolor=white"; 
     }
 
@@ -78,7 +78,7 @@ class ChaturbateAPI {
 
     changeIframeSrc(username) {
         const mainIframe = document.getElementById("mainIframe");
-        mainIframe.src = `https://chaturbate.com/embed/${username}/?campaign=9cg6A&disable_sound=0&join_overlay=1&room=jessicapearsons&tour=9oGW`;
+        mainIframe.src = `https://chaturbate.com/embed/${username}/?campaign=9cg6A&disable_sound=0&join_overlay=1&room=jessicapearsons&tour=dU9X`;
 
         this.previousUsers[username] = this.onlineUsers[username];
         this.storeData("previousUsers", this.previousUsers);
