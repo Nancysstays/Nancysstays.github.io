@@ -5,7 +5,7 @@ class ChaturbateAPI {
         this.previousUsers = {};
         this.currentPage = 1;
         this.usersPerPage = 100;
-        this.iframeSrcBase = "https://chaturbate.com/in/?tour=Jrvi&campaign=9cg6A&track=embed&bgcolor=white"; 
+        this.iframeSrcBase = "https://chaturbate.com/in/?tour=dU9X&campaign=9cg6A&track=embed&bgcolor=white"; 
     }
 
     async fetchData() {
