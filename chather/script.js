@@ -119,28 +119,68 @@ class ChaturbateAPI {
         return users.slice(startIndex, endIndex);
     }
 
+// ... (other parts of the ChaturbateAPI class)
 
-    updatePagination(filteredUsers) {
-        const paginationDiv = document.getElementById("pagination");
-        paginationDiv.innerHTML = ""; 
+updatePagination(filteredUsers) {
+    const paginationDiv = document.getElementById("pagination");
+    paginationDiv.innerHTML = ""; 
 
-        const totalPages = Math.ceil(filteredUsers.length / this.usersPerPage);
+    const totalPages = Math.ceil(filteredUsers.length / this.usersPerPage);
 
-        if (totalPages > 1) {
-            for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement("button");
-                pageButton.textContent = i;
-                pageButton.addEventListener("click", () => {
-                    this.currentPage = i;
-                    this.displayUsers(); 
-                });
-                if (i === this.currentPage) {
-                    pageButton.classList.add("active");
-                }
-                paginationDiv.appendChild(pageButton);
+    if (totalPages > 1) {
+        // Create a container for the pagination elements
+        const paginationContainer = document.createElement("nav");
+        const paginationList = document.createElement("ul");
+        paginationList.classList.add("pagination"); 
+
+        // Add "Previous" button
+        const prevButton = this.createPaginationButton("&laquo;", this.currentPage - 1, this.currentPage > 1);
+        paginationList.appendChild(prevButton);
+
+        // Add page number buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = this.createPaginationButton(i, i, true);
+            if (i === this.currentPage) {
+                pageButton.classList.add("active");
             }
+            paginationList.appendChild(pageButton);
         }
+
+        // Add "Next" button
+        const nextButton = this.createPaginationButton("&raquo;", this.currentPage + 1, this.currentPage < totalPages);
+        paginationList.appendChild(nextButton);
+
+        // Add the list to the container and the container to the page
+        paginationContainer.appendChild(paginationList);
+        paginationDiv.appendChild(paginationContainer);
     }
+}
+
+createPaginationButton(text, page, enabled) {
+    const li = document.createElement("li");
+    li.classList.add("page-item");
+    if (!enabled) {
+        li.classList.add("disabled");
+    }
+
+    const button = document.createElement("a");
+    button.classList.add("page-link");
+    button.href = "#"; 
+    button.textContent = text;
+    button.addEventListener("click", (event) => {
+        event.preventDefault(); 
+        if (enabled) {
+            this.currentPage = page;
+            this.displayUsers(); 
+        }
+    });
+
+    li.appendChild(button);
+    return li;
+}
+
+// ... (other parts of the ChaturbateAPI class)
+
 // ... (other parts of the ChaturbateAPI class)
 
 loadStoredData() {
