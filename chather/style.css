@@ -1,0 +1,9 @@
+ .scrollable-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#mainIframe, #secondaryIframe {
+    width: 100%;
+    height: 500px; /* Adjust as needed */
+}
