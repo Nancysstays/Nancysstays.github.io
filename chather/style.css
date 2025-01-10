@@ -1,7 +1,7 @@
 /* style.css */
 .scrollable-list {
-    height: 528px;
-    overflow-y: auto;
+    height: 128px;
+    /* overflow-y: auto; */
 				float: left;
 }
 
