@@ -1,6 +1,6 @@
 class ChaturbateAPI {
     constructor() {
-        this.apiUrl = "https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=9cg6A&&gender=f&client_ip=request_ip";
+        this.apiUrl = "https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=9cg6A&&gender=f&limit=500&client_ip=request_ip";
         this.onlineUsers = {};
         this.previousUsers = {};
         this.currentPage = 1;
