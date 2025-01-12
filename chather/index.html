@@ -12,13 +12,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Chaturbate Online Rooms</h1>
+        <h1>ChatHer</h1>
         <button id="toggleButton">Toggle</button>
 
         <script>
             // Toggle controls on button click from id controls none/
             var toggleControls = document.getElementById('controls');
             var toggleButton = document.getElementById('toggleButton');
+            var toggleButton1 = document.getElementById('recordContainer');
+            var toggleButton2 = document.getElementById('controlsFilter');
+            // var toggleButton3 = document.getElementById('toggleButton3');
+
             toggleButton.addEventListener('click', function() {
                 var controls = document.getElementById('controls');
                 if (controls.style.display === 'none') {
@@ -27,8 +31,16 @@
                     controls.style.display = 'none';
                 }
             });
-            // document.body.insertBefore(toggleButton, document.body.childNodes[1]);
-        </script>
+
+            toggleButton1.addEventListener('click', function() {
+                var controls = document.getElementById('controls');
+                if (controls.style.display === 'none') {
+                    controls.style.display = 'block';
+                } else {
+                    controls.style.display = 'none';
+                }
+            });
+</script>
 
         <script>
             // Load rooms from chaturbate API
@@ -572,9 +584,8 @@
             var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
             var iframeUrl = URL.createObjectURL(iframeBlob);
             var iframeDownload = document.createElement('a');
-        
         </script>
-        <div class="filters">
+        <div id="controlsFilter" class="filters">
             <input type="text" id="filterInput" placeholder="Filter by username" class="form-control">
             <select id="genderFilter" class="form-control">
                 <option value="">All Genders</option>
@@ -658,7 +669,7 @@
                 <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                 <button type="reset" id="reset" class="btn btn-primary">Reset</button>
             </div>
-            <div class="recordContainer col-md-6">
+            <div class="recordContainer col-md-6" id="recordContainer">
                 <!-- Small Recorder buttons in a line-->
                  <style>
                     .recordContainer {
