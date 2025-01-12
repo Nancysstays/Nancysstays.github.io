@@ -339,7 +339,7 @@
                 xhr.send();
             }
 
-            loadRooms();
+            // loadRooms();
 
             submit.addEventListener('click', function() {
                 var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
@@ -722,7 +722,7 @@
             // iframe.contentWindow.postMessage('focus', 'https://nancysstays.github.io/texther');
         </script>
         <style>
-            .mainIframe {
+            #mainIframe {
                 width: 100%;
                 height: 100%;
                 min-height: 528px;
@@ -732,7 +732,7 @@
                 margin: 0;
             }
             /* Add scrolling for secondIframe */
-            .secondIframe {
+            #secondIframe {
                 overflow: auto;
                 overflow-x: hidden;
                 height: 100%;
