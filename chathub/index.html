@@ -62,7 +62,7 @@
             // Allow crud operations for videos
 
             // Load with localstorage
-            loadVideos() {
+            async loadVideos() {
                 const videos = JSON.parse(localStorage.getItem('videos'));
                 if (videos) {
                     this.videos = videos;
@@ -70,44 +70,45 @@
             }
 
             // Save to localstorage
-            saveVideos() {
+            async saveVideos() {
                 localStorage.setItem('videos', JSON.stringify(this.videos));
             }
 
             // Add video
-            addVideo(video) {
+            async addVideo(video) {
                 this.videos.push(video);
                 this.saveVideos();
             }
 
             // Remove video
-            removeVideo(id) {
+            async removeVideo(id) {
                 this.videos = this.videos.filter(video => video.id !== id);
                 this.saveVideos();
             }
 
             // Update video
-            updateVideo(id, newVideo) {
+            async updateVideo(id, newVideo) {
                 const index = this.videos.findIndex(video => video.id === id);
                 this.videos[index] = newVideo;
                 this.saveVideos();
             }
 
             // Clear videos
-            clearVideos() {
+            async clearVideos() {
                 this.videos = [];
                 this.saveVideos();
             }
 
             // Show video in the UI when clicked
-            showVideo(video) {
+            async showVideo(video) {
                 const videoElement = document.createElement('div');
                 videoElement.classList.add('video');
                 videoElement.innerHTML = `
                     <img src="${video.thumb}" alt="${video.title}">
                     <h4>${video.title}</h4>
                 `;
-                document.body.insertAfter(videoElement, document.getElementById('video'));
+                document.getElementById('video').innerHTML = '';
+                document.getElementById('video').appendChild(videoElement);
             }
 
         }
@@ -118,6 +119,9 @@
             const videoHub = new VideoHub();
             await videoHub.fetchVideos();
             await videoHub.displayVideos();
+            videoHub.loadVideos();
+            await videoHub.getVideos();
+            await videoHub.displayVideoImageWithText();
         });
 
     </script>
