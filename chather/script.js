@@ -391,8 +391,11 @@ class AutoScrollOnlineUsers {
 const chaturbate = new ChaturbateAPI();
 const autoScrollOnlineUsers = new AutoScrollOnlineUsers();
 window.onload = () => {
-    chaturbate.fetchData();
-    autoScrollOnlineUsers.startAutoScroll();
+    try {
+        chaturbate.fetchAllData();
+    } catch (error) {
+        alert("Error fetching data:", error);
+    }
 };
 
 // Stop auto-scrolling when the user scrolls manually.
