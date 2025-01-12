@@ -107,8 +107,7 @@
                     <img src="${video.thumb}" alt="${video.title}">
                     <h4>${video.title}</h4>
                 `;
-                document.getElementById('video').innerHTML = '';
-                document.getElementById('video').appendChild(videoElement);
+                document.body.insertAfter(videoElement, document.getElementById('video'));
             }
 
         }
@@ -119,9 +118,6 @@
             const videoHub = new VideoHub();
             await videoHub.fetchVideos();
             await videoHub.displayVideos();
-            videoHub.loadVideos();
-            await videoHub.getVideos();
-            await videoHub.displayVideoImageWithText();
         });
 
     </script>
