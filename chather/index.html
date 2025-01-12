@@ -177,24 +177,24 @@
                             pagination.appendChild(pageElement);
                         });
 
-                        loadMore.addEventListener('click', function() {
-                            var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=' + rooms.length + '&count=100';
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('GET', url, true);
-                            xhr.onload = function() {
-                                if (xhr.status === 200) {
-                                    var response = JSON.parse(xhr.responseText);
-                                    var rooms = response.rooms;
-                                    rooms.forEach(function(room) {
-                                        var roomElement = document.createElement('div');
-                                        roomElement.className = 'room';
-                                        roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
-                                        rooms.appendChild(roomElement);
-                                    });
-                                }
-                            };
-                            xhr.send();
-                        });
+                        // loadMore.addEventListener('click', function() {
+                        //     var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=' + rooms.length + '&count=100';
+                        //     var xhr = new XMLHttpRequest();
+                        //     xhr.open('GET', url, true);
+                        //     xhr.onload = function() {
+                        //         if (xhr.status === 200) {
+                        //             var response = JSON.parse(xhr.responseText);
+                        //             var rooms = response.rooms;
+                        //             rooms.forEach(function(room) {
+                        //                 var roomElement = document.createElement('div');
+                        //                 roomElement.className = 'room';
+                        //                 roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                        //                 rooms.appendChild(roomElement);
+                        //             });
+                        //         }
+                        //     };
+                        //     xhr.send();
+                        // });
 
 
                         clearFilters.addEventListener('click', function() {
@@ -639,13 +639,16 @@
             <div class="controls" id="controls">
                 <button id="loadMore" class="btn btn-primary">Load More</button>
                 <script>
-                    // Load more rooms on button click using ChaturbateAPI class
-                    var loadMore = document.getElementById('loadMore');
-                    // Create new ChaturbateAPI object
                     var chaturbateAPI = new ChaturbateAPI();
+                    var loadMore = document.getElementById('loadMore');
+                    let loadLess = document.getElementById('loadLess');
                     // Load more rooms on button click
                     loadMore.addEventListener('click', function() {
                         chaturbateAPI.loadMore();
+                    });
+                    // Load less rooms on button click
+                    loadLess.addEventLestener('click', function() {
+                        chaturbateAPI.loadLess();
                     });
                 </script>
                 <button id="loadLess" class="btn btn-primary">Load Less</button>
