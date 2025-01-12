@@ -18,8 +18,7 @@
         <script>
             // Toggle controls on button click from id controls none/
             var toggleControls = document.getElementById('controls');
-            var toggleButton = document.createElement('button');
-            toggleButton.textContent = 'Controls';
+            var toggleButton = document.getElementById('toggleButton');
             toggleButton.addEventListener('click', function() {
                 var controls = document.getElementById('controls');
                 if (controls.style.display === 'none') {
@@ -28,7 +27,7 @@
                     controls.style.display = 'none';
                 }
             });
-            document.body.insertBefore(toggleButton, document.body.childNodes[1]);
+            // document.body.insertBefore(toggleButton, document.body.childNodes[1]);
         </script>
         <button id="toggleButton1">Form Toggle</button>
         <script>
