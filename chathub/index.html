@@ -49,7 +49,7 @@
                     <img src="${video.thumb}" alt="${video.title}">
                     <h4>${video.title}</h4>
                 `;
-                document.body.appendChild(videoElement);
+                document.body.insertBefore(videoElement, document.getElementById('video'));
             }
 
             async displayVideos() {
@@ -107,7 +107,7 @@
                     <img src="${video.thumb}" alt="${video.title}">
                     <h4>${video.title}</h4>
                 `;
-                document.body.appendChild(videoElement);
+                document.body.insertAfter(videoElement, document.getElementById('video'));
             }
 
         }
