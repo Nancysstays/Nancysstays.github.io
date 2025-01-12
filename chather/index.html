@@ -58,7 +58,21 @@
             <div id="previousUsers" class="scrollable-list user-list"></div>
             </div>
             <div class="col-md-3">
-            <div class="controls">
+            <script>
+                // Toggle controls on button click from id controls none/
+                var toggleControls = document.getElementById('controls');
+                var toggleButton = document.createElement('button');
+                toggleButton.textContent = 'Controls';
+                toggleButton.addEventListener('click', function() {
+                    var controls = document.getElementById('controls');
+                    if (controls.style.display === 'none') {
+                        controls.style.display = 'block';
+                    } else {
+                        controls.style.display = 'none';
+                    }
+                });
+            </script>
+            <div class="controls" id="controls">
                 <button id="loadMore" class="btn btn-primary">Load More</button>
                 <button id="loadAll" class="btn btn-primary">Load All</button>
                 <button id="clearFilters" class="btn btn-primary">Clear Filters</button>
