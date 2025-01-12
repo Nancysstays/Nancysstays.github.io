@@ -1,0 +1,229 @@
+//@version=6
+strategy(title="Jinx Systems - Advanced", shorttitle="JS", overlay=true, max_bars_back=5000, default_qty_type = strategy.percent_of_equity, default_qty_value = 100, margin_long = 30, margin_short = 30, initial_capital = 10000, pyramiding = 2)
+
+// Provide Outlines for the Strategy
+// 1. Define the Strategy Information
+//  A. Name
+//  B. Description
+//  C. Version
+//  D. Author
+// 2. Define the General Strategy Settings
+//  A. Strategy A
+//   a. Lookback Period
+//    i. Swing Detection
+//   b. Length of Calculation
+//   c. Number of Swing Labels
+//  B. Strategy B
+//   a. Macd
+//    i. Fast
+//    ii. Medium
+//    iii. Slow
+//   b. Ma
+//   c. Vwma
+//   d. Linreg
+//   e. Eigen
+//   b. Covariance
+//   c. Stochastic
+//   e. Swing
+//   f. Atr
+//   g. Rsi
+//   h. Adx
+//   i. Bollinger Bands
+//   j. Ichimoku Cloud
+//   k. Parabolic Sar
+//   l. Volume
+//   m. Momentum
+//   n. Williams %R
+//   o. Cci
+//  C. Strategy C
+// 3. Define the Risk Management Parameters
+//  A. Risk Per Trade
+//   a. Percentage of Equity
+//  B. Maximum Concurrent Trades
+//  C. Pyramiding
+//  D. Max Pyramiding Trades
+// 4. Define the Entry Conditions
+//  A. Entry Threshold
+//  B. Use Confirmation Candle
+//  C. Entry Order Offset
+// 5. Define the Indicator Weights using types and functions
+//  A. Type IndicatorWeights
+//   a. Weight Macd
+//   b. Weight Ma
+//   c. Weight Vwma
+//   d. Weight Linreg
+//   e. Weight Eigen
+//   f. Weight Swing
+//   g. Weight Covariance
+//   h. Weight Stochastic
+//   i. Weight Atr
+//   j. Weight Rsi
+//   k. Weight Adx
+//   l. Weight Bollinger Bands
+//   m. Weight Ichimoku Cloud
+//   n. Weight Parabolic Sar
+//   o. Weight Volume
+//   p. Weight Momentum
+//   q. Weight Williams %R
+//   r. Weight Cci
+//   s. Weight Stdev
+//  B. Function getIndicatorWeights
+//   a. Return IndicatorWeights
+//  C. Define the Exit Conditions
+// 9. Plot the Strategy Information
+// 10. Alert the Strategy Information
+//  A. alertcondition 1
+//   a. Condition
+//  B. alertcondition 2
+
+import TradingView/Strategy/3
+import TradingView/ta/9
+import TradingView/ta/8
+import TradingView/ta/7
+import TradingView/ta/6
+import TradingView/ta/5
+import TradingView/ta/4
+import TradingView/ta/3
+import TradingView/ta/2
+import TradingView/ta/1
+import TradingView/ta/0
+
+// --- Symbols ---
+symbols = array.new_string("AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NFLX", "NVDA", "FB", "PYPL", "INTC", "CSCO", "ADBE", "CMCSA", "PEP", "COST", "TMUS", "AVGO", "TXN", "QCOM", "INTU", "AMAT", "MU", "AMD", "ADI", "ADSK", "ATVI", "EA", "CTSH", "EBAY", "EXPE", "FISV", "GILD", "HAS", "HOLX", "HSIC", "IDXX", "ILMN", "INCY", "KLAC", "LRCX", "MAR", "MCHP", "MDLZ", "MNST", "NTAP", "NTES", "ORLY", "PAYX", "PCAR", "REGN", "ROST", "SBUX", "SHPG", "SIRI", "SWKS", "SYMC", "TMUS", "TSCO", "VRSK", "VRSN", "WBA", "WDC", "WYNN", "XLNX", "XRAY", "ZM", "ZNGA", "ZS", "ZTS", "ADBE")
+
+// --- General Strategy Settings ---
+lookback = input.int(title="Swing Detection Lookback", defval=20, minval=2, tooltip="Defines the lookback period for identifying swing highs and lows. A higher value may capture more significant swings but can increase lag.",group="Swing Parameters")
+length = input.int(title="General Calculation Lookback", defval=100, minval=10, tooltip="This lookback period is used for various calculations within the strategy, determining the scope of historical data considered.",group="General Settings")
+labelCount = input.int(title="Number of Swing Labels", defval=2, options=[0, 1, 2, 3, 5],  tooltip="Controls the number of swing high/low labels displayed on the chart. Useful for decluttering or focusing on recent swings.", group="Swing Parameters")
+
+// --- Risk Management ---
+riskPerTrade = input.float(title="Risk Per Trade (%)", defval=1.0, minval=0.1, step=0.1, tooltip="Defines the percentage of your account equity you are willing to risk on each trade.", group="Risk Management")
+maxTrades = input.int(title="Maximum Concurrent Trades", defval=5, minval=1, tooltip="Sets the maximum number of trades that can be open simultaneously.", group="Risk Management")
+pyramiding = input.bool(title="Allow Pyramiding?", defval=false, tooltip="Enables pyramiding, allowing you to add to winning positions as the trade moves in your favor.",group="Risk Management")
+maxPyramidingTrades = input.int(title="Max Pyramiding Trades", defval=3, minval=1, tooltip="If pyramiding is enabled, this sets the maximum number of entries allowed for a single position.",group="Risk Management")
+
+// --- Entry Conditions ---
+entryThreshold = input.float(title="Entry Threshold", defval=0.5, minval=0, maxval=1, tooltip="Determines the required alignment of indicator signals for trade entry. A value of 0.5 means signals must be 50% aligned, while 1 requires full alignment.", group="Entry Conditions")
+useConfirmationCandle = input.bool(title="Use Confirmation Candle", defval=true, tooltip="Enables the requirement for a confirmation candle in the direction of the trade after the entry condition is met.", group="Entry Conditions")
+entryOffset = input.int(title="Entry Order Offset (Ticks)", defval=0, minval=0, tooltip="Offsets the entry order by a specified number of ticks from the current price. Useful for fine-tuning entry points.", group="Entry Conditions")
+
+// --- Indicator Weights ---
+type IndicatorWeights
+    float weightMacd
+    float weightMa
+    float weightVwma
+    float weightLinreg
+    float weightEigen
+    float weightSwing
+    float weightCovariance
+    float weightStochastic
+    float weightAtr
+    float weightRsi
+    float weightAdx
+    float weightBollingerBands
+    float weightIchimokuCloud
+    float weightParabolicSar
+    float weightVolume
+    float weightMomentum
+    float weightWilliamsR
+    float weightCci
+    float weightStdev
+
+// --- Function to Get Indicator Weights ---
+getIndicatorWeights() =>
+    weights = IndicatorWeights.new()
+    weights.weightMacd := 1.0
+    weights.weightStdev := 1.0
+    weights.weightLinreg := 1.0
+    weights.weightCovariance := 1.0
+    weights.weightMa := 1.0
+    weights.weightVwma := 1.0
+    weights.weightEigen := 1.0
+    weights.weightSwing := 1.0
+    weights.weightStochastic := 1.0
+    weights.weightAtr := 1.0
+    weights.weightRsi := 1.0
+    weights.weightAdx := 1.0
+    weights.weightBollingerBands := 1.0
+    weights.weightIchimokuCloud := 1.0
+    weights.weightParabolicSar := 1.0
+    weights.weightVolume := 1.0
+    weights.weightMomentum := 1.0
+    weights.weightWilliamsR := 1.0
+    weights.weightCci := 1.0
+
+// --- Type for Indicator Parameters ---
+type IndicatorParameters
+    int maLength
+    int macdFastLength
+    int macdSlowLength
+    int macdSignalLength
+
+// --- Type for Display Options ---
+type DisplayOptions
+    bool showMaLabel
+    bool showVwmaLabel
+    bool showLinregLabel
+
+// --- Type for Exit Conditions ---
+type ExitConditions
+    string exitType
+    float trailingStopPercentage
+    float profitTargetPercentage
+    int exitOffset
+
+// --- Type for Trading Session and Order Execution ---
+type TradingSession
+    string tradingSession
+    string orderExecution
+    int limitOrderOffset
+
+// --- Type for Inputs ---
+type Inputs
+    float entryIo
+    int barsToAnalyze
+    string maType
+    float __ma
+
+// --- Indicator Weights ---
+weight_macd = input.float(title="MACD Weight", defval=0.2, minval=0, maxval=1, tooltip="The weight assigned to the MACD indicator in the overall strategy decision-making process.",group="Indicator Weights")
+weight_ma = input.float(title="SMA Weight", defval=0.15, minval=0, maxval=1, tooltip="Weight given to the Simple Moving Average (SMA) indicator.", group="Indicator Weights")
+weight_vwma = input.float(title="VWMA Weight", defval=0.15, minval=0, maxval=1,  tooltip="Weight assigned to the Volume-Weighted Moving Average (VWMA) indicator.", group="Indicator Weights")
+weight_linreg = input.float(title="Linear Regression Weight", defval=0.1, minval=0, maxval=1,  tooltip="Weight given to the Linear Regression indicator.", group="Indicator Weights")
+weight_eigen = input.float(title="Eigenvalue Weight (Illustrative)", defval=0.1, minval=0, maxval=1,  tooltip="This is an illustrative weight for an Eigenvalue-based indicator (not fully implemented).", group="Indicator Weights")
+weight_swing = input.float(title="Swing Weight", defval=0.1, minval=0, maxval=1,  tooltip="Weight assigned to the swing high/low detection logic in the strategy.", group="Indicator Weights")
+
+// --- Indicator Parameters ---
+ma_length = input.int(title="SMA Length", defval=20, minval=1,  tooltip="The number of bars used to calculate the Simple Moving Average (SMA).", group="Indicator Parameters")
+macd_fast_length = input.int(title="MACD Fast Length", defval=12, minval=1,  tooltip="The shorter period used in the MACD calculation.", group="Indicator Parameters")
+macd_slow_length = input.int(title="MACD Slow Length", defval=26, minval=1,  tooltip="The longer period used in the MACD calculation.", group="Indicator Parameters")
+macd_signal_length = input.int(title="MACD Signal Length", defval=9, minval=1,  tooltip="The period used to calculate the MACD signal line (average of the MACD).", group="Indicator Parameters")
+
+// --- Display Options ---
+show_ma_label = input.bool(title="Show SMA Label", defval=true,  tooltip="Toggle the display of labels for the Simple Moving Average (SMA) on the chart.", group="Display Options")
+show_vwma_label = input.bool(title="Show VWMA Label", defval=true,  tooltip="Toggle the display of labels for the Volume-Weighted Moving Average (VWMA) on the chart.", group="Display Options")
+show_linreg_label = input.bool(title="Show Linear Regression Label", defval=true,  tooltip="Toggle the display of labels for the Linear Regression indicator on the chart.", group="Display Options")
+
+// --- Exit Conditions --- 
+exitType = input.string(title="Exit Strategy", defval="Trailing Stop", options=["Trailing Stop", "Fixed Percentage", "Indicator Crossover"], tooltip="Select the method for exiting trades: Trailing Stop, Fixed Percentage Profit Target, or Indicator Crossover.", group="Exit Conditions")
+trailingStopPercentage = input.float(title="Trailing Stop Percentage", defval=5.0, minval=0.1, step=0.1, tooltip="Percentage below the highest high (for longs) or above the lowest low (for shorts) at which a trailing stop order will be triggered.", group="Exit Conditions")
+profitTargetPercentage = input.float(title="Profit Target Percentage", defval=10.0, minval=0.1, step=0.1, tooltip="Percentage of profit at which a trade will be exited.", group="Exit Conditions")
+exitOffset = input.int(title="Exit Order Offset (Ticks)", defval=0, minval=0, tooltip="Offsets the exit order (stop-loss or take-profit) by a specified number of ticks from the calculated exit price.", group="Exit Conditions")
+
+// --- Trading Session and Order Execution ---
+tradingSession = input.session(title="Trading Session", defval="0930-1600", tooltip="Defines the time period during which the strategy is allowed to generate trading signals.", group="Trading Execution")
+orderExecution = input.string(title="Order Execution Type", defval="Market", options=["Market", "Limit"], tooltip="Specifies how orders will be executed: 'Market' orders fill at the current market price, while 'Limit' orders require setting a specific limit price.", group="Trading Execution")
+limitOrderOffset = input.int(title="Limit Order Offset (Ticks)", defval=2, minval=0, tooltip="If 'Limit' order execution is selected, this determines the offset in ticks from the entry/exit price for placing limit orders.", group="Trading Execution")
+divisor2 = input.int(3, "Linear Regression Length Divisor", options = [1, 2, 3, 4, 5, 10, 20, 50, 100])
+
+// --- Inputs ---
+entryIo = input.float(.5, "Entry for Long and Short", tooltip="Get Gemini Info", inline="Strategy", group="Entry")
+barsToAnalyze = input.int(1000, "Bars to Analyze")
+
+// --- Type for Inputs ---
+type Inputs
+    float entryIo
+    int barsToAnalyze
+    string maType
+    float __ma
+
