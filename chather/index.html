@@ -60,7 +60,6 @@
             var previousUsers = document.getElementById('previousUsers');
             var pagination = document.getElementById('pagination');
             var loadMore = document.getElementById('loadMore');
-
             var loadAll = document.getElementById('loadAll');
             var clearFilters = document.getElementById('clearFilters');
             var clearRooms = document.getElementById('clearRooms');
@@ -196,6 +195,24 @@
                             xhr.send();
                         });
 
+                        loadAll.addEventListener('click', function() {
+                            var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=1000';
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', url, true);
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    var response = JSON.parse(xhr.responseText);
+                                    var rooms = response.rooms;
+                                    rooms.forEach(function(room) {
+                                        var roomElement = document.createElement('div');
+                                        roomElement.className = 'room';
+                                        roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                                        rooms.appendChild(roomElement);
+                                    });
+                                }
+                            };
+                            xhr.send();
+                        });
 
                         clearFilters.addEventListener('click', function() {
                             filterInput.value = '';
@@ -339,7 +356,7 @@
                 xhr.send();
             }
 
-            // loadRooms();
+            loadRooms();
 
             submit.addEventListener('click', function() {
                 var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
@@ -638,20 +655,6 @@
             </script>
             <div class="controls" id="controls">
                 <button id="loadMore" class="btn btn-primary">Load More</button>
-                <script>
-                    var chaturbateAPI = new ChaturbateAPI();
-                    var loadMore = document.getElementById('loadMore');
-                    let loadLess = document.getElementById('loadLess');
-                    // Load more rooms on button click
-                    loadMore.addEventListener('click', function() {
-                        chaturbateAPI.loadMore();
-                    });
-                    // Load less rooms on button click
-                    loadLess.addEventListener('click', function() {
-                        chaturbateAPI.loadLess();
-                    });
-                </script>
-                <button id="loadLess" class="btn btn-primary">Load Less</button>
                 <button id="loadAll" class="btn btn-primary">Load All</button>
                 <!-- button id="clearFilters" class="btn btn-primary">Clear Filters</button>
                 <button id="clearRooms" class="btn btn-primary">Clear Rooms</button>
@@ -678,6 +681,30 @@
             </div>
             <div style="display: none;" class="recordContainer col-md-6" id="recordContainer">
                 <!-- Small Recorder buttons in a line-->
+                 <style>
+                    .recordContainer {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                    .recordButton {
+                        margin-right: 10px;
+                    }
+                    .recordButton:last-child {
+                        margin-right: 0;
+                    }
+                    .recordButton:active {
+                        background-color: #007bff;
+                        border-color: #007bff;
+                    }
+                    .recordButton:hover {
+                        background-color: #0056b3;
+                        border-color: #0056b3;
+                    }
+                    .recordButton:focus {
+                        outline: none;
+                    }
+
+                 </style>
                 <div style="display: none;" id="BatWoman" class="recordButton">
                     <button id="startRecording" class="btn btn-primary">Start Recording</button>
                     <button id="stopRecording" class="btn btn-primary">Stop Recording</button>
@@ -693,10 +720,28 @@
             var iframe = document.getElementById('mainIframe');
             var iframe2 = document.getElementById('secondIframe');
             iframe.contentWindow.focus();
-            // iframe.contentWindow.postMessage('focus', '*');
-            // iframe.contentWindow.postMessage('focus', 'https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f');
-            // iframe.contentWindow.postMessage('focus', 'https://nancysstays.github.io/texther');
+            iframe.contentWindow.postMessage('focus', '*');
+            iframe.contentWindow.postMessage('focus', 'https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f');
+            iframe.contentWindow.postMessage('focus', 'https://nancysstays.github.io/texther');
         </script>
+        <style>
+            iframe {
+                width: 100%;
+                height: 100%;
+                min-height: 528px;
+                min-width: 800px;
+                border: none;
+                padding: 20px;
+                margin: 0;
+            }
+            /* Add scrolling for secondIframe */
+            .secondIframe {
+                overflow: auto;
+                overflow-x: hidden;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
     </div>
 </div>
     <script>
