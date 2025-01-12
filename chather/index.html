@@ -638,6 +638,16 @@
             </script>
             <div class="controls" id="controls">
                 <button id="loadMore" class="btn btn-primary">Load More</button>
+                <script>
+                    // Load more rooms on button click using ChaturbateAPI class
+                    var loadMore = document.getElementById('loadMore');
+                    // Create new ChaturbateAPI object
+                    var chaturbateAPI = new ChaturbateAPI();
+                    // Load more rooms on button click
+                    loadMore.addEventListener('click', function() {
+                        chaturbateAPI.loadMore();
+                    });
+                </script>
                 <button id="loadLess" class="btn btn-primary">Load Less</button>
                 <button id="loadAll" class="btn btn-primary">Load All</button>
                 <!-- button id="clearFilters" class="btn btn-primary">Clear Filters</button>
