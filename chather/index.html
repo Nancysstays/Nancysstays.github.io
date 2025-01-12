@@ -14,13 +14,15 @@
     <div class="container">
         <h1>ChatHer</h1>
         <button id="toggleButton">Toggle</button>
+        <button id="toggleButton1">Toggle Record</button>
+        <button id="toggleButton2">Toggle BatWoman</button>
 
         <script>
             // Toggle controls on button click from id controls none/
             var toggleControls = document.getElementById('controls');
             var toggleButton = document.getElementById('toggleButton');
-            var toggleButton1 = document.getElementById('recordContainer');
-            var toggleButton2 = document.getElementById('controlsFilter');
+            var toggleButton1 = document.getElementById('toggleButton1');
+            var toggleButton2 = document.getElementById('toggleButton2');
             // var toggleButton3 = document.getElementById('toggleButton3');
 
             toggleButton.addEventListener('click', function() {
@@ -33,7 +35,16 @@
             });
 
             toggleButton1.addEventListener('click', function() {
-                var controls = document.getElementById('controls');
+                var controls = document.getElementById('recordContainer');
+                if (controls.style.display === 'none') {
+                    controls.style.display = 'block';
+                } else {
+                    controls.style.display = 'none';
+                }
+            });
+
+            toggleButton2.addEventListener('click', function() {
+                var controls = document.getElementById('BatWoman');
                 if (controls.style.display === 'none') {
                     controls.style.display = 'block';
                 } else {
@@ -616,17 +627,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9">
+            <!-- div class="col-md-9">
                 <div id="rooms" class="scrollable-list room-list"></div>
-            </div>
+            </div -->
             <div class="col-md-3">
                 <h2>Online Users</h2>
                 <div id="pagination"></div>
                 <div id="onlineUsers" class="scrollmenu scrollable-list user-list"></div>
             </div>
             <div class="col-md-3">
-            <h2>Previous Users</h2>
-            <div id="previousUsers" class="scrollable-list user-list"></div>
+                <h2>Previous Users</h2>
+                <div id="previousUsers" class="scrollable-list user-list"></div>
             </div>
             <div class="col-md-3">
             <script>
