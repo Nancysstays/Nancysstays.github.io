@@ -117,7 +117,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const videoHub = new VideoHub();
             await videoHub.fetchVideos();
-            videoHub.displayVideos();
+            await videoHub.displayVideos();
         });
 
     </script>
@@ -163,7 +163,7 @@
                 document.getElementById('video').innerHTML = '';
             });
 
-            
+
         </script>
     </div>
 </body>
