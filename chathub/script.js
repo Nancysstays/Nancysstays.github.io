@@ -9,11 +9,11 @@ class Hub {
         this.data = [];
     }
 
-    async fetch() {
+    async ftch() {
         const response = await fetch(this.url);
         const text = await response.text();
         // The data is as mentioned in the comment above
-        document.body.innerHTML += text;
+        alert(text);
     }
 
     get() {
@@ -21,7 +21,7 @@ class Hub {
     }
 
     async init() {
-        await this.fetch();
+        await this.ftch();
     }
 
     async render() {
