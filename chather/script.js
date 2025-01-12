@@ -1,3 +1,14 @@
+// Create a new instance of ChaturbateAPI and AutoScrollOnlineUsers when the page loads.
+const chaturbate = new ChaturbateAPI();
+const autoScrollOnlineUsers = new AutoScrollOnlineUsers();
+window.onload = () => {
+    try {
+        chaturbate.fetchAllData();
+    } catch (error) {
+        alert("Error fetching data:", error);
+    }
+};
+
 class ChaturbateAPI {
     constructor() {
         this.apiUrl = "https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=9cg6A&&gender=f&limit=500&client_ip=request_ip";
@@ -386,17 +397,6 @@ class AutoScrollOnlineUsers {
         clearInterval(this.intervalId);
     }
 }
-
-// Create a new instance of ChaturbateAPI and AutoScrollOnlineUsers when the page loads.
-const chaturbate = new ChaturbateAPI();
-const autoScrollOnlineUsers = new AutoScrollOnlineUsers();
-window.onload = () => {
-    try {
-        chaturbate.fetchAllData();
-    } catch (error) {
-        alert("Error fetching data:", error);
-    }
-};
 
 // Stop auto-scrolling when the user scrolls manually.
 window.onscroll = () => {
