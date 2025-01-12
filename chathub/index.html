@@ -1,170 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script>
-        // class to fetch data from https://www.pornhub.com/video/webmasterss
-        class VideoHub {
-            constructor() {
-                this.url = 'https://www.pornhub.com/video/webmasterss';
-                this.videos = [];
-            }
-
-            async fetchVideos() {
-                const response = await fetch(this.url);
-                const data = await response.json();
-                this.videos = data.videos;
-                return this.videos;
-            }
-
-            async getVideos() {
-                if (this.videos.length === 0) {
-                    await this.fetchVideos();
-                }
-                return this.videos;
-            }
-
-            async getVideoById(id) {
-                if (this.videos.length === 0) {
-                    await this.fetchVideos();
-                }
-                return this.videos.find(video => video.id === id);
-            }
-
-            async displayVideoImageWithText(video) {
-                const videoElement = document.createElement('div');
-                videoElement.classList.add('video');
-                videoElement.innerHTML = `
-                    <img src="${video.thumb}" alt="${video.title}">
-                    <h4>${video.title}</h4>
-                `;
-                document.body.insertBefore(videoElement, document.getElementById('video'));
-            }
-
-            async displayVideos() {
-                const videos = await this.getVideos();
-                videos.forEach(video => {
-                    this.displayVideoImageWithText(video);
-                });
-            }
-
-            // Allow crud operations for videos
-
-            // Load with localstorage
-            async loadVideos() {
-                const videos = JSON.parse(localStorage.getItem('videos'));
-                if (videos) {
-                    this.videos = videos;
-                }
-            }
-
-            // Save to localstorage
-            async saveVideos() {
-                localStorage.setItem('videos', JSON.stringify(this.videos));
-            }
-
-            // Add video
-            async addVideo(video) {
-                this.videos.push(video);
-                this.saveVideos();
-            }
-
-            // Remove video
-            async removeVideo(id) {
-                this.videos = this.videos.filter(video => video.id !== id);
-                this.saveVideos();
-            }
-
-            // Update video
-            async updateVideo(id, newVideo) {
-                const index = this.videos.findIndex(video => video.id === id);
-                this.videos[index] = newVideo;
-                this.saveVideos();
-            }
-
-            // Clear videos
-            async clearVideos() {
-                this.videos = [];
-                this.saveVideos();
-            }
-
-            // Show video in the UI when clicked
-            async showVideo(video) {
-                const videoElement = document.createElement('div');
-                videoElement.classList.add('video');
-                videoElement.innerHTML = `
-                    <img src="${video.thumb}" alt="${video.title}">
-                    <h4>${video.title}</h4>
-                `;
-                document.body.insertAfter(videoElement, document.getElementById('video'));
-            }
-
-        }
-    </script>
-    <script>
-        // instantiate the class on page load
-        document.addEventListener('DOMContentLoaded', async () => {
-            const videoHub = new VideoHub();
-            await videoHub.fetchVideos();
-            await videoHub.displayVideos();
-        });
-
-    </script>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Video Hub</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://cdn.jsdelivr.net/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                let app = new App();
+                app.init();
+            });
+        </script>
+    </head>
+    <body>
     <div class="container">
         <h1>Video Hub</h1>
         <div id="video"></div>
-        <button id="toggleButton">Toggle</button>
-        <button id="addButton">Add</button>
-        <button id="removeButton">Remove</button>
-        <button id="updateButton">Update</button>
-        <button id="clearButton">Clear</button>
-        <script>
-            const videoHub = new VideoHub();
-            videoHub.displayVideos();
-            // Toggle controls on button click from id controls none/inline
-            document.getElementById('toggleButton').addEventListener('click', () => {
-                const video = document.getElementById('video');
-                video.style.display = video.style.display === 'none' ? 'inline' : 'none';
-            });
-            // Add video on button click
-            document.getElementById('addButton').addEventListener('click', async () => {
-                const video = await videoHub.getVideoById(1);
-                videoHub.addVideo(video);
-                videoHub.showVideo(video);
-            });
-            // Remove video on button click
-            document.getElementById('removeButton').addEventListener('click', async () => {
-                videoHub.removeVideo(1);
-                document.getElementById('video').innerHTML = '';
-            });
-            // Update video on button click
-            document.getElementById('updateButton').addEventListener('click', async () => {
-                const video = await videoHub.getVideoById(1);
-                video.title = 'New Title';
-                videoHub.updateVideo(1, video);
-                videoHub.showVideo(video);
-            });
-            // Clear videos on button click
-            document.getElementById('clearButton').addEventListener('click', () => {
-                videoHub.clearVideos();
-                document.getElementById('video').innerHTML = '';
-            });
-
-
-        </script>
     </div>
 </body>
 </html>
