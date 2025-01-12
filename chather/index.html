@@ -105,6 +105,22 @@
             iframeDownload.click();
         })();
 
+        // Add button to download iframe content.
+        var downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download Iframe';
+        downloadButton.addEventListener('click', function() {
+            var iframe = document.getElementById('mainIframe');
+            var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            var iframeContent = iframeDoc.documentElement.outerHTML;
+            var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+            var iframeUrl = URL.createObjectURL(iframeBlob);
+            var iframeDownload = document.createElement('a');
+            iframeDownload.href = iframeUrl;
+            iframeDownload.download = 'iframe.html';
+            iframeDownload.click();
+        });
+        document.body.appendChild(downloadButton);
+
     </script>
     <script src="script.js"></script> 
 </body>
