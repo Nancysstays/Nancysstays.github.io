@@ -13,9 +13,9 @@
 <body>
     <div class="container">
         <h1>ChatHer</h1>
-        <button style="display:none;" id="toggleButton">Toggle</button>
-        <button style="display:none;" id="toggleButton1">Toggle Record</button>
-        <button style="display:none;" id="toggleButton2">Toggle BatWoman</button>
+        <button id="toggleButton">Toggle</button>
+        <button id="toggleButton1">Toggle Record</button>
+        <button id="toggleButton2">Toggle BatWoman</button>
 
         <script>
             // Toggle controls on button click from id controls none/
@@ -596,7 +596,7 @@
             var iframeUrl = URL.createObjectURL(iframeBlob);
             var iframeDownload = document.createElement('a');
         </script>
-        <div id="controlsFilter" class="filters">
+        <div style="display: none;" id="controlsFilter" class="filters">
             <input type="text" id="filterInput" placeholder="Filter by username" class="form-control">
             <select id="genderFilter" class="form-control">
                 <option value="">All Genders</option>
@@ -679,7 +679,7 @@
                 <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                 <button type="reset" id="reset" class="btn btn-primary">Reset</button>
             </div>
-            <div class="recordContainer col-md-6" id="recordContainer">
+            <div style="display: none;" class="recordContainer col-md-6" id="recordContainer">
                 <!-- Small Recorder buttons in a line-->
                  <style>
                     .recordContainer {
@@ -705,7 +705,7 @@
                     }
 
                  </style>
-                <div id="BatWoman" class="recordButton">
+                <div style="display: none;" id="BatWoman" class="recordButton">
                     <button id="startRecording" class="btn btn-primary">Start Recording</button>
                     <button id="stopRecording" class="btn btn-primary">Stop Recording</button>
                     <button id="download" class="btn btn-primary">Download</button>
