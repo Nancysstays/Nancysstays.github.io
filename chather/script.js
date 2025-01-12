@@ -242,9 +242,6 @@ storeData(key, value) {
 // ... (other parts of the ChaturbateAPI class)
 }
 
-const chaturbate = new ChaturbateAPI();
-chaturbate.fetchData();
-
 // Add event listener to the filter form
 const filterForm = document.getElementById("filterForm");
 filterForm.addEventListener("submit", (event) => {
@@ -389,3 +386,25 @@ class AutoScrollOnlineUsers {
         clearInterval(this.intervalId);
     }
 }
+
+// Create a new instance of ChaturbateAPI and AutoScrollOnlineUsers when the page loads.
+const chaturbate = new ChaturbateAPI();
+const autoScrollOnlineUsers = new AutoScrollOnlineUsers();
+window.onload = () => {
+    chaturbate.fetchData();
+    autoScrollOnlineUsers.startAutoScroll();
+};
+
+// Stop auto-scrolling when the user scrolls manually.
+window.onscroll = () => {
+    autoScrollOnlineUsers.stopAutoScroll();
+};
+
+// Add event listener to the "Auto-Scroll" checkbox.
+document.getElementById("autoScroll").addEventListener("change", event => {
+    if (event.target.checked) {
+        autoScrollOnlineUsers.startAutoScroll();
+    } else {
+        autoScrollOnlineUsers.stopAutoScroll();
+    }
+});
