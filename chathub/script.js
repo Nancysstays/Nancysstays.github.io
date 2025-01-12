@@ -12,16 +12,8 @@ class Hub {
     async fetch() {
         const response = await fetch(this.url);
         const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const items = doc.querySelectorAll('item');
-        items.forEach(item => {
-            const title = item.querySelector('title').textContent;
-            const description = item.querySelector('description').textContent;
-            const image = item.querySelector('image').textContent;
-            const iframe = item.querySelector('embed').getAttribute('src');
-            this.data.push({ title, description, image, iframe });
-        });
+        // The data is as mentioned in the comment above
+        document.body.innerHTML += text;
     }
 
     get() {
