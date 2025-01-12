@@ -59,7 +59,7 @@
             var onlineUsers = document.getElementById('onlineUsers');
             var previousUsers = document.getElementById('previousUsers');
             var pagination = document.getElementById('pagination');
-            var loadMore = document.getElementById('loadMore');
+            // var loadMore = document.getElementById('loadMore');
 
             var loadAll = document.getElementById('loadAll');
             var clearFilters = document.getElementById('clearFilters');
@@ -79,13 +79,13 @@
             var toggleWidget = document.getElementById('toggleWidget');
             var toggleIframe = document.getElementById('toggleIframe');
             var toggleChat = document.getElementById('toggleChat');
-            var toggleRecorder = document.getElementById('toggleRecorder');
-            var toggleRecorderStop = document.getElementById('toggleRecorderStop');
-            var toggleRecorderDownload = document.getElementById('toggleRecorderDownload');
+            // var toggleRecorder = document.getElementById('toggleRecorder');
+            // var toggleRecorderStop = document.getElementById('toggleRecorderStop');
+            // var toggleRecorderDownload = document.getElementById('toggleRecorderDownload');
             var submit = document.getElementById('submit');
             var reset = document.getElementById('reset');
-            var startRecording = document.getElementById('startRecording');
-            var stopRecording = document.getElementById('stopRecording');
+            // var startRecording = document.getElementById('startRecording');
+            // var stopRecording = document.getElementById('stopRecording');
             var download = document.getElementById('download');
             var filterInput = document.getElementById('filterInput');
             var genderFilter = document.getElementById('genderFilter');
@@ -98,8 +98,8 @@
             var iframe = document.getElementById('mainIframe');
             var secondIframe = document.getElementById('secondIframe');
             var mainIframe = document.getElementById('mainIframe');
-            var recordContainer = document.getElementById('recordContainer');
-            var recordButton = document.getElementById('recordButton');
+            // var recordContainer = document.getElementById('recordContainer');
+            // var recordButton = document.getElementById('recordButton');
 
             function loadRooms() {
                 var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
@@ -112,7 +112,7 @@
                         var onlineUsers = response.online_users;
                         var previousUsers = response.previous_users;
                         var pagination = response.pagination;
-                        var loadMore = response.load_more;
+                        // var loadMore = response.load_more;
                         var loadAll = response.load_all;
                         var clearFilters = response.clear_filters;
                         var clearRooms = response.clear_rooms;
@@ -131,13 +131,13 @@
                         var toggleWidget = response.toggle_widget;
                         var toggleIframe = response.toggle_iframe;
                         var toggleChat = response.toggle_chat;
-                        var toggleRecorder = response.toggle_recorder;
-                        var toggleRecorderStop = response.toggle_recorder_stop;
-                        var toggleRecorderDownload = response.toggle_recorder_download;
+                        // var toggleRecorder = response.toggle_recorder;
+                        // var toggleRecorderStop = response.toggle_recorder_stop;
+                        // var toggleRecorderDownload = response.toggle_recorder_download;
                         var submit = response.submit;
                         var reset = response.reset;
-                        var startRecording = response.start_recording;
-                        var stopRecording = response.stop_recording;
+                        // var startRecording = response.start_recording;
+                        // var stopRecording = response.stop_recording;
                         var download = response.download;
                         var filterInput = response.filter_input;
                         var genderFilter = response.gender_filter;
@@ -150,8 +150,8 @@
                         var iframe = response.iframe;
                         var secondIframe = response.second_iframe;
                         var mainIframe = response.main_iframe;
-                        var recordContainer = response.record_container;
-                        var recordButton = response.record_button;
+                        // var recordContainer = response.record_container;
+                        // var recordButton = response.record_button;
                         rooms.forEach(function(room) {
                             var roomElement = document.createElement('div');
                             roomElement.className = 'room';
@@ -352,7 +352,7 @@
                         var onlineUsers = response.online_users;
                         var previousUsers = response.previous_users;
                         var pagination = response.pagination;
-                        var loadMore = response.load_more;
+                        // var loadMore = response.load_more;
                         var loadAll = response.load_all;
                         var clearFilters = response.clear_filters;
                         var clearRooms = response.clear_rooms;

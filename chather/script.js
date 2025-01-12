@@ -326,7 +326,7 @@ document.getElementById("resetPage").addEventListener("click", () => {
 //     };
 //     xhr.send();
 // });
-
+// 
 class Recorder {
     constructor() {
         this.mediaRecorder = null;
@@ -373,3 +373,20 @@ document.getElementById("startRecording").addEventListener("click", () => {
 document.getElementById("stopRecording").addEventListener("click", () => {
     recorder.stopRecording();
 });
+
+class AutoScrollOnlineUsers {
+    constructor() {
+        this.intervalId = null;
+        this.id = null;
+    }
+
+    startAutoScroll() {
+        this.intervalId = setInterval(() => {
+            window.scrollBy(0, 100);
+        }, 100);
+    }
+
+    stopAutoScroll() {
+        clearInterval(this.intervalId);
+    }
+}
