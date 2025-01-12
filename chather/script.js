@@ -237,3 +237,49 @@ filterForm.addEventListener("submit", (event) => {
     chaturbate.currentPage = 1; // Reset to the first page when filtering
     chaturbate.displayUsers(); // Re-display users with applied filters
 });
+
+class Recorder {
+    constructor() {
+        this.mediaRecorder = null;
+        this.chunks = [];
+        this.recording = false;
+    }
+
+    startRecording() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                this.mediaRecorder = new MediaRecorder(stream);
+                this.mediaRecorder.ondataavailable = event => {
+                    this.chunks.push(event.data);
+                };
+                this.mediaRecorder.onstop = () => {
+                    const blob = new Blob(this.chunks, { type: "audio/ogg; codecs=opus" });
+                    const url = URL.createObjectURL(blob);
+                    const audio = new Audio(url);
+                    audio.controls = true;
+                    document.getElementById("recordings").appendChild(audio);
+                };
+                this.mediaRecorder.start();
+                this.recording = true;
+            })
+            .catch(error => {
+                console.error("Error starting recording:", error);
+            });
+    }
+
+    stopRecording() {
+        if (this.mediaRecorder && this.recording) {
+            this.mediaRecorder.stop();
+            this.recording = false;
+        }
+    }
+}
+
+// Create a new instance of the Recorder class when a record button is clicked.
+const recorder = new Recorder();
+document.getElementById("startRecording").addEventListener("click", () => {
+    recorder.startRecording();
+});
+document.getElementById("stopRecording").addEventListener("click", () => {
+    recorder.stopRecording();
+});
