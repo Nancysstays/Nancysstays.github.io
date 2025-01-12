@@ -13,7 +13,310 @@
 <body>
     <div class="container">
         <h1>Chaturbate Online Rooms</h1>
+        <script>
+            // Load rooms from chaturbate API
+            var rooms = document.getElementById('rooms');
+            var onlineUsers = document.getElementById('onlineUsers');
+            var previousUsers = document.getElementById('previousUsers');
+            var pagination = document.getElementById('pagination');
+            var loadMore = document.getElementById('loadMore');
+            var loadAll = document.getElementById('loadAll');
+            var clearFilters = document.getElementById('clearFilters');
+            var clearRooms = document.getElementById('clearRooms');
+            var clearUsers = document.getElementById('clearUsers');
+            var clearAll = document.getElementById('clearAll');
+            var toggleAutoRefresh = document.getElementById('toggleAutoRefresh');
+            var toggleAutoJoin = document.getElementById('toggleAutoJoin');
+            var toggleAutoTip = document.getElementById('toggleAutoTip');
+            var toggleAutoPvt = document.getElementById('toggleAutoPvt');
+            var toggleAutoSpy = document.getElementById('toggleAutoSpy');
+            var toggleAutoFav = document.getElementById('toggleAutoFav');
+            var toggleAutoFollow = document.getElementById('toggleAutoFollow');
+            var toggleAutoMessage = document.getElementById('toggleAutoMessage');
+            var toggleAutoGift = document.getElementById('toggleAutoGift');
+            var toggleCrate = document.getElementById('toggleCrate');
+            var toggleWidget = document.getElementById('toggleWidget');
+            var toggleIframe = document.getElementById('toggleIframe');
+            var toggleChat = document.getElementById('toggleChat');
+            var toggleRecorder = document.getElementById('toggleRecorder');
+            var toggleRecorderStop = document.getElementById('toggleRecorderStop');
+            var toggleRecorderDownload = document.getElementById('toggleRecorderDownload');
+            var submit = document.getElementById('submit');
+            var reset = document.getElementById('reset');
+            var startRecording = document.getElementById('startRecording');
+            var stopRecording = document.getElementById('stopRecording');
+            var download = document.getElementById('download');
+            var filterInput = document.getElementById('filterInput');
+            var genderFilter = document.getElementById('genderFilter');
+            var ageFilterMin = document.getElementById('ageFilterMin');
+            var ageFilterMax = document.getElementById('ageFilterMax');
+            var tagsFilter = document.getElementById('tagsFilter');
+            var numUsersFilterMin = document.getElementById('numUsersFilterMin');
+            var numUsersFilterMax = document.getElementById('numUsersFilterMax');
+            var countryFilter = document.getElementById('countryFilter');
+            var iframe = document.getElementById('mainIframe');
+            var secondIframe = document.getElementById('secondIframe');
+            var mainIframe = document.getElementById('mainIframe');
+            var recordContainer = document.getElementById('recordContainer');
+            var recordButton = document.getElementById('recordButton');
 
+            function loadRooms() {
+                var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var rooms = response.rooms;
+                        var onlineUsers = response.online_users;
+                        var previousUsers = response.previous_users;
+                        var pagination = response.pagination;
+                        var loadMore = response.load_more;
+                        var loadAll = response.load_all;
+                        var clearFilters = response.clear_filters;
+                        var clearRooms = response.clear_rooms;
+                        var clearUsers = response.clear_users;
+                        var clearAll = response.clear_all;
+                        var toggleAutoRefresh = response.toggle_auto_refresh;
+                        var toggleAutoJoin = response.toggle_auto_join;
+                        var toggleAutoTip = response.toggle_auto_tip;
+                        var toggleAutoPvt = response.toggle_auto_pvt;
+                        var toggleAutoSpy = response.toggle_auto_spy;
+                        var toggleAutoFav = response.toggle_auto_fav;
+                        var toggleAutoFollow = response.toggle_auto_follow;
+                        var toggleAutoMessage = response.toggle_auto_message;
+                        var toggleAutoGift = response.toggle_auto_gift;
+                        var toggleCrate = response.toggle_crate;
+                        var toggleWidget = response.toggle_widget;
+                        var toggleIframe = response.toggle_iframe;
+                        var toggleChat = response.toggle_chat;
+                        var toggleRecorder = response.toggle_recorder;
+                        var toggleRecorderStop = response.toggle_recorder_stop;
+                        var toggleRecorderDownload = response.toggle_recorder_download;
+                        var submit = response.submit;
+                        var reset = response.reset;
+                        var startRecording = response.start_recording;
+                        var stopRecording = response.stop_recording;
+                        var download = response.download;
+                        var filterInput = response.filter_input;
+                        var genderFilter = response.gender_filter;
+                        var ageFilterMin = response.age_filter_min;
+                        var ageFilterMax = response.age_filter_max;
+                        var tagsFilter = response.tags_filter;
+                        var numUsersFilterMin = response.num_users_filter_min;
+                        var numUsersFilterMax = response.num_users_filter_max;
+                        var countryFilter = response.country_filter;
+                        var iframe = response.iframe;
+                        var secondIframe = response.second_iframe;
+                        var mainIframe = response.main_iframe;
+                        var recordContainer = response.record_container;
+                        var recordButton = response.record_button;
+                        rooms.forEach(function(room) {
+                            var roomElement = document.createElement('div');
+                            roomElement.className = 'room';
+                            roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                            rooms.appendChild(roomElement);
+                        });
+                        onlineUsers.forEach(function(user) {
+                            var userElement = document.createElement('div');
+                            userElement.className = 'user';
+                            userElement.innerHTML = '<a href="https://chaturbate.com/' + user.username + '" target="_blank">' + user.username + '</a>';
+                            onlineUsers.appendChild(userElement);
+                        });
+                        previousUsers.forEach(function(user) {
+                            var userElement = document.createElement('div');
+                            userElement.className = 'user';
+                            userElement.innerHTML = '<a href="https://chaturbate.com/' + user.username + '" target="_blank">' + user.username + '</a>';
+                            previousUsers.appendChild(userElement);
+                        });
+                        pagination.forEach(function(page) {
+                            var pageElement = document.createElement('div');
+                            pageElement.className = 'page';
+                            pageElement.innerHTML = '<a href="https://
+                            chaturbate.com/' + page.username + '" target="_blank">' + page.username + '</a>';
+                            pagination.appendChild(pageElement);
+                        });
+
+                        loadMore.addEventListener('click', function() {
+                            var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=' + rooms.length + '&count=100';
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', url, true);
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    var response = JSON.parse(xhr.responseText);
+                                    var rooms = response.rooms;
+                                    rooms.forEach(function(room) {
+                                        var roomElement = document.createElement('div');
+                                        roomElement.className = 'room';
+                                        roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                                        rooms.appendChild(roomElement);
+                                    });
+                                }
+                            };
+                            xhr.send();
+                        });
+
+                        loadAll.addEventListener('click', function() {
+                            var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=1000';
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', url, true);
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    var response = JSON.parse(xhr.responseText);
+                                    var rooms = response.rooms;
+                                    rooms.forEach(function(room) {
+                                        var roomElement = document.createElement('div');
+                                        roomElement.className = 'room';
+                                        roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                                        rooms.appendChild(roomElement);
+                                    });
+                                }
+                            };
+                            xhr.send();
+                        });
+
+                        clearFilters.addEventListener('click', function() {
+                            filterInput.value = '';
+                            genderFilter.value = '';
+                            ageFilterMin.value = '';
+                            ageFilterMax.value = '';
+                            tagsFilter.value = '';
+                            numUsersFilterMin.value = '';
+                            numUsersFilterMax.value = '';
+                            countryFilter.value = '';
+                        });
+
+                        clearRooms.addEventListener('click', function() {
+                            rooms.innerHTML = '';
+                        });
+
+                        clearUsers.addEventListener('click', function() {
+                            onlineUsers.innerHTML = '';
+                            previousUsers.innerHTML = '';
+                        });
+
+                        clearAll.addEventListener('click', function() {
+                            rooms.innerHTML = '';
+                            onlineUsers.innerHTML = '';
+                            previousUsers.innerHTML = '';
+                        });
+
+                        toggleAutoRefresh.addEventListener('click', function() {
+                            if (toggleAutoRefresh.textContent === 'Toggle Auto Refresh') {
+                                toggleAutoRefresh.textContent = 'Auto Refresh On';
+                            } else {
+                                toggleAutoRefresh.textContent = 'Toggle Auto Refresh';
+                            }
+                        });
+
+                        toggleAutoJoin.addEventListener('click', function() {
+                            if (toggleAutoJoin.textContent === 'Toggle Auto Join') {
+                                toggleAutoJoin.textContent = 'Auto Join On';
+                            } else {
+                                toggleAutoJoin.textContent = 'Toggle Auto Join';
+                            }
+                        });
+
+                        toggleAutoTip.addEventListener('click', function() {
+                            if (toggleAutoTip.textContent === 'Toggle Auto Tip') {
+                                toggleAutoTip.textContent = 'Auto Tip On';
+                            } else {
+                                toggleAutoTip.textContent = 'Toggle Auto Tip';
+                            }
+                        });
+
+                        toggleAutoPvt.addEventListener('click', function() {
+                            if (toggleAutoPvt.textContent === 'Toggle Auto Pvt') {
+                                toggleAutoPvt.textContent = 'Auto Pvt On';
+                            } else {
+                                toggleAutoPvt.textContent = 'Toggle Auto Pvt';
+                            }
+                        });
+
+                        toggleAutoSpy.addEventListener('click', function() {
+                            if (toggleAutoSpy.textContent === 'Toggle Auto Spy') {
+                                toggleAutoSpy.textContent = 'Auto Spy On';
+                            } else {
+                                toggleAutoSpy.textContent = 'Toggle Auto Spy';
+                            }
+                        });
+
+                        toggleAutoFav.addEventListener('click', function() {
+                            if (toggleAutoFav.textContent === 'Toggle Auto Fav') {
+                                toggleAutoFav.textContent = 'Auto Fav On';
+                            } else {
+                                toggleAutoFav.textContent = 'Toggle Auto Fav';
+                            }
+                        });
+
+                        toggleAutoFollow.addEventListener('click', function() {
+                            if (toggleAutoFollow.textContent === 'Toggle Auto Follow') {
+                                toggleAutoFollow.textContent = 'Auto Follow On';
+                            } else {
+                                toggleAutoFollow.textContent = 'Toggle Auto Follow';
+                            }
+                        });
+
+                        toggleAutoMessage.addEventListener('click', function() {
+                            if (toggleAutoMessage.textContent === 'Toggle Auto Message') {
+                                toggleAutoMessage.textContent = 'Auto Message On';
+                            } else {
+                                toggleAutoMessage.textContent = 'Toggle Auto Message';
+                            }
+                        });
+
+                        toggleAutoGift.addEventListener('click', function() {
+                            if (toggleAutoGift.textContent === 'Toggle Auto Gift') {
+                                toggleAutoGift.textContent = 'Auto Gift On';
+                            } else {
+                                toggleAutoGift.textContent = 'Toggle Auto Gift';
+                            }
+                        });
+                        
+                        toggleCrate.addEventListener('click', function() {
+                            if (toggleCrate.textContent === 'Toggle Crate') {
+                                toggleCrate.textContent = 'Crate On';
+                            } else {
+                                toggleCrate.textContent = 'Toggle Crate';
+                            }
+                        });
+                        
+                        toggleWidget.addEventListener('click', function() {
+                            if (toggleWidget.textContent === 'Toggle Widget') {
+                                toggleWidget.textContent = 'Widget On';
+                            } else {
+                                toggleWidget.textContent = 'Toggle Widget';
+                            }
+                        });
+
+                        toggleIframe.addEventListener('click', function() {
+                            if (toggleIframe.textContent === 'Toggle Iframe') {
+                                toggleIframe.textContent = 'Iframe On';
+                            } else {
+                                toggleIframe.textContent = 'Toggle Iframe';
+                            }
+                        });
+
+                        toggleChat.addEventListener('click', function() {
+                            if (toggleChat.textContent === 'Toggle Chat') {
+                                toggleChat.textContent = 'Chat On';
+                            } else {
+                                toggleChat.textContent = 'Toggle Chat';
+                            }
+                        });
+
+                        toggleRecorder.addEventListener('click', function() {
+                            if (toggleRecorder.textContent === 'Toggle Recorder') {
+                                toggleRecorder.textContent = 'Recorder On';
+                            } else {
+                                toggleRecorder.textContent = 'Toggle Recorder';
+                            }
+                        });
+                                
+                        </script>
+        <script>
+            //
+            </script>
         <div class="filters">
             <input type="text" id="filterInput" placeholder="Filter by username" class="form-control">
             <select id="genderFilter" class="form-control">
