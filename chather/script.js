@@ -35,7 +35,6 @@ class ChaturbateAPI {
         }
     }
 
-
     processData(users) {
         users.forEach(user => {
             if (user.current_show === "public") {
