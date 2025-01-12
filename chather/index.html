@@ -132,8 +132,7 @@
                         pagination.forEach(function(page) {
                             var pageElement = document.createElement('div');
                             pageElement.className = 'page';
-                            pageElement.innerHTML = '<a href="https://
-                            chaturbate.com/' + page.username + '" target="_blank">' + page.username + '</a>';
+                            pageElement.innerHTML = '<a href="https://chaturbate.com/' + page.username + '" target="_blank">' + page.username + '</a>';
                             pagination.appendChild(pageElement);
                         });
 
@@ -312,11 +311,252 @@
                                 toggleRecorder.textContent = 'Toggle Recorder';
                             }
                         });
-                                
-                        </script>
-        <script>
-            //
-            </script>
+                    }
+                };
+                xhr.send();
+            }
+
+            loadRooms();
+
+            submit.addEventListener('click', function() {
+                var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var rooms = response.rooms;
+                        var onlineUsers = response.online_users;
+                        var previousUsers = response.previous_users;
+                        var pagination = response.pagination;
+                        var loadMore = response.load_more;
+                        var loadAll = response.load_all;
+                        var clearFilters = response.clear_filters;
+                        var clearRooms = response.clear_rooms;
+                        var clearUsers = response.clear_users;
+                        var clearAll = response.clear_all;
+                        var toggleAutoRefresh = response.toggle_auto_refresh;
+                        var toggleAutoJoin = response.toggle_auto_join;
+                        var toggleAutoTip = response.toggle_auto_tip;
+                        var toggleAutoPvt = response.toggle_auto_pvt;
+                        var toggleAutoSpy = response.toggle_auto_spy;
+                        var toggleAutoFav = response.toggle_auto_fav;
+                        var toggleAutoFollow = response.toggle_auto_follow;
+                        var toggleAutoMessage = response.toggle_auto_message;
+                        var toggleAutoGift = response.toggle_auto_gift;
+                        var toggleCrate = response.toggle_crate;
+                        var toggleWidget = response.toggle_widget;
+                        var toggleIframe = response.toggle_iframe;
+                        var toggleChat = response.toggle_chat;
+                        var toggleRecorder = response.toggle_recorder;
+                        var toggleRecorderStop = response.toggle_recorder_stop;
+                        var toggleRecorderDownload = response.toggle_recorder_download;
+                        var submit = response.submit;var reset = response.reset;
+                        var startRecording = response.start_recording;
+                        var stopRecording = response.stop_recording;
+                        var download = response.download;
+                        var filterInput = response.filter_input;
+                        var genderFilter = response.gender_filter;
+                        var ageFilterMin = response.age_filter_min;
+                        var ageFilterMax = response.age_filter_max;
+                        var tagsFilter = response.tags_filter;
+                        var numUsersFilterMin = response.num_users_filter_min;
+                        var numUsersFilterMax = response.num_users_filter_max;
+                        var countryFilter = response.country_filter;
+                        var iframe = response.iframe;
+                        var secondIframe = response.second_iframe;
+                        var mainIframe = response.main_iframe;
+                        var recordContainer = response.record_container;
+                        var recordButton = response.record_button;
+                        rooms.forEach(function(room) {
+                            var roomElement = document.createElement('div');
+                            roomElement.className = 'room';
+                            roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                            rooms.appendChild(roomElement);
+                        });
+                    }
+                };
+                xhr.send();
+            });
+
+            reset.addEventListener('click', function() {
+                filterInput.value = '';
+                genderFilter.value = '';
+                ageFilterMin.value = '';
+                ageFilterMax.value = '';
+                tagsFilter.value = '';
+                numUsersFilterMin.value = '';
+                numUsersFilterMax.value = '';
+                countryFilter.value = '';
+                rooms.innerHTML = '';
+                onlineUsers.innerHTML = '';
+                previousUsers.innerHTML = '';
+            });
+        
+            startRecording.addEventListener('click', function() {
+                var iframe = document.getElementById('mainIframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeContent = iframeDoc.documentElement.outerHTML;
+                var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+                var iframeUrl = URL.createObjectURL(iframeBlob);
+                var iframeDownload = document.createElement('a');
+                iframeDownload.href = iframeUrl;
+                iframeDownload.download = 'iframe.html';
+                iframeDownload.click();
+            });
+
+            stopRecording.addEventListener('click', function() {
+                var iframe = document.getElementById('mainIframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeContent = iframeDoc.documentElement.outerHTML;
+                var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+                var iframeUrl = URL.createObjectURL(iframeBlob);
+                var iframeDownload = document.createElement('a');
+                iframeDownload.href = iframeUrl;
+                iframeDownload.download = 'iframe.html';
+                iframeDownload.click();
+            });
+
+            download.addEventListener('click', function() {
+                var iframe = document.getElementById('mainIframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeContent = iframeDoc.documentElement.outerHTML;
+                var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+                var iframeUrl = URL.createObjectURL(iframeBlob);
+                var iframeDownload = document.createElement('a');
+                iframeDownload.href = iframeUrl;
+                iframeDownload.download = 'iframe.html';
+                iframeDownload.click();
+            });
+
+            filterInput.addEventListener('input', function() {
+                var filter = filterInput.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            genderFilter.addEventListener('change', function() {
+                var filter = genderFilter.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            ageFilterMin.addEventListener('input', function() {
+                var filter = ageFilterMin.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            ageFilterMax.addEventListener('input', function() {
+                var filter = ageFilterMax.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            tagsFilter.addEventListener('input', function() {
+                var filter = tagsFilter.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            numUsersFilterMin.addEventListener('input', function() {
+                var filter = numUsersFilterMin.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            numUsersFilterMax.addEventListener('input', function() {
+                var filter = numUsersFilterMax.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            countryFilter.addEventListener('input', function() {
+                var filter = countryFilter.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            var iframe = document.getElementById('mainIframe');
+            var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            var iframeContent = iframeDoc.documentElement.outerHTML;
+            var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+            var iframeUrl = URL.createObjectURL(iframeBlob);
+            var iframeDownload = document.createElement('a');
+        
+        </script>
         <div class="filters">
             <input type="text" id="filterInput" placeholder="Filter by username" class="form-control">
             <select id="genderFilter" class="form-control">
@@ -473,11 +713,7 @@
             iframeDownload.click();
         });
         document.body.appendChild(downloadButton);
-
     </script>
     <script src="script.js"></script> 
 </body>
 </html>
-
-
-
