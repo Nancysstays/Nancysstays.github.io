@@ -18,6 +18,24 @@ class ChaturbateAPI {
         }
     }
 
+    async fetchAllData() {
+        // Get data over multiple async requests
+        try {
+            const response = await fetch(this.apiUrl);
+            const data = await response.json();
+            this.processData(data.results);
+
+            if (data.next) {
+                this.apiUrl = data.next;
+                await this.fetchAllData();
+            }
+        }
+        catch (error) {
+            alert("Error fetching data:", error);
+        }
+    }
+
+
     processData(users) {
         users.forEach(user => {
             if (user.current_show === "public") {
@@ -118,8 +136,6 @@ class ChaturbateAPI {
         const endIndex = startIndex + this.usersPerPage;
         return users.slice(startIndex, endIndex);
     }
-
-// ... (other parts of the ChaturbateAPI class)
 
 updatePagination(filteredUsers) {
     const paginationDiv = document.getElementById("pagination");
@@ -237,6 +253,79 @@ filterForm.addEventListener("submit", (event) => {
     chaturbate.currentPage = 1; // Reset to the first page when filtering
     chaturbate.displayUsers(); // Re-display users with applied filters
 });
+
+// Add event listener to the "Load All" button
+document.getElementById("loadAll").addEventListener("click", () => {
+    chaturbate.fetchAllData();
+});
+
+// Add event listener to the "Reset Filters" button
+document.getElementById("resetFilters").addEventListener("click", () => {
+    filterForm.reset();
+    chaturbate.currentPage = 1;
+    chaturbate.displayUsers();
+});
+
+// Add event listener to the "Reset Removed Users" button
+document.getElementById("resetRemovedUsers").addEventListener("click", () => {
+    localStorage.removeItem("removedUsers");
+    chaturbate.loadStoredData();
+    chaturbate.displayUsers();
+});
+
+
+// Add event listener to the "Reset Previous Users" button
+document.getElementById("resetPreviousUsers").addEventListener("click", () => {
+    sessionStorage.removeItem("previousUsers");
+    chaturbate.loadStoredData();
+    chaturbate.displayPreviousUsers();
+});
+
+// Add event listener to the "Clear All" button
+document.getElementById("clearAll").addEventListener("click", () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    chaturbate.loadStoredData();
+    chaturbate.displayUsers();
+    chaturbate.displayPreviousUsers();
+});
+
+// Add event listener to the "Load More" button
+document.getElementById("loadMore").addEventListener("click", () => {
+    chaturbate.currentPage++;
+    chaturbate.displayUsers();
+});
+
+// Add event listener to the "Load Less" button
+document.getElementById("loadLess").addEventListener("click", () => {
+    chaturbate.currentPage--;
+    chaturbate.displayUsers();
+});
+
+// Add event listener to the "Reset Page" button
+document.getElementById("resetPage").addEventListener("click", () => {
+    chaturbate.currentPage = 1;
+    chaturbate.displayUsers();
+});
+
+// document.getElementById("loadmore").addEventListener('click', function() {
+//     var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=1000';
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('GET', url, true);
+//     xhr.onload = function() {
+//         if (xhr.status === 200) {
+//             var response = JSON.parse(xhr.responseText);
+//             var rooms = response.rooms;
+//             rooms.forEach(function(room) {
+//                 var roomElement = document.createElement('div');
+//                 roomElement.className = 'room';
+//                 roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+//                 rooms.appendChild(roomElement);
+//             });
+//         }
+//     };
+//     xhr.send();
+// });
 
 class Recorder {
     constructor() {

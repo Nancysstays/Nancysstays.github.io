@@ -60,6 +60,7 @@
             var previousUsers = document.getElementById('previousUsers');
             var pagination = document.getElementById('pagination');
             var loadMore = document.getElementById('loadMore');
+
             var loadAll = document.getElementById('loadAll');
             var clearFilters = document.getElementById('clearFilters');
             var clearRooms = document.getElementById('clearRooms');
@@ -195,24 +196,6 @@
                             xhr.send();
                         });
 
-                        loadAll.addEventListener('click', function() {
-                            var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=1000';
-                            var xhr = new XMLHttpRequest();
-                            xhr.open('GET', url, true);
-                            xhr.onload = function() {
-                                if (xhr.status === 200) {
-                                    var response = JSON.parse(xhr.responseText);
-                                    var rooms = response.rooms;
-                                    rooms.forEach(function(room) {
-                                        var roomElement = document.createElement('div');
-                                        roomElement.className = 'room';
-                                        roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
-                                        rooms.appendChild(roomElement);
-                                    });
-                                }
-                            };
-                            xhr.send();
-                        });
 
                         clearFilters.addEventListener('click', function() {
                             filterInput.value = '';
