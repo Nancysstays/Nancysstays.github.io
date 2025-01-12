@@ -263,7 +263,8 @@ class Recorder {
                 this.recording = true;
             })
             .catch(error => {
-                console.error("Error starting recording:", error);
+                alert("Error accessing microphone. Please allow access and refresh the page.");
+                // console.error("Error starting recording:", error);
             });
     }
 
