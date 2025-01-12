@@ -2,7 +2,7 @@
 .scrollable-list {
     height: 128px;
     /* overflow-y: auto; */
-				float: left;
+		float: left;
     width: 25%;
 }
 
@@ -11,9 +11,17 @@
     max-width: fit-content;
     height: 100%;
     max-height: fit-content
-    overflow: hidden; /* Prevent iframe scrolling */
-				float: right;
+    /* overflow: hidden; Prevent iframe scrolling
+		float: right; */
 }
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
 
 .filters {
     margin-bottom: 20px;
