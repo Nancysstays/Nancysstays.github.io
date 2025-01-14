@@ -3,7 +3,7 @@ const chaturbate = new ChaturbateAPI();
 const autoScrollOnlineUsers = new AutoScrollOnlineUsers();
 window.onload = () => {
     try {
-        chaturbate.fetchAllData();
+        chaturbate.fetchData();
     } catch (error) {
         alert("Error fetching data:", error);
     }
