@@ -1,110 +1,777 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WebRTC Screen Sharing</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif; /* Use a more professional font */
-      background-color: #f4f4f4;
-    }
-
-    h1, h2 {
-      font-weight: 500; /* Less bold headings */
-    }
-
-    #video-container {
-      width: 800px;
-      height: 600px; /* Larger default size */
-      margin: 30px auto;
-      border: none; /* Remove border */
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Softer shadow */
-      border-radius: 8px; /* Add rounded corners */
-    }
-
-    #video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background-color: #212529;
-    }
-
-    .overlay {
-      /* ... (same as before) ... */
-    }
-
-    .controls {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .btn-primary {
-      background-color: #0056b3; /* Deeper blue */
-      border-color: #0056b3;
-    }
-
-    #status {
-      margin-top: 10px;
-      font-weight: normal; /* Use normal font weight */
-      color: #555; /* Darker gray for status text */
-    }
-
-    .instructions, .about {
-      margin-top: 30px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) { 
-      #video-container {
-        width: 90vw;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chaturbate Viewer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
 </head>
 <body>
-  <div class="container">
-    <h1 class="mt-5 text-center">Screen Sharing with WebRTC</h1>
+    <div class="container">
+        <h1>ChatHer</h1>
+        <button id="toggleButton">Toggle</button>
+        <button id="toggleButton1">Toggle Record</button>
+        <button id="toggleButton2">Toggle BatWoman</button>
 
-    <div id="video-container">
-      <video id="video" autoplay playsinline muted></video>
-      <div class="overlay">
-        <i class="fas fa-desktop fa-3x"></i> 
-        <span id="overlay-text">Click "Start Sharing" to begin</span>
-      </div>
+        <script>
+            // Toggle controls on button click from id controls none/
+            var toggleControls = document.getElementById('controls');
+            var toggleButton = document.getElementById('toggleButton');
+            var toggleButton1 = document.getElementById('toggleButton1');
+            var toggleButton2 = document.getElementById('toggleButton2');
+            // var toggleButton3 = document.getElementById('toggleButton3');
+
+            toggleButton.addEventListener('click', function() {
+                var controls = document.getElementById('controlsFilter');
+                if (controls.style.display === 'none') {
+                    controls.style.display = 'block';
+                } else {
+                    controls.style.display = 'none';
+                }
+            });
+
+            toggleButton1.addEventListener('click', function() {
+                var controls = document.getElementById('recordContainer');
+                if (controls.style.display === 'none') {
+                    controls.style.display = 'block';
+                } else {
+                    controls.style.display = 'none';
+                }
+            });
+
+            toggleButton2.addEventListener('click', function() {
+                var controls = document.getElementById('BatWoman');
+                if (controls.style.display === 'none') {
+                    controls.style.display = 'block';
+                } else {
+                    controls.style.display = 'none';
+                }
+            });
+</script>
+
+        <script>
+            // Load rooms from chaturbate API
+            var rooms = document.getElementById('rooms');
+            var onlineUsers = document.getElementById('onlineUsers');
+            var previousUsers = document.getElementById('previousUsers');
+            var pagination = document.getElementById('pagination');
+            var loadMore = document.getElementById('loadMore');
+
+            var loadAll = document.getElementById('loadAll');
+            var clearFilters = document.getElementById('clearFilters');
+            var clearRooms = document.getElementById('clearRooms');
+            var clearUsers = document.getElementById('clearUsers');
+            var clearAll = document.getElementById('clearAll');
+            var toggleAutoRefresh = document.getElementById('toggleAutoRefresh');
+            var toggleAutoJoin = document.getElementById('toggleAutoJoin');
+            var toggleAutoTip = document.getElementById('toggleAutoTip');
+            var toggleAutoPvt = document.getElementById('toggleAutoPvt');
+            var toggleAutoSpy = document.getElementById('toggleAutoSpy');
+            var toggleAutoFav = document.getElementById('toggleAutoFav');
+            var toggleAutoFollow = document.getElementById('toggleAutoFollow');
+            var toggleAutoMessage = document.getElementById('toggleAutoMessage');
+            var toggleAutoGift = document.getElementById('toggleAutoGift');
+            var toggleCrate = document.getElementById('toggleCrate');
+            var toggleWidget = document.getElementById('toggleWidget');
+            var toggleIframe = document.getElementById('toggleIframe');
+            var toggleChat = document.getElementById('toggleChat');
+            var toggleRecorder = document.getElementById('toggleRecorder');
+            var toggleRecorderStop = document.getElementById('toggleRecorderStop');
+            var toggleRecorderDownload = document.getElementById('toggleRecorderDownload');
+            var submit = document.getElementById('submit');
+            var reset = document.getElementById('reset');
+            var startRecording = document.getElementById('startRecording');
+            var stopRecording = document.getElementById('stopRecording');
+            var download = document.getElementById('download');
+            var filterInput = document.getElementById('filterInput');
+            var genderFilter = document.getElementById('genderFilter');
+            var ageFilterMin = document.getElementById('ageFilterMin');
+            var ageFilterMax = document.getElementById('ageFilterMax');
+            var tagsFilter = document.getElementById('tagsFilter');
+            var numUsersFilterMin = document.getElementById('numUsersFilterMin');
+            var numUsersFilterMax = document.getElementById('numUsersFilterMax');
+            var countryFilter = document.getElementById('countryFilter');
+            var iframe = document.getElementById('mainIframe');
+            var secondIframe = document.getElementById('secondIframe');
+            var mainIframe = document.getElementById('mainIframe');
+            var recordContainer = document.getElementById('recordContainer');
+            var recordButton = document.getElementById('recordButton');
+
+            function loadRooms() {
+                var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var rooms = response.rooms;
+                        var onlineUsers = response.online_users;
+                        var previousUsers = response.previous_users;
+                        var pagination = response.pagination;
+                        var loadMore = response.load_more;
+                        var loadAll = response.load_all;
+                        var clearFilters = response.clear_filters;
+                        var clearRooms = response.clear_rooms;
+                        var clearUsers = response.clear_users;
+                        var clearAll = response.clear_all;
+                        var toggleAutoRefresh = response.toggle_auto_refresh;
+                        var toggleAutoJoin = response.toggle_auto_join;
+                        var toggleAutoTip = response.toggle_auto_tip;
+                        var toggleAutoPvt = response.toggle_auto_pvt;
+                        var toggleAutoSpy = response.toggle_auto_spy;
+                        var toggleAutoFav = response.toggle_auto_fav;
+                        var toggleAutoFollow = response.toggle_auto_follow;
+                        var toggleAutoMessage = response.toggle_auto_message;
+                        var toggleAutoGift = response.toggle_auto_gift;
+                        var toggleCrate = response.toggle_crate;
+                        var toggleWidget = response.toggle_widget;
+                        var toggleIframe = response.toggle_iframe;
+                        var toggleChat = response.toggle_chat;
+                        var toggleRecorder = response.toggle_recorder;
+                        var toggleRecorderStop = response.toggle_recorder_stop;
+                        var toggleRecorderDownload = response.toggle_recorder_download;
+                        var submit = response.submit;
+                        var reset = response.reset;
+                        var startRecording = response.start_recording;
+                        var stopRecording = response.stop_recording;
+                        var download = response.download;
+                        var filterInput = response.filter_input;
+                        var genderFilter = response.gender_filter;
+                        var ageFilterMin = response.age_filter_min;
+                        var ageFilterMax = response.age_filter_max;
+                        var tagsFilter = response.tags_filter;
+                        var numUsersFilterMin = response.num_users_filter_min;
+                        var numUsersFilterMax = response.num_users_filter_max;
+                        var countryFilter = response.country_filter;
+                        var iframe = response.iframe;
+                        var secondIframe = response.second_iframe;
+                        var mainIframe = response.main_iframe;
+                        var recordContainer = response.record_container;
+                        var recordButton = response.record_button;
+                        rooms.forEach(function(room) {
+                            var roomElement = document.createElement('div');
+                            roomElement.className = 'room';
+                            roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                            rooms.appendChild(roomElement);
+                        });
+                        onlineUsers.forEach(function(user) {
+                            var userElement = document.createElement('div');
+                            userElement.className = 'user';
+                            userElement.innerHTML = '<a href="https://chaturbate.com/' + user.username + '" target="_blank">' + user.username + '</a>';
+                            onlineUsers.appendChild(userElement);
+                        });
+                        previousUsers.forEach(function(user) {
+                            var userElement = document.createElement('div');
+                            userElement.className = 'user';
+                            userElement.innerHTML = '<a href="https://chaturbate.com/' + user.username + '" target="_blank">' + user.username + '</a>';
+                            previousUsers.appendChild(userElement);
+                        });
+                        pagination.forEach(function(page) {
+                            var pageElement = document.createElement('div');
+                            pageElement.className = 'page';
+                            pageElement.innerHTML = '<a href="https://chaturbate.com/' + page.username + '" target="_blank">' + page.username + '</a>';
+                            pagination.appendChild(pageElement);
+                        });
+
+                        loadMore.addEventListener('click', function() {
+                            var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=' + rooms.length + '&count=100';
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', url, true);
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    var response = JSON.parse(xhr.responseText);
+                                    var rooms = response.rooms;
+                                    rooms.forEach(function(room) {
+                                        var roomElement = document.createElement('div');
+                                        roomElement.className = 'room';
+                                        roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                                        rooms.appendChild(roomElement);
+                                    });
+                                }
+                            };
+                            xhr.send();
+                        });
+
+
+                        clearFilters.addEventListener('click', function() {
+                            filterInput.value = '';
+                            genderFilter.value = '';
+                            ageFilterMin.value = '';
+                            ageFilterMax.value = '';
+                            tagsFilter.value = '';
+                            numUsersFilterMin.value = '';
+                            numUsersFilterMax.value = '';
+                            countryFilter.value = '';
+                        });
+
+                        clearRooms.addEventListener('click', function() {
+                            rooms.innerHTML = '';
+                        });
+
+                        clearUsers.addEventListener('click', function() {
+                            onlineUsers.innerHTML = '';
+                            previousUsers.innerHTML = '';
+                        });
+
+                        clearAll.addEventListener('click', function() {
+                            rooms.innerHTML = '';
+                            onlineUsers.innerHTML = '';
+                            previousUsers.innerHTML = '';
+                        });
+
+                        toggleAutoRefresh.addEventListener('click', function() {
+                            if (toggleAutoRefresh.textContent === 'Toggle Auto Refresh') {
+                                toggleAutoRefresh.textContent = 'Auto Refresh On';
+                            } else {
+                                toggleAutoRefresh.textContent = 'Toggle Auto Refresh';
+                            }
+                        });
+
+                        toggleAutoJoin.addEventListener('click', function() {
+                            if (toggleAutoJoin.textContent === 'Toggle Auto Join') {
+                                toggleAutoJoin.textContent = 'Auto Join On';
+                            } else {
+                                toggleAutoJoin.textContent = 'Toggle Auto Join';
+                            }
+                        });
+
+                        toggleAutoTip.addEventListener('click', function() {
+                            if (toggleAutoTip.textContent === 'Toggle Auto Tip') {
+                                toggleAutoTip.textContent = 'Auto Tip On';
+                            } else {
+                                toggleAutoTip.textContent = 'Toggle Auto Tip';
+                            }
+                        });
+
+                        toggleAutoPvt.addEventListener('click', function() {
+                            if (toggleAutoPvt.textContent === 'Toggle Auto Pvt') {
+                                toggleAutoPvt.textContent = 'Auto Pvt On';
+                            } else {
+                                toggleAutoPvt.textContent = 'Toggle Auto Pvt';
+                            }
+                        });
+
+                        toggleAutoSpy.addEventListener('click', function() {
+                            if (toggleAutoSpy.textContent === 'Toggle Auto Spy') {
+                                toggleAutoSpy.textContent = 'Auto Spy On';
+                            } else {
+                                toggleAutoSpy.textContent = 'Toggle Auto Spy';
+                            }
+                        });
+
+                        toggleAutoFav.addEventListener('click', function() {
+                            if (toggleAutoFav.textContent === 'Toggle Auto Fav') {
+                                toggleAutoFav.textContent = 'Auto Fav On';
+                            } else {
+                                toggleAutoFav.textContent = 'Toggle Auto Fav';
+                            }
+                        });
+
+                        toggleAutoFollow.addEventListener('click', function() {
+                            if (toggleAutoFollow.textContent === 'Toggle Auto Follow') {
+                                toggleAutoFollow.textContent = 'Auto Follow On';
+                            } else {
+                                toggleAutoFollow.textContent = 'Toggle Auto Follow';
+                            }
+                        });
+
+                        toggleAutoMessage.addEventListener('click', function() {
+                            if (toggleAutoMessage.textContent === 'Toggle Auto Message') {
+                                toggleAutoMessage.textContent = 'Auto Message On';
+                            } else {
+                                toggleAutoMessage.textContent = 'Toggle Auto Message';
+                            }
+                        });
+
+                        toggleAutoGift.addEventListener('click', function() {
+                            if (toggleAutoGift.textContent === 'Toggle Auto Gift') {
+                                toggleAutoGift.textContent = 'Auto Gift On';
+                            } else {
+                                toggleAutoGift.textContent = 'Toggle Auto Gift';
+                            }
+                        });
+                        
+                        toggleCrate.addEventListener('click', function() {
+                            if (toggleCrate.textContent === 'Toggle Crate') {
+                                toggleCrate.textContent = 'Crate On';
+                            } else {
+                                toggleCrate.textContent = 'Toggle Crate';
+                            }
+                        });
+                        
+                        toggleWidget.addEventListener('click', function() {
+                            if (toggleWidget.textContent === 'Toggle Widget') {
+                                toggleWidget.textContent = 'Widget On';
+                            } else {
+                                toggleWidget.textContent = 'Toggle Widget';
+                            }
+                        });
+
+                        toggleIframe.addEventListener('click', function() {
+                            if (toggleIframe.textContent === 'Toggle Iframe') {
+                                toggleIframe.textContent = 'Iframe On';
+                            } else {
+                                toggleIframe.textContent = 'Toggle Iframe';
+                            }
+                        });
+
+                        toggleChat.addEventListener('click', function() {
+                            if (toggleChat.textContent === 'Toggle Chat') {
+                                toggleChat.textContent = 'Chat On';
+                            } else {
+                                toggleChat.textContent = 'Toggle Chat';
+                            }
+                        });
+
+                        toggleRecorder.addEventListener('click', function() {
+                            if (toggleRecorder.textContent === 'Toggle Recorder') {
+                                toggleRecorder.textContent = 'Recorder On';
+                            } else {
+                                toggleRecorder.textContent = 'Toggle Recorder';
+                            }
+                        });
+                    }
+                };
+                xhr.send();
+            }
+
+            // loadRooms();
+
+            submit.addEventListener('click', function() {
+                var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var rooms = response.rooms;
+                        var onlineUsers = response.online_users;
+                        var previousUsers = response.previous_users;
+                        var pagination = response.pagination;
+                        var loadMore = response.load_more;
+                        var loadAll = response.load_all;
+                        var clearFilters = response.clear_filters;
+                        var clearRooms = response.clear_rooms;
+                        var clearUsers = response.clear_users;
+                        var clearAll = response.clear_all;
+                        var toggleAutoRefresh = response.toggle_auto_refresh;
+                        var toggleAutoJoin = response.toggle_auto_join;
+                        var toggleAutoTip = response.toggle_auto_tip;
+                        var toggleAutoPvt = response.toggle_auto_pvt;
+                        var toggleAutoSpy = response.toggle_auto_spy;
+                        var toggleAutoFav = response.toggle_auto_fav;
+                        var toggleAutoFollow = response.toggle_auto_follow;
+                        var toggleAutoMessage = response.toggle_auto_message;
+                        var toggleAutoGift = response.toggle_auto_gift;
+                        var toggleCrate = response.toggle_crate;
+                        var toggleWidget = response.toggle_widget;
+                        var toggleIframe = response.toggle_iframe;
+                        var toggleChat = response.toggle_chat;
+                        var toggleRecorder = response.toggle_recorder;
+                        var toggleRecorderStop = response.toggle_recorder_stop;
+                        var toggleRecorderDownload = response.toggle_recorder_download;
+                        var submit = response.submit;var reset = response.reset;
+                        var startRecording = response.start_recording;
+                        var stopRecording = response.stop_recording;
+                        var download = response.download;
+                        var filterInput = response.filter_input;
+                        var genderFilter = response.gender_filter;
+                        var ageFilterMin = response.age_filter_min;
+                        var ageFilterMax = response.age_filter_max;
+                        var tagsFilter = response.tags_filter;
+                        var numUsersFilterMin = response.num_users_filter_min;
+                        var numUsersFilterMax = response.num_users_filter_max;
+                        var countryFilter = response.country_filter;
+                        var iframe = response.iframe;
+                        var secondIframe = response.second_iframe;
+                        var mainIframe = response.main_iframe;
+                        var recordContainer = response.record_container;
+                        var recordButton = response.record_button;
+                        rooms.forEach(function(room) {
+                            var roomElement = document.createElement('div');
+                            roomElement.className = 'room';
+                            roomElement.innerHTML = '<a href="https://chaturbate.com/' + room.username + '" target="_blank">' + room.username + '</a>';
+                            rooms.appendChild(roomElement);
+                        });
+                    }
+                };
+                xhr.send();
+            });
+
+            reset.addEventListener('click', function() {
+                filterInput.value = '';
+                genderFilter.value = '';
+                ageFilterMin.value = '';
+                ageFilterMax.value = '';
+                tagsFilter.value = '';
+                numUsersFilterMin.value = '';
+                numUsersFilterMax.value = '';
+                countryFilter.value = '';
+                rooms.innerHTML = '';
+                onlineUsers.innerHTML = '';
+                previousUsers.innerHTML = '';
+            });
+        
+            startRecording.addEventListener('click', function() {
+                var iframe = document.getElementById('mainIframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeContent = iframeDoc.documentElement.outerHTML;
+                var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+                var iframeUrl = URL.createObjectURL(iframeBlob);
+                var iframeDownload = document.createElement('a');
+                iframeDownload.href = iframeUrl;
+                iframeDownload.download = 'iframe.html';
+                iframeDownload.click();
+            });
+
+            stopRecording.addEventListener('click', function() {
+                var iframe = document.getElementById('mainIframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeContent = iframeDoc.documentElement.outerHTML;
+                var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+                var iframeUrl = URL.createObjectURL(iframeBlob);
+                var iframeDownload = document.createElement('a');
+                iframeDownload.href = iframeUrl;
+                iframeDownload.download = 'iframe.html';
+                iframeDownload.click();
+            });
+
+            download.addEventListener('click', function() {
+                var iframe = document.getElementById('mainIframe');
+                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                var iframeContent = iframeDoc.documentElement.outerHTML;
+                var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+                var iframeUrl = URL.createObjectURL(iframeBlob);
+                var iframeDownload = document.createElement('a');
+                iframeDownload.href = iframeUrl;
+                iframeDownload.download = 'iframe.html';
+                iframeDownload.click();
+            });
+
+            filterInput.addEventListener('input', function() {
+                var filter = filterInput.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            genderFilter.addEventListener('change', function() {
+                var filter = genderFilter.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            ageFilterMin.addEventListener('input', function() {
+                var filter = ageFilterMin.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            ageFilterMax.addEventListener('input', function() {
+                var filter = ageFilterMax.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            tagsFilter.addEventListener('input', function() {
+                var filter = tagsFilter.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            numUsersFilterMin.addEventListener('input', function() {
+                var filter = numUsersFilterMin.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            numUsersFilterMax.addEventListener('input', function() {
+                var filter = numUsersFilterMax.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            countryFilter.addEventListener('input', function() {
+                var filter = countryFilter.value.toUpperCase();
+                var rooms = document.getElementById('rooms');
+                var room = rooms.getElementsByClassName('room');
+                for (var i = 0; i < room.length; i++) {
+                    var a = room[i].getElementsByTagName('a')[0];
+                    var txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        room[i].style.display = '';
+                    } else {
+                        room[i].style.display = 'none';
+                    }
+                }
+            });
+
+            var iframe = document.getElementById('mainIframe');
+            var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            var iframeContent = iframeDoc.documentElement.outerHTML;
+            var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+            var iframeUrl = URL.createObjectURL(iframeBlob);
+            var iframeDownload = document.createElement('a');
+        </script>
+        <div style="display: none;" id="controlsFilter" class="filters">
+            <input type="text" id="filterInput" placeholder="Filter by username" class="form-control">
+            <select id="genderFilter" class="form-control">
+                <option value="">All Genders</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="couple">Couple</option>
+            </select>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="number" id="ageFilterMin" placeholder="Min Age" class="form-control">
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="number" id="ageFilterMax" placeholder="Max Age" class="form-control">
+                </div>
+            </div>
+            <input type="text" id="tagsFilter" placeholder="Filter by tags" class="form-control">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="number" id="numUsersFilterMin" placeholder="Min Users" class="form-control">
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="number" id="numUsersFilterMax" placeholder="Max Users" class="form-control">
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" id="countryFilter" placeholder="Filter by country" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- div class="col-md-9">
+                <div id="rooms" class="scrollable-list room-list"></div>
+            </div -->
+            <div class="col-md-3">
+                <h2>Online Users</h2>
+                <div id="pagination"></div>
+                <div id="onlineUsers" class="scrollmenu scrollable-list user-list"></div>
+            </div>
+            <div class="col-md-3">
+                <h2>Previous Users</h2>
+                <div id="previousUsers" class="scrollable-list user-list"></div>
+            </div>
+            <div class="col-md-3">
+            <script>
+                // Toggle controls on button click from id controls none/
+                var toggleControls = document.getElementById('controls');
+                var toggleButton = document.createElement('button');
+                toggleButton.textContent = 'Controls';
+                toggleButton.addEventListener('click', function() {
+                    var controls = document.getElementById('controls');
+                    if (controls.style.display === 'none') {
+                        controls.style.display = 'block';
+                    } else {
+                        controls.style.display = 'none';
+                    }
+                });
+            </script>
+            <div class="controls" id="controls">
+                <button id="loadMore" class="btn btn-primary">Load More</button>
+                <script>
+                    var chaturbateAPI = new ChaturbateAPI();
+                    var loadMore = document.getElementById('loadMore');
+                    let loadLess = document.getElementById('loadLess');
+                    // Load more rooms on button click
+                    loadMore.addEventListener('click', function() {
+                        chaturbateAPI.loadMore();
+                    });
+                    // Load less rooms on button click
+                    loadLess.addEventListener('click', function() {
+                        chaturbateAPI.loadLess();
+                    });
+                </script>
+                <button id="loadLess" class="btn btn-primary">Load Less</button>
+                <button id="loadAll" class="btn btn-primary">Load All</button>
+                <!-- button id="clearFilters" class="btn btn-primary">Clear Filters</button>
+                <button id="clearRooms" class="btn btn-primary">Clear Rooms</button>
+                <button id="clearUsers" class="btn btn-primary">Clear Users</button>
+                <button id="clearAll" class="btn btn-primary">Clear All</button>
+                <button id="toggleAutoRefresh" class="btn btn-primary">Toggle Auto Refresh</button>
+                <button id="toggleAutoJoin" class="btn btn-primary">Toggle Auto Join</button>
+                <button id="toggleAutoTip" class="btn btn-primary">Toggle Auto Tip</button>
+                <button id="toggleAutoPvt" class="btn btn-primary">Toggle Auto Pvt</button>
+                <button id="toggleAutoSpy" class="btn btn-primary">Toggle Auto Spy</button>
+                <button id="toggleAutoFav" class="btn btn-primary">Toggle Auto Fav</button>
+                <button id="toggleAutoFollow" class="btn btn-primary">Toggle Auto Follow</button>
+                <button id="toggleAutoMessage" class="btn btn-primary">Toggle Auto Message</button>
+                <button id="toggleAutoGift" class="btn btn-primary">Toggle Auto Gift</button>
+                <button id="toggleCrate" class="btn btn-primary">Toggle Crate</button>
+                <button id="toggleWidget" class="btn btn-primary">Toggle Widget</button>
+                <button id="toggleIframe" class="btn btn-primary">Toggle Iframe</button>
+                <button id="toggleChat" class="btn btn-primary">Toggle Chat</button>
+                <button id="toggleRecorder" class="btn btn-primary">Toggle Recorder</button>
+                <button id="toggleRecorderStop" class="btn btn-primary">Toggle Recorder Stop</button>
+                <button id="toggleRecorderDownload" class="btn btn-primary">Toggle Recorder Download</button-->
+                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" id="reset" class="btn btn-primary">Reset</button>
+            </div>
+            <div style="display: none;" class="recordContainer col-md-6" id="recordContainer">
+                <!-- Small Recorder buttons in a line-->
+                 <style>
+                    .recordContainer {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                    .recordButton {
+                        margin-right: 10px;
+                    }
+                    .recordButton:last-child {
+                        margin-right: 0;
+                    }
+                    .recordButton:active {
+                        background-color: #007bff;
+                        border-color: #007bff;
+                    }
+                    .recordButton:hover {
+                        background-color: #0056b3;
+                        border-color: #0056b3;
+                    }
+                    .recordButton:focus {
+                        outline: none;
+                    }
+
+                 </style>
+                <div style="display: none;" id="BatWoman" class="recordButton">
+                    <button id="startRecording" class="btn btn-primary">Start Recording</button>
+                    <button id="stopRecording" class="btn btn-primary">Stop Recording</button>
+                    <button id="download" class="btn btn-primary">Download</button>
+                </div>
+                <!-- Recorder-->
+            </div>
+        </div>
+        <iframe id="mainIframe" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" frameborder="0" scrolling="no"></iframe>
+        <iframe id="mainIframe2" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" width="850px" height="528px" frameborder="0" scrolling="no"></iframe>
+        <iframe id="secondIframe" src="https://nancysstays.github.io/texther" frameborder="0" scrolling="no"></iframe> 
+        <script>
+            // focus on iframe message input on page load
+            var iframe = document.getElementById('mainIframe');
+            var iframe2 = document.getElementById('secondIframe');
+            iframe.contentWindow.focus();
+            // iframe.contentWindow.postMessage('focus', '*');
+            // iframe.contentWindow.postMessage('focus', 'https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f');
+            // iframe.contentWindow.postMessage('focus', 'https://nancysstays.github.io/texther');
+        </script>
+        <style>
+            #mainIframe {
+                width: 100%;
+                height: 100%;
+                min-height: 528px;
+                min-width: 800px;
+                border: none;
+                padding: 20px;
+                margin: 0;
+            }
+            /* Add scrolling for secondIframe */
+            #secondIframe {
+                overflow: auto;
+                overflow-x: hidden;
+                height: 100%;
+                width: 100%;
+                min-height: 528px;
+                min-width: 800px;
+            }
+        </style>
     </div>
+</div>
+    <script>
+        // // record portion of screen only iframe content on button click
+        // var iframe = document.getElementById('mainIframe');
+        // var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        // var iframeContent = iframeDoc.documentElement.outerHTML;
+        // var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+        // var iframeUrl = URL.createObjectURL(iframeBlob);
+        // var iframeDownload = document.createElement('a');
+        // iframeDownload.href = iframeUrl;
+        // iframeDownload.download = 'iframe.html';
+        // iframeDownload.click();
 
-    <div class="controls">
-      <button id="start-sharing" class="btn btn-primary">Start Sharing</button>
-      <button id="stop-sharing" class="btn btn-secondary" disabled>Stop Sharing</button>
-      <div id="status"></div>
-    </div>
-
-    <div class="instructions">
-      <h2>Instructions:</h2>
-      <ol>
-        <li>Click "Start Sharing".</li>
-        <li>Select the screen or application window you want to share.</li>
-        <li>Click "Share" in the browser prompt.</li>
-        <li>To stop sharing, click "Stop Sharing".</li>
-      </ol>
-    </div>
-
-    <div class="about">
-      <h2>About WebRTC Screen Sharing:</h2>
-      <p>This example demonstrates how to use WebRTC to share your screen with others. WebRTC is a powerful technology that allows real-time communication directly between web browsers. This opens up possibilities for various applications, including online meetings, remote collaboration, and interactive tutorials.</p>
-      <p>This implementation uses the <code>getDisplayMedia()</code> method to capture the screen content. It also includes a signaling mechanism (which is simplified here) to establish a connection between the sharer and the viewers.</p>
-    </div>
-  </div>
-
-  <script>
-    // ... (Your JavaScript code) ...
-  </script>
+        // Add button to download iframe content.
+        var downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download Iframe';
+        downloadButton.addEventListener('click', function() {
+            var iframe = document.getElementById('mainIframe');
+            var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            var iframeContent = iframeDoc.documentElement.outerHTML;
+            var iframeBlob = new Blob([iframeContent], {type: 'text/html'});
+            var iframeUrl = URL.createObjectURL(iframeBlob);
+            var iframeDownload = document.createElement('a');
+            iframeDownload.href = iframeUrl;
+            iframeDownload.download = 'iframe.html';
+            iframeDownload.click();
+        });
+        document.body.appendChild(downloadButton);
+    </script>
+    <script src="script.js"></script> 
 </body>
 </html>
