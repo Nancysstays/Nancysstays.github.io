@@ -9,6 +9,17 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+    <style>
+        .iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 528px;
+            min-width: 850px;
+            border: none;
+            padding: 20px;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -710,8 +721,8 @@
                 <!-- Recorder-->
             </div>
         </div>
-        <iframe id="mainIframe" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" frameborder="0" scrolling="no"></iframe>
-        <iframe id="mainIframe2" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" width="850px" height="528px" frameborder="0" scrolling="no"></iframe>
+        <iframe class="ifr" id="mainIframe" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" frameborder="0" scrolling="no"></iframe>
+        <iframe class="ifr" id="mainIframe2" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" frameborder="0" scrolling="no"></iframe>
         <iframe id="secondIframe" src="https://nancysstays.github.io/texther" frameborder="0" scrolling="no"></iframe> 
         <script>
             // focus on iframe message input on page load
