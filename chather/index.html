@@ -651,7 +651,7 @@
             <div class="controls" id="controls">
                 <button id="loadMore" class="btn btn-primary">Load More</button>
                 <script>
-                    var chaturbateAPI = new ChaturbateAPI();
+                    var chaturbateAPI = new API();
                     var loadMore = document.getElementById('loadMore');
                     let loadLess = document.getElementById('loadLess');
                     // Load more rooms on button click
@@ -771,7 +771,7 @@
             iframeDownload.download = 'iframe.html';
             iframeDownload.click();
         });
-        document.body.appendChild(downloadButton);
+        // document.body.appendChild(downloadButton);
     </script>
     <script src="script.js"></script> 
 </body>
