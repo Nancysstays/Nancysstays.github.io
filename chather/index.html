@@ -24,6 +24,55 @@
 </head>
 <body>
     <div class="container">
+        <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500 Index"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100 Cash CFD"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR to USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
+    },
+    {
+      "description": "Tesla",
+      "proName": "NASDAQ:TSLA"
+    },
+    {
+      "description": "",
+      "proName": "FX_IDC:ARSUSD"
+    },
+    {
+      "description": "",
+      "proName": "NASDAQ:GOOG"
+    }
+  ],
+  "showSymbolLogo": false,
+  "isTransparent": true,
+  "displayMode": "adaptive",
+  "colorTheme": "light",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
         <h1>ChatHer</h1>
         <button id="toggleButton">Toggle</button>
         <button id="toggleButton1">Toggle Record</button>
@@ -725,7 +774,31 @@
         <iframe class="ifr" id="mainIframe" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" frameborder="0"></iframe>
         <iframe class="ifr" id="mainIframe2" src="https://cbxyz.com/in/?tour=dU9X&campaign=9cg6A&track=embed&signup_notice=1&disable_sound=1&mobileRedirect=never&gender=f" frameborder="0"></iframe>
         <iframe id="secondIframe" src="https://nancysstays.github.io/texther" frameborder="0" scrolling="no"></iframe> 
-        <script>
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {
+  "autosize": true,
+  "symbol": "BTCUSD",
+  "interval": "60",
+  "timezone": "America/Los_Angeles",
+  "theme": "light",
+  "style": "1",
+  "locale": "en",
+  "withdateranges": true,
+  "hide_side_toolbar": false,
+  "allow_symbol_change": true,
+  "details": true,
+  "hotlist": true,
+  "calendar": true,
+  "support_host": "https://www.tradingview.com"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+            <script>
             // focus on iframe message input on page load
             var iframe = document.getElementById('mainIframe');
             var iframe2 = document.getElementById('secondIframe');
