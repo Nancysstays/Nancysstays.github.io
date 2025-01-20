@@ -351,7 +351,7 @@
                 xhr.send();
             }
 
-            // loadRooms();
+            window.addEventListener('DOMContentLoaded', loadRooms());
 
             submit.addEventListener('click', function() {
                 var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
