@@ -13,8 +13,8 @@
         .ifr {
             /* width: 100%; */
             /* height: 100%; */
-            max-height: 528px;
-            max-width: 850px;
+            height: 528px;
+            width: 850px;
             border: none;
             padding: 2px;
             margin: 0;
@@ -114,7 +114,7 @@
             var recordButton = document.getElementById('recordButton');
 
             function loadRooms() {
-                var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=100';
+                var url = 'https://chaturbate.com/api/chatvideocontext/' + '?from=0&count=500';
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url, true);
                 xhr.onload = function() {
