@@ -57,7 +57,7 @@ class ChartRenderer {
 }
 
 // Create an instance of StockData with your API key
-const stockData = new StockData('XVYHOWRTRNPN3FJA');
+const stockData = new StockData(process.env.ALPHAVANTAGE);
 
 // Create an instance of ChartRenderer
 const chartRenderer = new ChartRenderer('chart-container');
