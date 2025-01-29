@@ -18,7 +18,7 @@ body {
   flex: 1 0 20%;
   box-sizing: border-box;
   padding: 5px;
-  position: relative; /* Important for positioning the year */
+  position: relative;
 }
 
 .tesla-image img {
@@ -49,12 +49,37 @@ body {
     flex: 1 0 100%;
   }
 }
+
+h2 {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+h2 span {
+  display: inline-block;
+  animation: fancy-slide 3s ease-in-out forwards;
+}
+
+@keyframes fancy-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  60% {
+    transform: translateX(calc(100% + 50px)); 
+  }
+  80% {
+    transform: translateX(calc(100% - 50px));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 </style>
 </head>
 <body>
 
 <div class="w3-container">
-  <h2>Tesla Cars</h2>
+  <h2><span>Tesla Cars</span></h2>
 
   <div class="tesla-container">
     <div class="tesla-image">
