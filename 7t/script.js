@@ -3,7 +3,7 @@
 
   class ChartManager {
     #chart;
-    #apiKey = 'XVYHOWRTRNPN3FJA'; // Replace with your actual API key
+    #apiKey = process.env.ALPHAVANTAGE; // Replace with your actual API key
 
     constructor() {
       // Initialize any properties or call methods needed for initial setup
