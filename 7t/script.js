@@ -9,8 +9,8 @@
       // Initialize any properties or call methods needed for initial setup
       this.init().then(() => {
         this.render(); // Render initial chart for IBM
-        this.render('AAPL'); // Render another chart for AAPL
-        this.render('TSLA'); // Render another chart for TSLA
+        // this.render('AAPL'); // Render another chart for AAPL
+        // this.render('TSLA'); // Render another chart for TSLA
       });
     }
 
