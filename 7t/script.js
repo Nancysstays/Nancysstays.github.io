@@ -1,73 +1,111 @@
-'use strict';
+    // Immediately Invoked Function Expression (IIFE) to encapsulate the code
+    (function() {
+      'use strict';
 
-class StockData {
-    #apiKey;
+      // Private Members
+      var chart;
+      var data = [
+        { time: '2023-01-01', value: 10 },
+        { time: '2023-02-01', value: 20 },
+        { time: '2023-03-01', value: 15 },
+        { time: '2023-04-01', value: 25 },
+        { time: '2023-05-01', value: 30 },
+        { time: '2023-06-01', value: 22 },
+        //... more data
+      ];
 
-    constructor(apiKey) {
-        this.#apiKey = apiKey;
-    }
+      // Protected Methods
+      function loadData() {
+        // Simulate loading data from an API (replace with actual API call)
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve([
+              { time: '2023-07-01', value: 35 },
+              { time: '2023-08-01', value: 40 },
+              { time: '2023-09-01', value: 38 }
+            ]);
+          }, 1000); // Simulate 1-second delay
+        });
+      }
 
-    async fetchData(symbol) {
-        const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${this.#apiKey}`);
-        return response.json();
-    }
-
-    static processData(data) {
-        const timeSeriesData = data['Time Series (Daily)'];
-        return Object.entries(timeSeriesData).map(([time, values]) => ({
-            time: time,
-            value: parseFloat(values['4. close']),
-        })).reverse();
-    }
-}
-
-class ChartRenderer {
-    constructor(containerId) {
-        this.chart = LightweightCharts.createChart(document.getElementById(containerId), {
+      // Public Methods
+      window.ChartManager = {
+        init: function() {
+          chart = LightweightCharts.createChart(document.getElementById('chart'), {
+            // Chart configuration options
             width: 800,
             height: 400,
             layout: {
-                backgroundColor: '#ffffff',
-                textColor: '#000000',
+              backgroundColor: '#fff',
+              textColor: '#333'
             },
             grid: {
-                vertLines: {
-                    color: 'rgba(197, 203, 206, 0.5)',
-                },
-                horzLines: {
-                    color: 'rgba(197, 203, 206, 0.5)',
-                },
+              vertLines: {
+                color: 'rgba(197, 203, 206, 0.5)'
+              },
+              horzLines: {
+                color: 'rgba(197, 203, 206, 0.5)'
+              }
             },
             crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
+              mode: LightweightCharts.CrosshairMode.Normal
             },
-            rightPriceScale: {
-                borderColor: 'rgba(197, 203, 206, 0.8)',
+            priceScale: {
+              borderColor: 'rgba(197, 203, 206, 0.8)'
             },
             timeScale: {
-                borderColor: 'rgba(197, 203, 206, 0.8)',
-            },
-        });
-        this.lineSeries = this.chart.addLineSeries();
-    }
+              borderColor: 'rgba(197, 203, 206, 0.8)'
+            }
+          });
 
-    displayData(chartData) {
-        this.lineSeries.setData(chartData);
-    }
-}
+          var series = chart.addLineSeries();
+          series.setData(data);
+        },
 
-// Create an instance of StockData with your API key
-const stockData = new StockData(process.env.ALPHAVANTAGE);
+        render: function() {
+          loadData().then(newData => {
+            chart.addLineSeries({
+              color: 'rgba(255, 0, 0, 0.5)', // Add a new series with red color
+              lineWidth: 2
+            }).setData(newData);
+          });
+        }
+      };
 
-// Create an instance of ChartRenderer
-const chartRenderer = new ChartRenderer('chart-container');
+      // Static Methods
+      ChartManager.formatData = function(rawData) {
+        // Format data for the chart (e.g., convert timestamps)
+        return rawData.map(item => ({
+          time: item.time,
+          value: item.value
+        }));
+      };
 
-// Fetch and display TSLA data
-stockData.fetchData('TSLA')
-    .then(StockData.processData)
-    .then(chartData => {
-        chartRenderer.displayData(chartData);
-    })
-    .catch(error => {
-        console.error('Error fetching or processing data:', error);
-    });
+      // Google Analytics (inactive)
+      if (typeof ga!== 'undefined') {
+        ga('send', 'event', 'Chart', 'Initialized');
+      }
+
+      // Decorator
+      function logExecutionTime(method) {
+        return function() {
+          var start = performance.now();
+          var result = method.apply(this, arguments);
+          var end = performance.now();
+          console.log(`Method ${method.name} took ${end - start} milliseconds`);
+          return result;
+        };
+      }
+
+      ChartManager.render = logExecutionTime(ChartManager.render);
+
+      // localStorage/IndexedDB (inactive)
+      if (typeof localStorage!== 'undefined') {
+        // Example: Store last updated time in localStorage
+        localStorage.setItem('lastUpdated', new Date().toString());
+      }
+
+      // Initialize the chart
+      document.addEventListener('DOMContentLoaded', ChartManager.init);
+
+    })();
