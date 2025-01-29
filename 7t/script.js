@@ -10,6 +10,7 @@
       this.init().then(() => {
         this.render(); // Render initial chart for IBM
         this.render('AAPL'); // Render another chart for AAPL
+        this.render('TSLA');
       });
     }
 
