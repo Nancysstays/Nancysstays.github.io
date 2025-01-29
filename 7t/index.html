@@ -3,6 +3,8 @@
 <head>
   <title>Jinx Charts</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="style.css" />
+
   <script src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
@@ -11,120 +13,7 @@
     <h2>Jinx Charts</h2>
     <div id="chart" class="chart-container"></div>
   </div>
-
-  <script>
-    // Immediately Invoked Function Expression (IIFE) to encapsulate the code
-    (function() {
-      'use strict';
-
-      // Private Members
-      var chart;
-      var data = [
-        { time: '2023-01-01', value: 10 },
-        { time: '2023-02-01', value: 20 },
-        { time: '2023-03-01', value: 15 },
-        { time: '2023-04-01', value: 25 },
-        { time: '2023-05-01', value: 30 },
-        { time: '2023-06-01', value: 22 },
-        //... more data
-      ];
-
-      // Protected Methods
-      function loadData() {
-        // Simulate loading data from an API (replace with actual API call)
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve([
-              { time: '2023-07-01', value: 35 },
-              { time: '2023-08-01', value: 40 },
-              { time: '2023-09-01', value: 38 }
-            ]);
-          }, 1000); // Simulate 1-second delay
-        });
-      }
-
-      // Public Methods
-      window.ChartManager = {
-        init: function() {
-          chart = LightweightCharts.createChart(document.getElementById('chart'), {
-            // Chart configuration options
-            width: 800,
-            height: 400,
-            layout: {
-              backgroundColor: '#fff',
-              textColor: '#333'
-            },
-            grid: {
-              vertLines: {
-                color: 'rgba(197, 203, 206, 0.5)'
-              },
-              horzLines: {
-                color: 'rgba(197, 203, 206, 0.5)'
-              }
-            },
-            crosshair: {
-              mode: LightweightCharts.CrosshairMode.Normal
-            },
-            priceScale: {
-              borderColor: 'rgba(197, 203, 206, 0.8)'
-            },
-            timeScale: {
-              borderColor: 'rgba(197, 203, 206, 0.8)'
-            }
-          });
-
-          var series = chart.addLineSeries();
-          series.setData(data);
-        },
-
-        render: function() {
-          loadData().then(newData => {
-            chart.addLineSeries({
-              color: 'rgba(255, 0, 0, 0.5)', // Add a new series with red color
-              lineWidth: 2
-            }).setData(newData);
-          });
-        }
-      };
-
-      // Static Methods
-      ChartManager.formatData = function(rawData) {
-        // Format data for the chart (e.g., convert timestamps)
-        return rawData.map(item => ({
-          time: item.time,
-          value: item.value
-        }));
-      };
-
-      // Google Analytics (inactive)
-      if (typeof ga!== 'undefined') {
-        ga('send', 'event', 'Chart', 'Initialized');
-      }
-
-      // Decorator
-      function logExecutionTime(method) {
-        return function() {
-          var start = performance.now();
-          var result = method.apply(this, arguments);
-          var end = performance.now();
-          console.log(`Method ${method.name} took ${end - start} milliseconds`);
-          return result;
-        };
-      }
-
-      ChartManager.render = logExecutionTime(ChartManager.render);
-
-      // localStorage/IndexedDB (inactive)
-      if (typeof localStorage!== 'undefined') {
-        // Example: Store last updated time in localStorage
-        localStorage.setItem('lastUpdated', new Date().toString());
-      }
-
-      // Initialize the chart
-      document.addEventListener('DOMContentLoaded', ChartManager.init);
-
-    })();
-  </script>
-
+		<script src="script.js"></script>
 </body>
 </html>
+
