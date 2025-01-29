@@ -1,111 +1,107 @@
-    // Immediately Invoked Function Expression (IIFE) to encapsulate the code
-    (function() {
-      'use strict';
+(function() {
+  'use strict';
 
-      // Private Members
-      var chart;
-      var data = [
-        { time: '2023-01-01', value: 10 },
-        { time: '2023-02-01', value: 20 },
-        { time: '2023-03-01', value: 15 },
-        { time: '2023-04-01', value: 25 },
-        { time: '2023-05-01', value: 30 },
-        { time: '2023-06-01', value: 22 },
-        //... more data
-      ];
+  class ChartManager {
+    #chart;
+    #apiKey = 'XVYHOWRTRNPN3FJA'; // Replace with your actual API key
 
-      // Protected Methods
-      function loadData() {
-        // Simulate loading data from an API (replace with actual API call)
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve([
-              { time: '2023-07-01', value: 35 },
-              { time: '2023-08-01', value: 40 },
-              { time: '2023-09-01', value: 38 }
-            ]);
-          }, 1000); // Simulate 1-second delay
-        });
-      }
+    constructor() {
+      // Initialize any properties or call methods needed for initial setup
+      this.init().then(() => {
+        this.render(); // Render initial chart for IBM
+        this.render('AAPL'); // Render another chart for AAPL
+      });
+    }
 
-      // Public Methods
-      window.ChartManager = {
-        init: function() {
-          chart = LightweightCharts.createChart(document.getElementById('chart'), {
-            // Chart configuration options
-            width: 800,
-            height: 400,
-            layout: {
-              backgroundColor: '#fff',
-              textColor: '#333'
-            },
-            grid: {
-              vertLines: {
-                color: 'rgba(197, 203, 206, 0.5)'
-              },
-              horzLines: {
-                color: 'rgba(197, 203, 206, 0.5)'
-              }
-            },
-            crosshair: {
-              mode: LightweightCharts.CrosshairMode.Normal
-            },
-            priceScale: {
-              borderColor: 'rgba(197, 203, 206, 0.8)'
-            },
-            timeScale: {
-              borderColor: 'rgba(197, 203, 206, 0.8)'
-            }
-          });
-
-          var series = chart.addLineSeries();
-          series.setData(data);
+    async init() {
+      this.#chart = LightweightCharts.createChart(document.getElementById('chart'), {
+        // Chart configuration options
+        width: 800,
+        height: 400,
+        layout: {
+          backgroundColor: '#fff',
+          textColor: '#333'
         },
-
-        render: function() {
-          loadData().then(newData => {
-            chart.addLineSeries({
-              color: 'rgba(255, 0, 0, 0.5)', // Add a new series with red color
-              lineWidth: 2
-            }).setData(newData);
-          });
+        grid: {
+          vertLines: {
+            color: 'rgba(197, 203, 206, 0.5)'
+          },
+          horzLines: {
+            color: 'rgba(197, 203, 206, 0.5)'
+          }
+        },
+        crosshair: {
+          mode: LightweightCharts.CrosshairMode.Normal
+        },
+        priceScale: {
+          borderColor: 'rgba(197, 203, 206, 0.8)'
+        },
+        timeScale: {
+          borderColor: 'rgba(197, 203, 206, 0.8)'
         }
-      };
+      });
 
-      // Static Methods
-      ChartManager.formatData = function(rawData) {
-        // Format data for the chart (e.g., convert timestamps)
-        return rawData.map(item => ({
-          time: item.time,
-          value: item.value
-        }));
-      };
+      const data = await this.#loadData('IBM'); // Fetch initial data for IBM
+      var series = this.#chart.addLineSeries();
+      series.setData(data);
+    }
 
-      // Google Analytics (inactive)
-      if (typeof ga!== 'undefined') {
-        ga('send', 'event', 'Chart', 'Initialized');
-      }
+    @logExecutionTime
+    async render(symbol = 'MSFT') { // Default to MSFT if no symbol is provided
+      const newData = await this.#loadData(symbol);
+      this.#chart.addLineSeries({
+        color: 'rgba(255, 0, 0, 0.5)',
+        lineWidth: 2
+      }).setData(newData);
+    }
 
-      // Decorator
-      function logExecutionTime(method) {
-        return function() {
-          var start = performance.now();
-          var result = method.apply(this, arguments);
-          var end = performance.now();
-          console.log(`Method ${method.name} took ${end - start} milliseconds`);
-          return result;
-        };
-      }
+    async #loadData(symbol) {
+      const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${this.#apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
 
-      ChartManager.render = logExecutionTime(ChartManager.render);
+      // Process the data from Alpha Vantage API
+      const timeSeriesData = data['Time Series (Daily)'];
+      const formattedData = Object.entries(timeSeriesData).map(([time, values]) => ({
+        time: time,
+        value: parseFloat(values['4. close']) // Use closing price
+      }));
 
-      // localStorage/IndexedDB (inactive)
-      if (typeof localStorage!== 'undefined') {
-        // Example: Store last updated time in localStorage
-        localStorage.setItem('lastUpdated', new Date().toString());
-      }
+      return formattedData;
+    }
 
-      // Initialize the chart
-      document.addEventListener('DOMContentLoaded', ChartManager.init);
+    static formatData(rawData) {
+      return rawData.map(item => ({
+        time: item.time,
+        value: item.value
+      }));
+    }
+  }
 
-    })();
+  function logExecutionTime(target, name, descriptor) {
+    const originalMethod = descriptor.value;
+    descriptor.value = async function(...args) {
+      const start = performance.now();
+      const result = await originalMethod.apply(this, args);
+      const end = performance.now();
+      console.log(`Method ${name} took ${end - start} milliseconds`);
+      return result;
+    };
+    return descriptor;
+  }
+
+  // Example of extending the class and overriding a method
+  class AdvancedChartManager extends ChartManager {
+    async #loadData() {
+      // Implement more complex data loading logic here
+      const data = await super.#loadData();
+      return data.map(item => ({
+        time: item.time,
+        value: item.value * 2 // Example: Double the values
+      }));
+    }
+  }
+
+  new ChartManager(); // Create an instance of ChartManager
+
+})();
