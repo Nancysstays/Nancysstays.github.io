@@ -54,7 +54,7 @@ async function fetchData() {
         });
 
     } catch (error) {
-        alert(`Error fetching or parsing data: {error}`);
+        consle.log('Error fetching or parsing data:', error);
         errorDiv.style.display = 'block'; // Show error message
     } finally {
         loadingIndicator.style.display = 'none'; // Hide loading indicator
