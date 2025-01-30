@@ -1,0 +1,15 @@
+/* Basic table styling */
+#stock-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#stock-table th, #stock-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#stock-table th {
+    background-color: #f0f0f0; /* Light gray header */
+}
