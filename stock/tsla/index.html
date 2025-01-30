@@ -16,7 +16,8 @@
   </div>
 
   <script>
-    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=googl&apikey=XVYHOWRTRNPN3FJA'; // Replace with your actual API key
+    const tsla = "tsla";
+    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + tsla + '&apikey=XVYHOWRTRNPN3FJA'; // Replace with your actual API key
 
     async function fetchDataAndPlot() {
       let cachedData = localStorage.getItem('chartData');
