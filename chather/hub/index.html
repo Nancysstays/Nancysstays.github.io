@@ -141,7 +141,7 @@
 </div>
 
 <script>
-    const rssFeedUrl = 'https://www.pornhub.com/video/webmasterss'; // Placeholder RSS feed
+    const rssFeedUrl = 'https://www.w3schools.com/xml/cd_catalog.xml'; // Placeholder: Replace with your safe video feed URL
     const videoList = document.getElementById('videoList');
     const videoPlayer = document.getElementById('videoPlayer');
     const searchInput = document.getElementById('searchInput');
@@ -154,7 +154,8 @@
             .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
             .then(data => {
                 videos = [];
-                const items = data.querySelectorAll("CD");
+                // **Important: Adapt this part to your RSS feed's structure**
+                const items = data.querySelectorAll("CD"); // Assuming the structure of the sample XML
                 items.forEach(item => {
                     const title = item.querySelector("TITLE").textContent;
                     const artist = item.querySelector("ARTIST").textContent;
@@ -162,6 +163,7 @@
                     const company = item.querySelector("COMPANY").textContent;
                     const price = item.querySelector("PRICE").textContent;
                     const year = item.querySelector("YEAR").textContent;
+                    const imageURL = `https://via.placeholder.com/150?text=${encodeURIComponent(title)}`; // Placeholder image
 
                     videos.push({
                         title: title,
@@ -169,13 +171,14 @@
                         country: country,
                         company: company,
                         price: price,
-                        year: year
+                        year: year,
+                        image: imageURL,
                     });
 
                     const videoItem = document.createElement('div');
                     videoItem.className = 'video-item';
                     videoItem.innerHTML = `
-                        <img src="https://via.placeholder.com/150?text=${encodeURIComponent(title)}" alt="${title}">
+                        <img src="${imageURL}" alt="${title}">
                         <p class="video-item-text">${title}</p>
                         <p class="video-item-text">Artist: ${artist}</p>
                         <p class="video-item-text">Country: ${country}</p>
@@ -185,7 +188,7 @@
                     `;
                     videoItem.addEventListener('click', () => {
                         // Placeholder action: Update video player
-                        videoPlayer.src = `https://via.placeholder.com/640x360?text=${encodeURIComponent(title)}`;
+                        videoPlayer.src = `https://via.placeholder.com/640x360?text=${encodeURIComponent(title)}`; // Placeholder video URL
                     });
                     videoList.appendChild(videoItem);
                 });
