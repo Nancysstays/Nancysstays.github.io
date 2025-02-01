@@ -1,0 +1,79 @@
+body {
+    font-family: sans-serif;
+}
+
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.scrollable-list {
+    height: 550px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-list li {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.user-list img {
+    width: 150px;
+    height: 113px;
+    margin-right: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.pagination button {
+    margin: 0 5px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-details {
+    flex-grow: 1;
+}
+
+/* Sticky behavior for lists */
+.user-list, .pagination {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure lists have a background to cover iframe content */
+  z-index: 10; /* Ensure lists are above iframe */
+}
+.controls {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure lists have a background to cover iframe content */
+  z-index: 10; /* Ensure lists are above iframe */
+}
+
+/* Style for the filter controls (hidden by default) */
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters input, .filters select {
+    margin-bottom: 10px;
+}
