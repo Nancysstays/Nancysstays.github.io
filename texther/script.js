@@ -2,7 +2,6 @@ const textInput = document.getElementById('textInput');
 const saveButton = document.getElementById('saveButton');
 const storedTextsList = document.getElementById('storedTexts');
 
-// Load stored texts on page load
 loadStoredTexts();
 
 textInput.addEventListener('input', () => {
@@ -65,31 +64,21 @@ function loadStoredTexts() {
     // Add a "Copy" link for each stored text
     const copyLink = document.createElement('a');
     copyLink.href = '#';
-    copyLink.textContent = 'Copy';
+    copyLink.textContent = 'Copy ';
     copyLink.addEventListener('click', (event) => {
       event.preventDefault();
       copyToClipboard(text);
     });
-
-    // Add a "Delete" link for each stored text
-    const hr = document.createElement('b');
-    deleteLink.innerHTML = "</ hr></ hr>";
-    deleteLink.addEventListener('click', () => {
-      deleteText(index);
-    });
-    listItem.appendChild(hr);
     listItem.appendChild(copyLink);
-    listItem.appendChild(hr);
 
     // Add a "Delete" link for each stored text
     const deleteLink = document.createElement('a');
     deleteLink.href = '#';
-    deleteLink.textContent = 'Delete';
+    deleteLink.textContent = ' Delete';
     deleteLink.addEventListener('click', () => {
       deleteText(index);
     });
     listItem.appendChild(deleteLink);
-    listItem.appendChild(hr);
 
     storedTextsList.appendChild(listItem);
   });
@@ -105,10 +94,10 @@ function deleteText(index) {
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text)
     .then(() => {
-      console.alert('Text copied to clipboard!');
+     // alert('Text copied to clipboard!');
     })
     .catch(err => {
       console.error('Failed to copy text: ', err);
-      console.error('Failed to copy text. Check console for errors.');
+      // alert('Failed to copy text. Check console for errors.');
     });
 }
