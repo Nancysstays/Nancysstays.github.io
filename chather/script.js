@@ -1,61 +1,82 @@
-class API {
-    constructor() {
-        this.baseURL = "https://chaturbate.com/api/public/affiliates/onlinerooms/";
-        this.wm = "9cg6A";
-        this.client_ip = "request_ip";
-        this.limit = 50; // Increased limit for pagination
-        this.offset = 0;
-        this.gender = "f"; // Default to female
-        this.format = "json";
-        this.exhibitionist = "";
-        this.region = "";
-        this.tag = "";
-        this.hd = "";
-        this.page = 1;
-        this.results = [];
-        this.previousUsers = this.loadPreviousUsers(); // Load from localStorage
-        this.displayPreviousUsers(); // Display previous users on load
-        this.fetchData();
-        this.setupEventListeners();
-        this.currentPage = 1;
-        this.usersPerPage = 50;
-        this.maxPages = 10;
-        this.currentData = [];
+// script.js
+if (window.Worker) {
+    const myWorker = new Worker("worker.js");
+    const onlineUsersDiv = document.getElementById("onlineUsers");
+    const previousUsersDiv = document.getElementById("previousUsers");
+    const mainIframe = document.getElementById("mainIframe");
+    let previousUsers = loadPreviousUsers(); // Load from localStorage
+
+    displayPreviousUsers(); // Display on load
+
+    myWorker.postMessage("fetchData");
+
+    myWorker.onmessage = function (event) {
+        if (event.data.error) {
+            console.error("Error from worker:", event.data.error);
+            return;
+        }
+
+        onlineUsersDiv.innerHTML = "";
+
+        event.data.results.forEach(user => {
+            const userElement = document.createElement("div");
+            userElement.className = "user-info";
+            userElement.innerHTML = `
+                <img src="${user.image_url}" alt="${user.username}" data-iframe-url="${user.iframe_embed}">
+                <div class="user-details">
+                    <p>Username: ${user.username}</p>
+                    <p>Age: ${user.age}</p>
+                    <p>Location: ${user.location}</p>
+                </div>
+            `;
+
+            userElement.addEventListener("click", function () {
+                const iframeUrl = userElement.querySelector("img").dataset.iframeUrl;
+                mainIframe.src = iframeUrl;
+
+                // Add to previousUsers and update localStorage
+                addToPreviousUsers(user);
+                displayPreviousUsers();
+            });
+
+            onlineUsersDiv.appendChild(userElement);
+        });
+    };
+
+    function addToPreviousUsers(user) {
+        // Check if user already exists
+        if (!previousUsers.some(u => u.username === user.username)) {
+            previousUsers.push(user);
+            localStorage.setItem("previousUsers", JSON.stringify(previousUsers));
+        }
     }
 
-    async fetchData() {
-        const queryParams = new URLSearchParams({
-            wm: this.wm,
-            client_ip: this.client_ip,
-            limit: this.limit,
-            offset: this.offset,
-            gender: this.gender,
-            format: this.format,
-            exhibitionist: this.exhibitionist,
-            region: this.region,
-            tag: this.tag,
-            hd: this.hd,
+    function displayPreviousUsers() {
+        previousUsersDiv.innerHTML = "";
+        previousUsers.forEach(user => {
+            const userElement = document.createElement("div");
+            userElement.className = "user-info";
+            userElement.innerHTML = `
+                <img src="${user.image_url}" alt="${user.username}" data-iframe-url="${user.iframe_embed}">
+                <div class="user-details">
+                    <p>Username: ${user.username}</p>
+                </div>
+            `;
+
+            userElement.addEventListener("click", function () {
+                const iframeUrl = userElement.querySelector("img").dataset.iframeUrl;
+                mainIframe.src = iframeUrl;
+            });
+
+            previousUsersDiv.appendChild(userElement);
         });
+    }
 
-        const url = `${this.baseURL}?${queryParams}`;
+    function loadPreviousUsers() {
+        const storedUsers = localStorage.getItem("previousUsers");
+        return storedUsers ? JSON.parse(storedUsers) : [];
+    }
 
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data && data.results && Array.isArray(data.results)) {
-                // Filter out duplicate usernames
-                const newResults = data.results.filter(newUser => 
-                    !this.results.some(existingUser => existingUser.username === newUser.username)
-                );
-
-                this.results.push(...newResults);
-                this.currentData = this.results; // Update current data for display
-                // this.displayOnlineUsers(this.results);
-                this.displayOnlineUsers();
-                this.createPaginationControls();
-            } else {
-                console.error("Unexpected API response format:", data);
-            }
-        } catch (error) {
-            console.error
+} else {
+    console.log("Your browser doesn't support web workers.");
+}
