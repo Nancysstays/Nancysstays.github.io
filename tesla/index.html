@@ -53,16 +53,16 @@ h2 span {
   0% {
     transform: translateX(-110%); /* Start a bit more offscreen to the left */
   }
-  30% {
-    transform: translateX(90%); /* Move to 90% of the way across in the first 30% of the duration */
+  25% {
+    transform: translateX(75%); /* Move to 90% of the way across in the first 30% of the duration */
     animation-timing-function: ease-in; /* Ease-in for initial acceleration */
   }
   65% {
-    transform: translateX(10%); /* Move back to 10% at 65% of the duration (35% of the duration to cover 80% of the distance) */
+    transform: translateX(25%); /* Move back to 10% at 65% of the duration (35% of the duration to cover 80% of the distance) */
     animation-timing-function: linear; /* Linear for consistent speed */
   }
   100% {
-    transform: translateX(0%); /* Settle at the final position (35% of the duration to cover 10% of the distance, hence slower) */
+    transform: translateX(15%); /* Settle at the final position (35% of the duration to cover 10% of the distance, hence slower) */
     animation-timing-function: ease-out; /* Ease-out for smooth deceleration */
   }
 }
