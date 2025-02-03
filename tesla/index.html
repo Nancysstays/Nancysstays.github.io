@@ -38,6 +38,36 @@ body {
   font-size: 14px;
 }
 
+h2 {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative; /* Needed for the translateX to be relative to the h2 itself */
+}
+
+h2 span {
+  display: inline-block;
+  animation: fancy-slide 20s linear forwards; /* Increased duration for the slower parts */
+}
+
+@keyframes fancy-slide {
+  0% {
+    transform: translateX(-110%); /* Start a bit more offscreen to the left */
+  }
+  30% {
+    transform: translateX(90%); /* Move to 90% of the way across in the first 30% of the duration */
+    animation-timing-function: ease-in; /* Ease-in for initial acceleration */
+  }
+  65% {
+    transform: translateX(10%); /* Move back to 10% at 65% of the duration (35% of the duration to cover 80% of the distance) */
+    animation-timing-function: linear; /* Linear for consistent speed */
+  }
+  100% {
+    transform: translateX(0%); /* Settle at the final position (35% of the duration to cover 10% of the distance, hence slower) */
+    animation-timing-function: ease-out; /* Ease-out for smooth deceleration */
+  }
+}
+
+/* Your existing media queries */
 @media (max-width: 900px) {
   .tesla-image {
     flex: 1 0 50%;
@@ -50,30 +80,7 @@ body {
   }
 }
 
-h2 {
-  overflow: hidden;
-  white-space: nowrap;
-}
 
-h2 span {
-  display: inline-block;
-  animation: fancy-slide 9s ease-in-out forwards;
-}
-
-@keyframes fancy-slide {
-  0% {
-    transform: translateX(-100%);
-  }
-  20% {
-    transform: translateX(calc(100% + 350px)); 
-  }
-  80% {
-    transform: translateX(calc(50%));
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
 </style>
 </head>
 <body>
