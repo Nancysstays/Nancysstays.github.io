@@ -1,0 +1,42 @@
+//@version=5
+indicator("Black-Scholes Option Pricing", overlay=false)
+
+// Input parameters
+var float S = input.float(100, title="Stock Price")
+var float K = input.float(100, title="Strike Price")
+var float T = input.float(1, title="Time to Maturity (Years)")
+var float r = input.float(0.05, title="Risk-Free Rate")
+var float sigma = input.float(0.2, title="Volatility")
+
+// Black-Scholes formula
+d1 = (math.log(S / K) + (r + (sigma * sigma) / 2) * T) / (sigma * math.sqrt(T))
+d2 = d1 - sigma * math.sqrt(T)
+
+N = (x) => 0.5 * (1 + math.erf(x / math.sqrt(2)))
+
+callPrice = S * N(d1) - K * math.exp(-r * T) * N(d2)
+putPrice = K * math.exp(-r * T) * N(-d2) - S * N(-d1)
+
+// Plot the results
+plot(callPrice, title="Call Option Price", color=color.green)
+plot(putPrice, title="Put Option Price", color=color.red)
+// Predict future price
+var float futurePrice = input.float(110, title="Future Stock Price")
+
+// Calculate future option prices
+future_d1 = (math.log(futurePrice / K) + (r + (sigma * sigma) / 2) * T) / (sigma * math.sqrt(T))
+future_d2 = future_d1 - sigma * math.sqrt(T)
+
+future_callPrice = futurePrice * N(future_d1) - K * math.exp(-r * T) * N(future_d2)
+future_putPrice = K * math.exp(-r * T) * N(-future_d2) - futurePrice * N(-future_d1)
+
+// Plot the future option prices
+plot(future_callPrice, title="Future Call Option Price", color=color.blue)
+plot(future_putPrice, title="Future Put Option Price", color=color.orange)
+// Calculate spot and future spot prices
+spotPrice = S * math.exp(r * T)
+futureSpotPrice = futurePrice * math.exp(r * T)
+
+// Plot the spot and future spot prices
+plot(spotPrice, title="Spot Price", color=color.purple)
+plot(futureSpotPrice, title="Future Spot Price", color=color.yellow)

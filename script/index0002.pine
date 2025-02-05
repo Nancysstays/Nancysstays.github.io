@@ -1,0 +1,166 @@
+// @version=6
+indicator("Jinx", overlay=true)
+
+type bar
+    float o
+    float h
+    float l
+    float c
+    float v
+    float t
+
+// Position tracking
+var float initial_capital = input.float(100000000, title="Initial Capital")
+var float shares = input.float(9.6, "Shares", step=0.1)
+
+// Input for multiple securities
+var sym1 = input.symbol("BTCUSD", "Symbol 1")
+var sym2 = input.symbol("ETHUSD", "Symbol 2")
+var sym3 = input.symbol("SOLUSD", "Symbol 3")
+var sym4 = input.symbol("BNBUSD", "Symbol 4")
+var sym5 = input.symbol("XRPUSD", "Symbol 5")
+var sym6 = input.symbol("ADAUSD", "Symbol 6")
+var sym7 = input.symbol("AVAXUSD", "Symbol 7")
+var sym8 = input.symbol("DOGEUSD", "Symbol 8")
+var sym9 = input.symbol("LINKUSD", "Symbol 9")
+var sym10 = input.symbol("DOTUSD", "Symbol 10")
+
+// i
+// Write an entry strategy function related to covariance, linear regression, normal distribution, bayesian logic, stochastics, multiple securities, eigen, cosh, and tanh
+
+
+JinxEntry(d) =>
+    d > d[1]
+
+// i
+JinxExit(d, p) =>
+    d < d[1] and p > 0
+
+// Function to track each security's position and capital
+trackSecurity(symbol, shares) =>
+    // Position tracking
+    var float position_size = 0.0
+    var float entry_price = 0.0
+    var float security_capital = initial_capital / 10 // Allocate initial capital evenly across securities
+
+    c = request.security(symbol, timeframe.period, close)
+
+    // Entry condition
+    if JinxEntry(c)
+        // Calculate trade cost
+        trade_cost = c * shares
+
+        // Check if sufficient capital
+        if trade_cost <= security_capital
+            // Execute trade (mimic entry)
+            position_size := shares
+            entry_price := c
+            security_capital := security_capital - trade_cost
+            log.info(symbol + ": Entered Long Position. Shares: " + str.tostring(shares) + ", Entry Price: " + str.tostring(entry_price) + ", Remaining Capital: " + str.tostring(security_capital))
+        else
+            log.warning(symbol + ": Insufficient Capital for Entry. Required: " + str.tostring(trade_cost) + ", Available: " + str.tostring(security_capital))
+
+    // Exit condition
+    if JinxExit(c, position_size)
+        // Calculate trade proceeds
+        trade_proceeds = c * position_size
+
+        // Execute trade (mimic exit)
+        security_capital := security_capital + trade_proceeds
+        position_size := 0
+        entry_price := 0.0
+        log.info(symbol + ": Exited Position. Proceeds: " + str.tostring(trade_proceeds) + ", New Capital: " + str.tostring(security_capital))
+
+    // Error Handling - Check for unexpected position state
+    if position_size > 0 and entry_price == 0.0
+        log.error(symbol + ": Error: Position active without entry price. Resetting position.")
+        position_size := 0
+
+    [security_capital, position_size, entry_price]
+
+log.info("Jinx")
+
+// Track each security
+[capital1, position_size1, entry_price1] = trackSecurity(sym1, shares)
+[capital2, position_size2, entry_price2] = trackSecurity(sym2, shares)
+[capital3, position_size3, entry_price3] = trackSecurity(sym3, shares)
+[capital4, position_size4, entry_price4] = trackSecurity(sym4, shares)
+[capital5, position_size5, entry_price5] = trackSecurity(sym5, shares)
+[capital6, position_size6, entry_price6] = trackSecurity(sym6, shares)
+[capital7, position_size7, entry_price7] = trackSecurity(sym7, shares)
+[capital8, position_size8, entry_price8] = trackSecurity(sym8, shares)
+[capital9, position_size9, entry_price9] = trackSecurity(sym9, shares)
+[capital10, position_size10, entry_price10] = trackSecurity(sym10, shares)
+
+// Calculate total capital
+total_capital = capital1 + capital2 + capital3 + capital4 + capital5 + capital6 + capital7 + capital8 + capital9 + capital10
+
+cl(c) => c > c[1] ? color.green : color.red
+
+// Plot current capital
+plot(initial_capital, "Initial Capital", color=total_capital > initial_capital ? color.green : color.red, display = display.data_window)
+plot(total_capital, "Total Equity", color=total_capital > initial_capital ? color.green : color.red, display = display.data_window)
+// plot(( total_capital - initial_capital ) / initial_capital, "Net Income", format = format.percent, color=total_capital > initial_capital ? color.green : color.red, display = display.data_window)
+
+// You can uncomment below lines to see detailed plots for each security if needed
+plot(capital1, "1 Capital", color=cl(capital1), display = display.data_window)
+plot(position_size1, "1 Position Size", color=cl(position_size1), style=plot.style_linebr, display = display.data_window)
+plot(entry_price1, "1 Entry Price", color=cl(entry_price1), style=plot.style_circles, display = display.data_window)
+
+plot(capital2, "2 Capital", color=cl(capital2), display = display.data_window)
+plot(position_size2, "2 Position Size", color=cl(position_size2), style=plot.style_linebr, display = display.data_window)
+plot(entry_price2, "2 Entry Price", color=cl(entry_price2), style=plot.style_circles, display = display.data_window)
+
+plot(capital3, "3 Capital", color=cl(capital3), display = display.data_window)
+plot(position_size3, "3 Position Size", color=cl(position_size3), style=plot.style_linebr, display = display.data_window)
+plot(entry_price3, "3 Entry Price", color=cl(entry_price3), style=plot.style_circles, display = display.data_window)
+
+plot(capital4, "4 Capital", color=cl(capital4), display = display.data_window)
+plot(position_size4, "4 Position Size", color=cl(position_size4), style=plot.style_linebr, display = display.data_window)
+plot(entry_price4, "4 Entry Price", color=cl(entry_price4), style=plot.style_circles, display = display.data_window)
+
+plot(capital5, "5 Capital", color=cl(capital5), display = display.data_window)
+plot(position_size5, "5 Position Size", color=cl(position_size5), style=plot.style_linebr, display = display.data_window)
+plot(entry_price5, "5 Entry Price", color=cl(entry_price5), style=plot.style_circles, display = display.data_window)
+
+plot(capital6, "6 Capital", color=cl(capital6), display = display.data_window)
+plot(position_size6, "6 Position Size", color=cl(position_size6), style=plot.style_linebr, display = display.data_window)
+plot(entry_price6, "6 Entry Price", color=cl(entry_price6), style=plot.style_circles, display = display.data_window)
+
+plot(capital7, "7 Capital", color=cl(capital7), display = display.data_window)
+plot(position_size7, "7 Position Size", color=cl(position_size7), style=plot.style_linebr, display = display.data_window)
+plot(entry_price7, "7 Entry Price", color=cl(entry_price7), style=plot.style_circles, display = display.data_window)
+
+plot(capital8, "8 Capital", color=cl(capital8), display = display.data_window)
+plot(position_size8, "8 Position Size", color=cl(position_size8), style=plot.style_linebr, display = display.data_window)
+plot(entry_price8, "8 Entry Price", color=cl(entry_price8), style=plot.style_circles, display = display.data_window)
+
+plot(capital9, "9 Capital", color=cl(capital9), display = display.data_window)
+plot(position_size9, "9 Position Size", color=cl(position_size9), style=plot.style_linebr, display = display.data_window)
+plot(entry_price9, "9 Entry Price", color=cl(entry_price9), style=plot.style_circles, display = display.data_window)
+
+plot(capital10, "10 Capital", color=cl(capital10), display = display.data_window)
+plot(position_size10, "10 Position Size", color=cl(position_size10), style=plot.style_linebr, display = display.data_window)
+plot(entry_price10, "10 Entry Price", color=cl(entry_price10), style=plot.style_circles, display = display.data_window)
+
+// Function to calculate the time remaining in the current bar in milliseconds
+getTimeRemaining() =>
+    time_close - timenow
+
+// Get the time remaining in milliseconds
+timeRemaining = getTimeRemaining()
+
+// Convert milliseconds to seconds, minutes, and hours for display
+secondsRemaining = timeRemaining / 1000
+minutesRemaining = secondsRemaining / 60
+hoursRemaining = minutesRemaining / 60
+
+// Format the output string for display
+displayString = 
+  "Time Remaining: " + 
+  (hoursRemaining >= 1 ? str.tostring(math.floor(hoursRemaining)) + "h " : "") +
+  (minutesRemaining >= 1 ? str.tostring(math.floor(minutesRemaining % 60)) + "m " : "") +
+  str.tostring(math.floor(secondsRemaining % 60)) + "s"
+
+// Log the time remaining (uncomment the line below if you want to see it in the console)
+log.info(displayString)

@@ -1,0 +1,186 @@
+//@version=5
+indicator("Advanced Entry Strategy", overlay=true)
+
+// Position tracking
+var float initial_capital = input.float(100000000, title="Initial Capital")
+var float shares = input.float(9.6, "Shares", step=0.1)
+
+// Input for multiple securities
+var sym1 = input.symbol("BTCUSD", "Symbol 1")
+var sym2 = input.symbol("ETHUSD", "Symbol 2")
+var sym3 = input.symbol("SOLUSD", "Symbol 3")
+var sym4 = input.symbol("BNBUSD", "Symbol 4")
+var sym5 = input.symbol("XRPUSD", "Symbol 5")
+var sym6 = input.symbol("ADAUSD", "Symbol 6")
+var sym7 = input.symbol("AVAXUSD", "Symbol 7")
+var sym8 = input.symbol("DOGEUSD", "Symbol 8")
+var sym9 = input.symbol("LINKUSD", "Symbol 9")
+var sym10 = input.symbol("DOTUSD", "Symbol 10")
+
+// Function to calculate covariance
+covariance(x, y) =>
+    avg_x = ta.sma(x, 10)
+    avg_y = ta.sma(y, 10)
+    sum = 0.0
+    for i = 0 to 9
+        sum := sum + (x[i] - avg_x) * (y[i] - avg_y)
+    sum / 10
+
+// Function to calculate linear regression
+linear_regression(x, length) =>
+    slope = ta.linreg(x, length, 0)
+    intercept = ta.linreg(x, length, 1)
+    slope * x + intercept
+
+// Function to calculate normal distribution
+normal_distribution(x, mean, stddev) =>
+    exp(-0.5 * pow((x - mean) / stddev, 2)) / (stddev * sqrt(2 * math.pi))
+
+// Function to calculate Bayesian logic
+bayesian_logic(prior, likelihood, evidence) =>
+    (likelihood * prior) / evidence
+
+// Function to calculate stochastics
+stochastics(x, length) =>
+    (x - ta.lowest(x, length)) / (ta.highest(x, length) - ta.lowest(x, length))
+
+// Function to calculate eigenvalues
+eigen(x) =>
+    // Placeholder for eigenvalue calculation
+    matrix = matrix.new(10, 10, 0.0)
+    for i = 0 to 9
+        for j = 0 to 9
+            matrix[i][j] := x[i] * x[j]
+    eigenvalues = matrix.eigenvalues(matrix)
+    x
+
+// Function to calculate hyperbolic cosine
+cosh(x) =>
+    (math.exp(x) + math.exp(-x)) / 2
+
+// Function to calculate hyperbolic tangent
+tanh(x) =>
+    (math.exp(x) - math.exp(-x)) / (math.exp(x) + math.exp(-x))
+
+// Advanced entry strategy function
+AdvancedEntry(d) =>
+    cov = covariance(d, d[1])
+    lin_reg = linear_regression(d, 10)
+    norm_dist = normal_distribution(d, ta.sma(d, 10), ta.stdev(d, 10))
+    bayes = bayesian_logic(0.5, 0.7, 0.9)
+    stoch = stochastics(d, 14)
+    eig = eigen(d)
+    cosh_val = cosh(d)
+    tanh_val = tanh(d)
+    cov > 0 and lin_reg > d and norm_dist > 0.5 and bayes > 0.5 and stoch > 0.8 and eig > 0 and cosh_val > 1 and tanh_val > 0.5
+
+// Function to track each security's position and capital
+trackSecurity(symbol, shares) =>
+    // Position tracking
+    var float position_size = 0.0
+    var float entry_price = 0.0
+    var float security_capital = initial_capital / 10 // Allocate initial capital evenly across securities
+
+    c = request.security(symbol, timeframe.period, close)
+
+    // Entry condition
+    if JinxEntry(c)
+        // Calculate trade cost
+        trade_cost = c * shares
+
+        // Check if sufficient capital
+        if trade_cost <= security_capital
+            // Execute trade (mimic entry)
+            position_size := shares
+            entry_price := c
+            security_capital := security_capital - trade_cost
+            log.info(symbol + ": Entered Long Position. Shares: " + str.tostring(shares) + ", Entry Price: " + str.tostring(entry_price) + ", Remaining Capital: " + str.tostring(security_capital))
+        else
+            log.warning(symbol + ": Insufficient Capital for Entry. Required: " + str.tostring(trade_cost) + ", Available: " + str.tostring(security_capital))
+
+    // Exit condition
+    if JinxExit(c, position_size)
+        // Calculate trade proceeds
+        trade_proceeds = c * position_size
+
+        // Execute trade (mimic exit)
+        security_capital := security_capital + trade_proceeds
+        position_size := 0
+        entry_price := 0.0
+        log.info(symbol + ": Exited Position. Proceeds: " + str.tostring(trade_proceeds) + ", New Capital: " + str.tostring(security_capital))
+
+    // Error Handling - Check for unexpected position state
+    if position_size > 0 and entry_price == 0.0
+        log.error(symbol + ": Error: Position active without entry price. Resetting position.")
+        position_size := 0
+
+    [security_capital, position_size, entry_price]
+
+log.info("Jinx")
+
+// Track each security
+[capital1, position_size1, entry_price1] = trackSecurity(sym1, shares)
+[capital2, position_size2, entry_price2] = trackSecurity(sym2, shares)
+[capital3, position_size3, entry_price3] = trackSecurity(sym3, shares)
+[capital4, position_size4, entry_price4] = trackSecurity(sym4, shares)
+[capital5, position_size5, entry_price5] = trackSecurity(sym5, shares)
+[capital6, position_size6, entry_price6] = trackSecurity(sym6, shares)
+[capital7, position_size7, entry_price7] = trackSecurity(sym7, shares)
+[capital8, position_size8, entry_price8] = trackSecurity(sym8, shares)
+[capital9, position_size9, entry_price9] = trackSecurity(sym9, shares)
+[capital10, position_size10, entry_price10] = trackSecurity(sym10, shares)
+
+// Calculate total capital
+total_capital = capital1 + capital2 + capital3 + capital4 + capital5 + capital6 + capital7 + capital8 + capital9 + capital10
+
+cl(c) => c > c[1] ? color.green : color.red
+
+// Plot current capital
+plot(initial_capital, "Initial Capital", color=total_capital > initial_capital ? color.green : color.red, display = display.data_window)
+plot(total_capital, "Total Equity", color=total_capital > initial_capital ? color.green : color.red, display = display.data_window)
+// plot(( total_capital - initial_capital ) / initial_capital, "Net Income", format = format.percent, color=total_capital > initial_capital ? color.green : color.red, display = display.data_window)
+
+// You can uncomment below lines to see detailed plots for each security if needed
+plot(capital1, "1 Capital", color=cl(capital1), display = display.data_window)
+plot(position_size1, "1 Position Size", color=cl(position_size1), style=plot.style_linebr, display = display.data_window)
+plot(entry_price1, "1 Entry Price", color=cl(entry_price1), style=plot.style_circles, display = display.data_window)
+
+plot(capital2, "2 Capital", color=cl(capital2), display = display.data_window)
+plot(position_size2, "2 Position Size", color=cl(position_size2), style=plot.style_linebr, display = display.data_window)
+plot(entry_price2, "2 Entry Price", color=cl(entry_price2), style=plot.style_circles, display = display.data_window)
+
+plot(capital3, "3 Capital", color=cl(capital3), display = display.data_window)
+plot(position_size3, "3 Position Size", color=cl(position_size3), style=plot.style_linebr, display = display.data_window)
+plot(entry_price3, "3 Entry Price", color=cl(entry_price3), style=plot.style_circles, display = display.data_window)
+
+plot(capital4, "4 Capital", color=cl(capital4), display = display.data_window)
+plot(position_size4, "4 Position Size", color=cl(position_size4), style=plot.style_linebr, display = display.data_window)
+plot(entry_price4, "4 Entry Price", color=cl(entry_price4), style=plot.style_circles, display = display.data_window)
+
+plot(capital5, "5 Capital", color=cl(capital5), display = display.data_window)
+plot(position_size5, "5 Position Size", color=cl(position_size5), style=plot.style_linebr, display = display.data_window)
+plot(entry_price5, "5 Entry Price", color=cl(entry_price5), style=plot.style_circles, display = display.data_window)
+
+plot(capital6, "6 Capital", color=cl(capital6), display = display.data_window)
+plot(position_size6, "6 Position Size", color=cl(position_size6), style=plot.style_linebr, display = display.data_window)
+plot(entry_price6, "6 Entry Price", color=cl(entry_price6), style=plot.style_circles, display = display.data_window)
+
+plot(capital7, "7 Capital", color=cl(capital7), display = display.data_window)
+plot(position_size7, "7 Position Size", color=cl(position_size7), style=plot.style_linebr, display = display.data_window)
+plot(entry_price7, "7 Entry Price", color=cl(entry_price7), style=plot.style_circles, display = display.data_window)
+
+plot(capital8, "8 Capital", color=cl(capital8), display = display.data_window)
+plot(position_size8, "8 Position Size", color=cl(position_size8), style=plot.style_linebr, display = display.data_window)
+plot(entry_price8, "8 Entry Price", color=cl(entry_price8), style=plot.style_circles, display = display.data_window)
+
+plot(capital9, "9 Capital", color=cl(capital9), display = display.data_window)
+plot(position_size9, "9 Position Size", color=cl(position_size9), style=plot.style_linebr, display = display.data_window)
+plot(entry_price9, "9 Entry Price", color=cl(entry_price9), style=plot.style_circles, display = display.data_window)
+
+plot(capital10, "10 Capital", color=cl(capital10), display = display.data_window)
+plot(position_size10, "10 Position Size", color=cl(position_size10), style=plot.style_linebr, display = display.data_window)
+plot(entry_price10, "10 Entry Price", color=cl(entry_price10), style=plot.style_circles, display = display.data_window)
+
+// Example usage of the AdvancedEntry function
+if AdvancedEntry(close)
+    label.new(bar_index, high, "Entry Signal", color=color.green, style=label.style_label_down)

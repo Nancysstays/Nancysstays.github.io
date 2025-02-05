@@ -1,0 +1,12 @@
+function! SourceCurrentFile()
+  if expand('%:t') == 'bashrc' || expand('%:t') == '.bashrc' || expand('%:t') == 'vimrc' || expand('%:t') == '.vimrc'
+    if &filetype ==# 'sh'
+      execute 'source ' . shellescape(expand('%:p'))
+    elseif &filetype ==# 'vim'
+      source %
+    endif
+  else
+    echoerr "This function can only be used to source .bashrc, bashrc, .vimrc, or vimrc files."
+  endif
+endfunction
+
