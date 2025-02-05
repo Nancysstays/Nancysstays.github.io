@@ -1,5 +1,5 @@
 let security = "googl";
-const apiKey = process.env[ALPHAVANTAGE];
+const apiKey = "XVYHOWRTRNPN3FJA";
 
 function changeSecurity(newSecurity) {
   security = newSecurity.toLowerCase();
