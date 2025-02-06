@@ -1,10 +1,11 @@
 const tsla = "tsla";
-const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + tsla + '&apikey=XVYHOWRTRNPN3FJA'; // Replace with your actual API key
+const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + tsla + '&apikey=XVYHOWRTRNPN3FJA';
+const intradayUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + tsla + '&interval=1min&outputsize=full&apikey=XVYHOWRTRNPN3FJA';
 
 async function fetchDataAndPlot() {
   try {
     console.log('Fetching data from API');
-    const response = await fetch(apiUrl);
+    const response = await fetch(intradayUrl);
     const data = await response.json();
 
     // Check if the API returned an error message
