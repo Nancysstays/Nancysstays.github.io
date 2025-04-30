@@ -1,64 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Options Trading Visualizer</title>
+  <title>Advanced Options Trading Visualizer</title>
+  <!-- Include Plotly for charting -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Include jQuery for AJAX and DOM manipulation -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include W3.CSS for styling -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<body>
-  <h1>Options Trading Visualizer</h1>
+<body class="w3-container">
+  <h1 class="w3-center">Advanced Options Trading Visualizer</h1>
 
-  <h2>Option Parameters</h2>
-  <label for="option-strategy">Option Strategy:</label>
-  <select id="option-strategy">
-    <option value="call">Long Call</option>
-    <option value="put">Long Put</option>
-    <option value="covered_call">Covered Call</option>
-    <option value="protective_put">Protective Put</option>
-    <option value="long_straddle">Long Straddle</option>
-    <option value="long_strangle">Long Strangle</option>
-    <option value="bull_call_spread">Bull Call Spread</option>
-    <option value="bear_put_spread">Bear Put Spread</option>
-    <option value="long_calendar_spread">Long Calendar Spread</option>
+  <div class="w3-card w3-padding">
+    <h2>Option Parameters</h2>
+    <label for="option-strategy">Option Strategy:</label>
+    <select id="option-strategy" class="w3-select">
+      <option value="call">Long Call</option>
+      <option value="put">Long Put</option>
+      <option value="covered_call">Covered Call</option>
+      <option value="protective_put">Protective Put</option>
+      <option value="long_straddle">Long Straddle</option>
+      <option value="long_strangle">Long Strangle</option>
+      <option value="bull_call_spread">Bull Call Spread</option>
+      <option value="bear_put_spread">Bear Put Spread</option>
+      <option value="long_calendar_spread">Long Calendar Spread</option>
     </select><br><br>
 
-  <label for="stock-price">Stock Price:</label>
-  <input type="number" id="stock-price" value="100"><br><br>
+    <label for="stock-symbol">Stock Symbol:</label>
+    <input type="text" id="stock-symbol" class="w3-input" placeholder="AAPL"><br>
 
-  <label for="strike-price">Strike Price (Primary):</label>
-  <input type="number" id="strike-price" value="100"><br><br>
+    <button id="fetch-stock" class="w3-button w3-blue">Fetch Stock Price</button><br><br>
 
-  <label for="strike-price2">Strike Price (Secondary - for spreads):</label>
-  <input type="number" id="strike-price2" value="110"><br><br>
+    <label for="stock-price">Stock Price:</label>
+    <input type="number" id="stock-price" class="w3-input" value="100"><br>
 
-  <label for="volatility">Volatility (%):</label>
-  <input type="number" id="volatility" value="30"><br><br>
+    <label for="strike-price">Strike Price (Primary):</label>
+    <input type="number" id="strike-price" class="w3-input" value="100"><br>
 
-  <label for="time-to-expiry">Time to Expiry (days) - Primary:</label>
-  <input type="number" id="time-to-expiry" value="30"><br><br>
+    <label for="strike-price2">Strike Price (Secondary - for spreads):</label>
+    <input type="number" id="strike-price2" class="w3-input" value="110"><br>
 
-  <label for="time-to-expiry2">Time to Expiry (days) - Secondary:</label>
-  <input type="number" id="time-to-expiry2" value="60"><br><br>
+    <label for="volatility">Volatility (%):</label>
+    <input type="number" id="volatility" class="w3-input" value="30"><br>
 
-  <div id="chart"></div>
+    <label for="time-to-expiry">Time to Expiry (days) - Primary:</label>
+    <input type="number" id="time-to-expiry" class="w3-input" value="30"><br>
+
+    <label for="time-to-expiry2">Time to Expiry (days) - Secondary:</label>
+    <input type="number" id="time-to-expiry2" class="w3-input" value="60"><br>
+  </div>
+
+  <div id="chart" class="w3-margin"></div>
 
   <script>
-    // Option Pricing Model (Black-Scholes-Merton)
-    function calculateOptionPrice(optionType, stockPrice, strikePrice, volatility, timeToExpiry, riskFreeRate = 0.05) {
-      timeToExpiry /= 365; // Convert days to years
-      const d1 = (Math.log(stockPrice / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
-      const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
-      const callPrice = stockPrice * normCDF(d1) - strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(d2);
-      const putPrice = strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(-d2) - stockPrice * normCDF(-d1);
-      return optionType === 'call' ? callPrice : putPrice;
+    // Encapsulate logic in a class
+    class OptionsCalculator {
+      static calculateOptionPrice(optionType, stockPrice, strikePrice, volatility, timeToExpiry, riskFreeRate = 0.05) {
+        timeToExpiry /= 365; // Convert days to years
+        const d1 = (Math.log(stockPrice / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
+        const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
+        const callPrice = stockPrice * this.normCDF(d1) - strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * this.normCDF(d2);
+        const putPrice = strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * this.normCDF(-d2) - stockPrice * this.normCDF(-d1);
+        return optionType === 'call' ? callPrice : putPrice;
+      }
 
-      function normCDF(x) {
-        // Approximation of the cumulative distribution function for the standard normal distribution
-        const a1 = 0.254829592;
-        const a2 = -0.284496736;
-        const a3 = 1.421413741;
-        const a4 = -1.453152027;
-        const a5 = 1.061405429;
-        const p = 0.3275911;
+      static normCDF(x) {
+        const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
         const sign = x < 0 ? -1 : 1;
         x = Math.abs(x) / Math.sqrt(2.0);
         const t = 1.0 / (1.0 + p * x);
@@ -67,65 +75,36 @@
       }
     }
 
-    function calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry, timeToExpiry2) {
-      const priceRange = [];
-      const profitLoss = [];
-
-      for (let i = Math.max(0, stockPrice - 3 * strikePrice); i <= stockPrice + 3 * strikePrice; i += 0.5) {
-        let profit = 0;
-        switch (strategy) {
-          case 'call':
-            profit = Math.max(0, i - strikePrice) - calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry);
-            break;
-          case 'put':
-            profit = Math.max(0, strikePrice - i) - calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry);
-            break;
-          case 'covered_call':
-            profit = i - stockPrice + calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice);
-            break;
-          case 'protective_put':
-            profit = i - stockPrice - calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) + Math.max(0, strikePrice - i);
-            break;
-          case 'long_straddle':
-            profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) + calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice) - Math.max(0, strikePrice - i);
-            break;
-          case 'long_strangle':
-            profit = calculateOptionPrice('call', stockPrice, strikePrice2, volatility, timeToExpiry) + calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - Math.max(0, i - strikePrice2) - Math.max(0, strikePrice - i);
-            break;
-          case 'bull_call_spread':
-            profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry) - calculateOptionPrice('call', stockPrice, strikePrice2, volatility, timeToExpiry) - Math.max(0, i - strikePrice) + Math.max(0, i - strikePrice2);
-            break;
-          case 'bear_put_spread':
-            profit = calculateOptionPrice('put', stockPrice, strikePrice, volatility, timeToExpiry) - calculateOptionPrice('put', stockPrice, strikePrice2, volatility, timeToExpiry) - Math.max(0, strikePrice - i) + Math.max(0, strikePrice2 - i);
-            break;
-          case 'long_calendar_spread': 
-            profit = calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry2) - calculateOptionPrice('call', stockPrice, strikePrice, volatility, timeToExpiry);
-            break;
-          // Add more strategies here...
-        }
-        priceRange.push(i);
-        profitLoss.push(-profit);
+    async function fetchStockPrice(symbol) {
+      const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const stockPrice = data.quoteResponse.result[0].regularMarketPrice;
+        document.getElementById('stock-price').value = stockPrice;
+        alert(`Fetched Stock Price: $${stockPrice}`);
+      } catch (error) {
+        alert('Error fetching stock price. Please check the stock symbol.');
       }
-
-      return [{
-        x: priceRange,
-        y: profitLoss,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Profit/Loss',
-      }];
     }
+
+    document.getElementById('fetch-stock').addEventListener('click', () => {
+      const symbol = document.getElementById('stock-symbol').value;
+      fetchStockPrice(symbol);
+    });
 
     function updateChart() {
       const strategy = document.getElementById('option-strategy').value;
       const stockPrice = parseFloat(document.getElementById('stock-price').value);
       const strikePrice = parseFloat(document.getElementById('strike-price').value);
-      const strikePrice2 = parseFloat(document.getElementById('strike-price2').value); // For spreads
+      const strikePrice2 = parseFloat(document.getElementById('strike-price2').value);
       const volatility = parseFloat(document.getElementById('volatility').value) / 100;
       const timeToExpiry = parseFloat(document.getElementById('time-to-expiry').value);
-      const timeToExpiry2 = parseFloat(document.getElementById('time-to-expiry2').value); // For calendars
+      const timeToExpiry2 = parseFloat(document.getElementById('time-to-expiry2').value);
 
-      const chartData = calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry, timeToExpiry2);
+      // Generate plot data
+      const x = Array.from({ length: 200 }, (_, i) => i + stockPrice - 100);
+      const y = x.map(price => OptionsCalculator.calculateOptionPrice('call', price, strikePrice, volatility, timeToExpiry));
 
       const layout = {
         title: `${strategy.replace(/_/g, ' ').toUpperCase()} Payoff`,
@@ -133,19 +112,13 @@
         yaxis: { title: 'Profit/Loss' },
       };
 
-      Plotly.newPlot('chart', chartData, layout);
+      Plotly.newPlot('chart', [{ x, y, type: 'scatter', mode: 'lines', name: 'Profit/Loss' }], layout);
     }
 
-    // Event listeners for input changes
-    document.getElementById('option-strategy').addEventListener('change', updateChart);
-    document.getElementById('stock-price').addEventListener('input', updateChart);
-    document.getElementById('strike-price').addEventListener('input', updateChart);
-    document.getElementById('strike-price2').addEventListener('input', updateChart);
-    document.getElementById('volatility').addEventListener('input', updateChart);
-    document.getElementById('time-to-expiry').addEventListener('input', updateChart);
-    document.getElementById('time-to-expiry2').addEventListener('input', updateChart);
+    document.querySelectorAll('input, select').forEach(element => {
+      element.addEventListener('change', updateChart);
+    });
 
-    // Initial chart rendering
     updateChart();
   </script>
 </body>
