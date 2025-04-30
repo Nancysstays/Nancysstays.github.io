@@ -8,6 +8,8 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Include W3.CSS for styling -->
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <!-- Include custom CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="w3-container">
   <h1 class="w3-center">Advanced Options Trading Visualizer</h1>
@@ -53,73 +55,7 @@
 
   <div id="chart" class="w3-margin"></div>
 
-  <script>
-    // Encapsulate logic in a class
-    class OptionsCalculator {
-      static calculateOptionPrice(optionType, stockPrice, strikePrice, volatility, timeToExpiry, riskFreeRate = 0.05) {
-        timeToExpiry /= 365; // Convert days to years
-        const d1 = (Math.log(stockPrice / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
-        const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
-        const callPrice = stockPrice * this.normCDF(d1) - strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * this.normCDF(d2);
-        const putPrice = strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * this.normCDF(-d2) - stockPrice * this.normCDF(-d1);
-        return optionType === 'call' ? callPrice : putPrice;
-      }
-
-      static normCDF(x) {
-        const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
-        const sign = x < 0 ? -1 : 1;
-        x = Math.abs(x) / Math.sqrt(2.0);
-        const t = 1.0 / (1.0 + p * x);
-        const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
-        return 0.5 * (1.0 + sign * y);
-      }
-    }
-
-    async function fetchStockPrice(symbol) {
-      const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const stockPrice = data.quoteResponse.result[0].regularMarketPrice;
-        document.getElementById('stock-price').value = stockPrice;
-        alert(`Fetched Stock Price: $${stockPrice}`);
-      } catch (error) {
-        alert('Error fetching stock price. Please check the stock symbol.');
-      }
-    }
-
-    document.getElementById('fetch-stock').addEventListener('click', () => {
-      const symbol = document.getElementById('stock-symbol').value;
-      fetchStockPrice(symbol);
-    });
-
-    function updateChart() {
-      const strategy = document.getElementById('option-strategy').value;
-      const stockPrice = parseFloat(document.getElementById('stock-price').value);
-      const strikePrice = parseFloat(document.getElementById('strike-price').value);
-      const strikePrice2 = parseFloat(document.getElementById('strike-price2').value);
-      const volatility = parseFloat(document.getElementById('volatility').value) / 100;
-      const timeToExpiry = parseFloat(document.getElementById('time-to-expiry').value);
-      const timeToExpiry2 = parseFloat(document.getElementById('time-to-expiry2').value);
-
-      // Generate plot data
-      const x = Array.from({ length: 200 }, (_, i) => i + stockPrice - 100);
-      const y = x.map(price => OptionsCalculator.calculateOptionPrice('call', price, strikePrice, volatility, timeToExpiry));
-
-      const layout = {
-        title: `${strategy.replace(/_/g, ' ').toUpperCase()} Payoff`,
-        xaxis: { title: 'Stock Price at Expiry' },
-        yaxis: { title: 'Profit/Loss' },
-      };
-
-      Plotly.newPlot('chart', [{ x, y, type: 'scatter', mode: 'lines', name: 'Profit/Loss' }], layout);
-    }
-
-    document.querySelectorAll('input, select').forEach(element => {
-      element.addEventListener('change', updateChart);
-    });
-
-    updateChart();
-  </script>
+  <!-- Include custom JS -->
+  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
