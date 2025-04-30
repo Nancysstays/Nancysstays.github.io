@@ -1,0 +1,10 @@
+option-calculator/
+├── index.html          # Main HTML file
+├── assets/
+│   ├── css/
+│   │   └── styles.css  # CSS file for styling
+│   └── js/
+│       ├── app.js      # Main JavaScript file
+│       ├── calculator.js # Contains the OptionsCalculator class
+│       ├── chart.js    # Handles chart rendering logic
+│       └── api.js      # Handles API calls (e.g., fetching stock prices)
