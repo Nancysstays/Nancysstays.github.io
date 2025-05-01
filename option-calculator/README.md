@@ -1,5 +1,3 @@
-Here is the full source for the `README.md` file for the `option-calculator` directory, incorporating the details and snippets from the existing source files:
-
 ```markdown
 # Option Calculator
 
@@ -7,7 +5,6 @@ The `option-calculator` directory contains the assets and files required for the
 
 ## File Structure
 
-```plaintext
 option-calculator/
 ├── index.html          # Main HTML file
 ├── assets/
@@ -18,7 +15,6 @@ option-calculator/
 │       ├── calculator.js # Contains the OptionsCalculator class
 │       ├── chart.js    # Handles chart rendering logic
 │       └── api.js      # Handles API calls (e.g., fetching stock prices)
-```
 
 ## Features
 
@@ -44,17 +40,6 @@ option-calculator/
 
    - **Interactive Charts**: Charts are dynamically generated to display profit/loss for the selected strategies, making it easier to visualize complex options data.
 
-   Example chart initialization in `chart.js`:
-   ```javascript
-   const layout = {
-     title: `${strategy.replace(/_/g, ' ').toUpperCase()} Payoff`,
-     xaxis: { title: 'Stock Price at Expiry' },
-     yaxis: { title: 'Profit/Loss' },
-   };
-
-   Plotly.newPlot('chart', chartData, layout);
-   ```
-
 ---
 
 ### 2. **Option Pricing Calculations**
@@ -63,12 +48,6 @@ option-calculator/
    Example from `calculator.js`:
    ```javascript
    function calculateOptionPrice(optionType, stockPrice, strikePrice, volatility, timeToExpiry, riskFreeRate = 0.05) {
-     timeToExpiry /= 365; // Convert days to years
-     const d1 = (Math.log(stockPrice / strikePrice) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
-     const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
-     const callPrice = stockPrice * normCDF(d1) - strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(d2);
-     const putPrice = strikePrice * Math.exp(-riskFreeRate * timeToExpiry) * normCDF(-d2) - stockPrice * normCDF(-d1);
-     return optionType === 'call' ? callPrice : putPrice;
    }
    ```
 
@@ -85,16 +64,6 @@ option-calculator/
    - Example function from `api.js`:
      ```javascript
      async function fetchStockPrice(symbol) {
-       const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
-       try {
-         const response = await fetch(url);
-         const data = await response.json();
-         const stockPrice = data.quoteResponse.result[0].regularMarketPrice;
-         document.getElementById('stock-price').value = stockPrice;
-         alert(`Fetched Stock Price: $${stockPrice}`);
-       } catch (error) {
-         alert('Error fetching stock price. Please check the stock symbol.');
-       }
      }
      ```
 
@@ -109,22 +78,6 @@ option-calculator/
    Example from `chart.js`:
    ```javascript
    function updateChart() {
-     const strategy = document.getElementById('option-strategy').value;
-     const stockPrice = parseFloat(document.getElementById('stock-price').value);
-     const strikePrice = parseFloat(document.getElementById('strike-price').value);
-     const strikePrice2 = parseFloat(document.getElementById('strike-price2').value); // For spreads
-     const volatility = parseFloat(document.getElementById('volatility').value) / 100;
-     const timeToExpiry = parseFloat(document.getElementById('time-to-expiry').value);
-
-     const chartData = calculateStrategyPayoff(strategy, stockPrice, strikePrice, strikePrice2, volatility, timeToExpiry);
-
-     const layout = {
-       title: `${strategy.replace(/_/g, ' ').toUpperCase()} Payoff`,
-       xaxis: { title: 'Stock Price at Expiry' },
-       yaxis: { title: 'Profit/Loss' },
-     };
-
-     Plotly.newPlot('chart', chartData, layout);
    }
    ```
 
@@ -151,7 +104,6 @@ To contribute to this project:
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
 ```
 
 This `README.md` file now includes snippets from the source code to provide a detailed explanation of the UI/UX and functionalities. Let me know if you'd like to add anything else!
