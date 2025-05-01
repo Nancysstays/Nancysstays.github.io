@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Price Chart</title>
+    <!-- Include the Lightweight Charts library -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #1a1a1a; }
+        #chart-container {
+            width: 90%; /* Adjust width as needed */
+            height: 500px; /* Adjust height as needed */
+            margin: 50px auto; /* Center the chart */
+            border: 1px solid #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .loading-message {
+            text-align: center;
+            color: #ccc;
+            font-family: sans-serif;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <div class="loading-message">Loading chart data...</div>
+    </div>
+
+    <script>
+        // --- Your JavaScript code for fetching data and creating the chart goes here ---
+
+        // Define the container for the chart
+        const chartContainer = document.getElementById('chart-container');
+        const loadingMessage = chartContainer.querySelector('.loading-message'); // Get the loading message element
+
+        // --- Configuration ---
+        const symbol = 'TSLA'; // The stock symbol you want to chart
+        const apiKey = 'BVkrsPt4yVls2mqGj7I940rkBWHkh2p7'; // <-- !! Replace with your actual FMP API key !!
+        // Use a pertinent FMP endpoint for historical data
+        // We'll use the historical daily price endpoint
+        const apiUrl = `https://financialmodelingprep.com/api/v3/historical-price/${symbol}?apikey=${apiKey}`;
+
+        // --- Fetch Data from FMP ---
+        fetch(apiUrl)
+            .then(response => {
+                // Check if the request was successful
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Check if the data structure is as expected and has historical data
+                if (!data || !data.historical || data.historical.length === 0) {
+                    throw new Error('No historical data found for this symbol.');
+                }
+
+                // FMP returns the data with the *most recent* entry first.
+                // Lightweight Charts requires data in *chronological* order (oldest first).
+                // We need to reverse the array and map the properties.
+
+                const candlestickData = data.historical.reverse().map(item => ({
+                    // Lightweight Charts time property expects a timestamp or date string
+                    // FMP's 'date' (YYYY-MM-DD) works perfectly for daily charts
+                    time: item.date,
+                    open: item.open,
+                    high: item.high,
+                    low: item.low,
+                    close: item.close,
+                }));
+
+                // Remove the loading message now that we have data
+                if (loadingMessage) {
+                     loadingMessage.style.display = 'none';
+                }
+
+
+                // --- Create and Configure the Chart using Lightweight Charts ---
+                const chart = LightweightCharts.createChart(chartContainer, {
+                    width: chartContainer.clientWidth, // Match container width
+                    height: chartContainer.clientHeight, // Match container height
+                    layout: {
+                        backgroundColor: '#1a1a1a', // Dark background
+                        textColor: 'rgba(255, 255, 255, 0.9)', // White text
+                    },
+                    grid: {
+                        vertLines: { color: '#333' },
+                        horzLines: { color: '#333' },
+                    },
+                    crosshair: {
+                        mode: LightweightCharts.CrosshairMode.Normal, // Standard crosshair
+                    },
+                    priceScale: {
+                        borderColor: '#444', // Border color
+                    },
+                    timeScale: {
+                        borderColor: '#444', // Border color
+                        timeVisible: true, // Show time labels on the axis
+                        secondsVisible: false, // Hide seconds for daily data
+                    },
+                });
+
+                // Add a candlestick series to the chart
+                const candlestickSeries = chart.addCandlestickSeries({
+                    upColor: '#00a67d', // Green for increasing candles
+                    downColor: '#ef5350', // Red for decreasing candles
+                    borderDownColor: '#ef5350',
+                    borderUpColor: '#00a67d',
+                    wickDownColor: '#ef5350',
+                    wickUpColor: '#00a67d',
+                });
+
+                // Set the formatted data on the candlestick series
+                candlestickSeries.setData(candlestickData);
+
+                // Optional: Handle chart resizing
+                new ResizeObserver(entries => {
+                    const entry = entries[0];
+                    const { width, height } = entry.contentRect;
+                    chart.applyOptions({ width, height });
+                }).observe(chartContainer);
+
+            })
+            .catch(error => {
+                // Handle any errors during fetch or data processing
+                console.error('Error loading chart data:', error);
+                if (loadingMessage) {
+                    loadingMessage.style.display = 'block'; // Show message again
+                    loadingMessage.style.color = 'red';
+                    loadingMessage.innerText = `Error loading chart data: ${error.message}`;
+                } else {
+                     chartContainer.innerHTML = `<p style="color: red; text-align: center;">Error loading chart data: ${error.message}</p>`;
+                }
+            });
+
+    </script>
+</body>
+</html>
