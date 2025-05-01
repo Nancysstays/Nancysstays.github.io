@@ -1,22 +1,88 @@
-Overall Structure and Flow:
-The HTML sets up the basic structure and styles.
-The main script block defines all the classes and the dynamic loader function.
-An event listener waits for the DOMContentLoaded event to ensure the HTML structure is ready.
-Inside the DOM listener:
-UI selectors are defined.
-Default symbols are obtained using a static method.
-An instance of StockChartApp is created, injecting dependencies (API_KEY, elementSelectors, defaultSymbols). The constructor of StockChartApp in turn creates instances of UIManager, FmpApiClient, and Autocomplete.
-The Jinx Init method is called.
-Shows an initial loading message.
-Awaits the loadScript promise for the charting library CDN.
-If the library loads, it uses the UIManager instance to create the chart and get references to the series and observer.
-Enables the load button and hides the initial message.
-Sets up event listeners for the UI controls via #setupEventListeners. This step includes creating the wrapped loadChart function using withLoadingAndErrorHandling.
-Triggers the first chart load by calling the wrapped load function with default UI values.
-When the button is clicked or Enter is pressed on an input:
-The event listener calls the wrapped loadChartWrapped function.
-The wrapper gets the latest values from the UI, shows a loading message, disables the button, and calls the original #fetchAndRender method.
-#fetchAndRender uses the FmpApiClient to fetch data.
-The fetched data is used to create a ChartDataCollection instance (for demo purposes) and passed to the UIManager to update the chart series.
-If #fetchAndRender succeeds, the wrapper hides messages and enables the button.
-If #fetchAndRender throws an error (API error, network issue, no data), the wrapper catches it, shows an error message, clears the chart data, and enables the button.
+Stock Chart App
+This repository hosts a dynamic Stock Chart Application that allows users to visualize stock data interactively. Below is an overview of the app’s structure, functionality, and important implementation details.
+
+Table of Contents
+Overview
+Features
+Technologies Used
+Application Structure
+How It Works
+Setup and Usage
+Contributing
+License
+Overview
+The Stock Chart App fetches and displays stock data dynamically, providing a smooth and interactive user experience. It is implemented with clean object-oriented design principles and modular components to ensure maintainability and scalability.
+
+Features
+Dynamic stock chart rendering.
+Autocomplete functionality for stock symbols.
+Error handling for network and API issues.
+Interactive UI controls for data fetching and visualization.
+Technologies Used
+HTML: For structuring the application.
+JavaScript: Core functionality, dynamic loading, and event handling.
+CSS: For basic styling.
+Charting Library: Dynamically loaded via CDN.
+API Integration: Uses a financial market data API.
+Application Structure
+The application is organized into several core components and follows a structured flow for initialization and interaction.
+
+HTML
+Sets up the basic structure and includes necessary styles and scripts.
+JavaScript
+Classes Defined:
+StockChartApp: Serves as the main entry point of the application.
+UIManager: Manages chart rendering and UI interactions.
+FmpApiClient: Handles API communication.
+Autocomplete: Provides autocomplete functionality for stock symbols.
+Dynamic Loader: Loads external charting libraries asynchronously.
+Event Flow
+DOMContentLoaded Event:
+Ensures the HTML structure is fully loaded before executing scripts.
+Initializes the app and its dependencies.
+UI Interaction:
+Button clicks or "Enter" keypresses trigger data fetching and chart updates.
+How It Works
+Initialization:
+
+UI selectors and default stock symbols are defined.
+An instance of StockChartApp is created with dependencies injected.
+The app.init() method is invoked.
+app.init():
+
+Displays an initial loading message.
+Asynchronously loads the charting library via loadScript.
+Initializes the chart UI with UIManager.
+Enables a load button and sets up event listeners for UI controls.
+Event Handling:
+
+A wrapped loadChart function ensures proper loading and error handling.
+When triggered, it fetches data via FmpApiClient, processes it, and updates the chart.
+Error Handling:
+
+Errors (e.g., API/network issues or no data) are caught and handled gracefully.
+Displays an error message and clears chart data if necessary.
+Setup and Usage
+Clone the repository:
+bash
+git clone https://github.com/Nancysstays/Nancysstays.github.io.git
+cd Nancysstays.github.io
+Navigate to the calculator/option directory.
+Open the HTML file in a browser, or host the app on a local server.
+Enter stock symbols and interact with the app.
+Contributing
+Contributions are welcome! Please follow these steps:
+
+Fork the repository.
+Create a feature branch:
+bash
+git checkout -b feature-name
+Commit your changes:
+bash
+git commit -m "Add feature"
+Push to the branch:
+bash
+git push origin feature-name
+Create a pull request.
+License
+This project is licensed under the MIT License.
