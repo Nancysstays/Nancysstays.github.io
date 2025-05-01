@@ -1,137 +1,919 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Stock Price Chart</title>
-    <!-- Include the Lightweight Charts library -->
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <title>Advanced Configurable Stock Price Chart</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #1a1a1a; }
+        body { margin: 0; padding: 0; background-color: #1a1a1a; color: #ccc; font-family: sans-serif; }
+
+        /* --- UI Elements Styling --- */
+        .controls {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .control-group label {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #bbb;
+        }
+
+        .symbol-input-container {
+            display: inline-block;
+            position: relative;
+            width: 150px;
+        }
+
+        #symbolInput,
+        #intervalSelect,
+        .date-input {
+            padding: 8px 10px;
+            font-size: 1em;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #ccc;
+            border-radius: 4px;
+            outline: none;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+            font-family: sans-serif;
+        }
+
+        #symbolInput:focus,
+        #intervalSelect:focus,
+        .date-input:focus {
+            border-color: #007bff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+         .date-input::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+         .date-input::-moz-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+         .date-input::-ms-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+
+
+        #autocompleteResults {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+
+        #autocompleteResults li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #333;
+        }
+
+        #autocompleteResults li:last-child { border-bottom: none; }
+
+        #autocompleteResults li:hover,
+        #autocompleteResults li.selected { background-color: #3a3a3a; color: #fff; }
+
+        #loadChartButton {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.2s ease;
+            align-self: center;
+        }
+
+        #loadChartButton:hover { background-color: #0056b3; }
+        #loadChartButton:active { background-color: #004085; }
+        #loadChartButton:disabled { background-color: #555; cursor: not-allowed; }
+
+
+        /* --- Chart Container & Messages --- */
         #chart-container {
-            width: 90%; /* Adjust width as needed */
-            height: 500px; /* Adjust height as needed */
-            margin: 50px auto; /* Center the chart */
+            width: 90%;
+            height: 500px;
+            margin: 20px auto 50px auto;
             border: 1px solid #333;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            background-color: #1a1a1a;
         }
-        .loading-message {
-            text-align: center;
+
+        .loading-message, .error-message, .initial-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(26, 26, 26, 0.9); /* Slightly more opaque cover */
             color: #ccc;
-            font-family: sans-serif;
-            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            z-index: 10;
+            padding: 20px;
+            text-align: center;
+            white-space: pre-wrap;
+            pointer-events: none; /* Allow clicks/interactions *under* the message */
         }
+        .error-message { color: #ff6b6b; }
+        .loading-message { color: #4fc3f7; }
+        .initial-message { color: #ccc; font-size: 1em; } /* Less prominent for initial state */
+
     </style>
 </head>
 <body>
+    <div class="controls">
+        <div class="control-group">
+             <label for="symbolInput">Symbol:</label>
+            <div class="symbol-input-container">
+                <input type="text" id="symbolInput" placeholder="e.g., AAPL, TSLA">
+                <ul id="autocompleteResults"></ul>
+            </div>
+        </div>
+
+        <div class="control-group">
+             <label for="intervalSelect">Interval:</label>
+            <select id="intervalSelect">
+                <option value="1min">1 Minute</option>
+                <option value="5min" selected>5 Minutes</option>
+                <option value="15min">15 Minutes</option>
+                <option value="30min">30 Minutes</option>
+                <option value="1hour">1 Hour</option>
+                <option value="4hour">4 Hours</option>
+                 <option value="1day">1 Day</option>
+                 <option value="1week">1 Week</option>
+                 <option value="1month">1 Month</option>
+            </select>
+        </div>
+
+         <div class="control-group">
+             <label for="startDateInput">From Date:</label>
+            <input type="date" id="startDateInput" class="date-input">
+         </div>
+
+          <div class="control-group">
+             <label for="endDateInput">To Date:</label>
+            <input type="date" id="endDateInput" class="date-input">
+         </div>
+
+        <button id="loadChartButton">Load Chart</button>
+    </div>
+
     <div id="chart-container">
-        <div class="loading-message">Loading chart data...</div>
+         <div class="initial-message">Loading charting library...</div>
     </div>
 
     <script>
-        // --- Your JavaScript code for fetching data and creating the chart goes here ---
-
-        // Define the container for the chart
-        const chartContainer = document.getElementById('chart-container');
-        const loadingMessage = chartContainer.querySelector('.loading-message'); // Get the loading message element
-
         // --- Configuration ---
-        const symbol = 'TSLA'; // The stock symbol you want to chart
-        const apiKey = 'BVkrsPt4yVls2mqGj7I940rkBWHkh2p7'; // <-- !! Replace with your actual FMP API key !!
-        // Use a pertinent FMP endpoint for historical data
-        // We'll use the historical daily price endpoint
-        const apiUrl = `https://financialmodelingprep.com/api/v3/historical-price/${symbol}?apikey=${apiKey}`;
+        // !! Replace with your actual FMP API key !!
+        const API_KEY = 'BVkrsPt4yVls2mqGj7I940rkBWHkh2p7';
+        const CHART_CDN_URL = 'https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js';
 
-        // --- Fetch Data from FMP ---
-        fetch(apiUrl)
-            .then(response => {
-                // Check if the request was successful
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Check if the data structure is as expected and has historical data
-                if (!data || !data.historical || data.historical.length === 0) {
-                    throw new Error('No historical data found for this symbol.');
-                }
+        // Default dates (last 30 days)
+        const defaultEndDate = new Date();
+        const defaultStartDate = new Date();
+        defaultStartDate.setDate(defaultEndDate.getDate() - 30);
 
-                // FMP returns the data with the *most recent* entry first.
-                // Lightweight Charts requires data in *chronological* order (oldest first).
-                // We need to reverse the array and map the properties.
+        // Helper to format date as YYYY-MM-DD
+        function formatDate(date) {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
 
-                const candlestickData = data.historical.reverse().map(item => ({
-                    // Lightweight Charts time property expects a timestamp or date string
-                    // FMP's 'date' (YYYY-MM-DD) works perfectly for daily charts
-                    time: item.date,
-                    open: item.open,
-                    high: item.high,
-                    low: item.low,
-                    close: item.close,
-                }));
-
-                // Remove the loading message now that we have data
-                if (loadingMessage) {
-                     loadingMessage.style.display = 'none';
-                }
-
-
-                // --- Create and Configure the Chart using Lightweight Charts ---
-                const chart = LightweightCharts.createChart(chartContainer, {
-                    width: chartContainer.clientWidth, // Match container width
-                    height: chartContainer.clientHeight, // Match container height
-                    layout: {
-                        backgroundColor: '#1a1a1a', // Dark background
-                        textColor: 'rgba(255, 255, 255, 0.9)', // White text
-                    },
-                    grid: {
-                        vertLines: { color: '#333' },
-                        horzLines: { color: '#333' },
-                    },
-                    crosshair: {
-                        mode: LightweightCharts.CrosshairMode.Normal, // Standard crosshair
-                    },
-                    priceScale: {
-                        borderColor: '#444', // Border color
-                    },
-                    timeScale: {
-                        borderColor: '#444', // Border color
-                        timeVisible: true, // Show time labels on the axis
-                        secondsVisible: false, // Hide seconds for daily data
-                    },
-                });
-
-                // Add a candlestick series to the chart
-                const candlestickSeries = chart.addCandlestickSeries({
-                    upColor: '#00a67d', // Green for increasing candles
-                    downColor: '#ef5350', // Red for decreasing candles
-                    borderDownColor: '#ef5350',
-                    borderUpColor: '#00a67d',
-                    wickDownColor: '#ef5350',
-                    wickUpColor: '#00a67d',
-                });
-
-                // Set the formatted data on the candlestick series
-                candlestickSeries.setData(candlestickData);
-
-                // Optional: Handle chart resizing
-                new ResizeObserver(entries => {
-                    const entry = entries[0];
-                    const { width, height } = entry.contentRect;
-                    chart.applyOptions({ width, height });
-                }).observe(chartContainer);
-
-            })
-            .catch(error => {
-                // Handle any errors during fetch or data processing
-                console.error('Error loading chart data:', error);
-                if (loadingMessage) {
-                    loadingMessage.style.display = 'block'; // Show message again
-                    loadingMessage.style.color = 'red';
-                    loadingMessage.innerText = `Error loading chart data: ${error.message}`;
-                } else {
-                     chartContainer.innerHTML = `<p style="color: red; text-align: center;">Error loading chart data: ${error.message}</p>`;
-                }
+        // --- Dynamic Script Loader (Async CDN) ---
+        async function loadScript(url) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.async = true;
+                script.onload = () => {
+                     console.log(`Script loaded: ${url}`);
+                     resolve(script);
+                };
+                script.onerror = () => {
+                     console.error(`Failed to load script: ${url}`);
+                     reject(new Error(`Failed to load script: ${url}`));
+                };
+                document.head.appendChild(script);
             });
+        }
+
+        // --- API Client Class ---
+        class FmpApiClient {
+            // Private field for the API key
+            #apiKey;
+            // Static field for the base URL
+            static #BASE_URL = 'https://financialmodelingprep.com/api/v3';
+
+            constructor(apiKey) {
+                if (!apiKey) {
+                    throw new Error('FMP API Key is required.');
+                }
+                this.#apiKey = apiKey;
+            }
+
+            // Private helper for constructing URLs
+            #buildUrl(endpoint, params = {}) {
+                const url = new URL(`${FmpApiClient.#BASE_URL}${endpoint}`);
+                url.searchParams.append('apikey', this.#apiKey);
+                for (const key in params) {
+                    if (params[key] !== undefined && params[key] !== null) {
+                         url.searchParams.append(key, params[key]);
+                    }
+                }
+                return url.toString();
+            }
+
+            // Public async method to fetch historical chart data
+            async fetchHistoricalChart(symbol, interval, from, to) {
+                if (!symbol || !interval || !from || !to) {
+                    throw new Error('Symbol, interval, from, and to dates are required for fetching chart data.');
+                }
+
+                const endpoint = `/historical-chart/${interval.toLowerCase()}/${symbol.toUpperCase()}`;
+                const params = { from, to };
+                const apiUrl = this.#buildUrl(endpoint, params);
+
+                console.log(`Fetching: ${apiUrl}`);
+
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    let errorDetail = text || response.statusText;
+                    if (response.status === 401 || response.status === 403) {
+                         errorDetail = "API Key Invalid or Unauthorized. Please check your key.";
+                    } else if (response.status === 404) {
+                         errorDetail = `Data not found for ${symbol.toUpperCase()} (${interval}) in the range ${from} to ${to}. Check inputs or try a different range.`;
+                    } else if (response.status === 429) {
+                         errorDetail = "Rate limit exceeded. Please wait a moment and try again.";
+                    } else {
+                         errorDetail = `API Error ${response.status}: ${errorDetail}`;
+                    }
+                    throw new Error(errorDetail);
+                }
+
+                const data = await response.json();
+
+                if (!Array.isArray(data) || data.length === 0) {
+                     // FMP might return 200 OK but an empty array if no data exists for the precise query
+                    throw new Error(`No chart data returned for ${symbol.toUpperCase()} (${interval}) in the range ${from} to ${to}.`);
+                }
+
+                 // Data should be in chronological order for /historical-chart endpoint with range
+                return data.map(item => ({
+                    time: item.date, // "YYYY-MM-DD HH:MM:SS" or "YYYY-MM-DD"
+                    open: parseFloat(item.open),
+                    high: parseFloat(item.high),
+                    low: parseFloat(item.low),
+                    close: parseFloat(item.close),
+                }));
+            }
+             // Other FMP methods could go here (e.g., fetchCompanyName, fetchQuote, etc.)
+        }
+
+         // --- UI Manager Class ---
+         class UIManager {
+            #symbolInput;
+            #autocompleteResults;
+            #intervalSelect;
+            #startDateInput;
+            #endDateInput;
+            #loadChartButton;
+            #chartContainer;
+
+             // Protected property (convention only in JS classes)
+             // protected _chartInstance = null; // Not strictly enforced but can be used
+
+            constructor(elementSelectors) {
+                this.#symbolInput = document.querySelector(elementSelectors.symbolInput);
+                this.#autocompleteResults = document.querySelector(elementSelectors.autocompleteResults);
+                this.#intervalSelect = document.querySelector(elementSelectors.intervalSelect);
+                this.#startDateInput = document.querySelector(elementSelectors.startDateInput);
+                this.#endDateInput = document.querySelector(elementSelectors.endDateInput);
+                this.#loadChartButton = document.querySelector(elementSelectors.loadChartButton);
+                this.#chartContainer = document.querySelector(elementSelectors.chartContainer);
+
+                if (!this.#symbolInput || !this.#intervalSelect || !this.#startDateInput || !this.#endDateInput || !this.#loadChartButton || !this.#chartContainer || !this.#autocompleteResults) {
+                     console.error("UI elements not found:", elementSelectors);
+                     throw new Error("Required UI elements not found in the DOM.");
+                }
+
+                 // Initial state
+                 this.#loadChartButton.disabled = true; // Disable until library loads
+                 this.setDates(formatDate(defaultStartDate), formatDate(defaultEndDate));
+            }
+
+            // Public method to get all input values
+            getValues() {
+                return {
+                    symbol: this.#symbolInput.value.trim().toUpperCase(),
+                    interval: this.#intervalSelect.value,
+                    startDate: this.#startDateInput.value,
+                    endDate: this.#endDateInput.value
+                };
+            }
+
+            // Public methods to set input values
+            setSymbolInputValue(value) {
+                 this.#symbolInput.value = value;
+            }
+             setDates(startDate, endDate) {
+                  this.#startDateInput.value = startDate;
+                  this.#endDateInput.value = endDate;
+             }
+
+            // Public method to get element references (if needed by other classes, e.g., Autocomplete)
+            getElements() {
+                 return {
+                     symbolInput: this.#symbolInput,
+                     autocompleteResults: this.#autocompleteResults,
+                     loadChartButton: this.#loadChartButton,
+                     chartContainer: this.#chartContainer // Pass container for chart library
+                 };
+            }
+
+            // Public methods for showing/hiding messages
+            showMessage(type, text) {
+                 this.#hideMessages(); // Clear existing messages
+
+                 const msgDiv = document.createElement('div');
+                 msgDiv.classList.add(`${type}-message`); // loading-message, error-message, initial-message
+                 msgDiv.innerText = text;
+                 this.#chartContainer.appendChild(msgDiv);
+            }
+
+            #hideMessages() {
+                 const existingMessage = this.#chartContainer.querySelector('.loading-message, .error-message, .initial-message');
+                 if (existingMessage) {
+                      existingMessage.remove();
+                 }
+            }
+
+            // Public methods for button state
+            disableButton() { this.#loadChartButton.disabled = true; }
+            enableButton() { this.#loadChartButton.disabled = false; }
+
+            // Public method to create the chart instance (needs LightweightCharts global)
+             // This method encapsulates the chart creation logic
+             createChart() {
+                 // Use the global LightweightCharts (loaded via CDN)
+                  if (typeof LightweightCharts === 'undefined') {
+                       throw new Error("LightweightCharts library not loaded.");
+                  }
+
+                 // Cleanup previous chart instance if it exists
+                 // This is a good place to handle lifecycle management
+                 if (this._chartInstance) { // Use protected property convention
+                     this._chartInstance.remove();
+                     this._chartInstance = null;
+                     if (this._resizeObserver) {
+                          this._resizeObserver.disconnect();
+                          this._resizeObserver = null;
+                     }
+                 }
+
+                 this._chartInstance = LightweightCharts.createChart(this.#chartContainer, {
+                     width: this.#chartContainer.clientWidth,
+                     height: this.#chartContainer.clientHeight,
+                     layout: { backgroundColor: '#1a1a1a', textColor: 'rgba(255, 255, 255, 0.9)', },
+                     grid: { vertLines: { color: '#333' }, horzLines: { color: '#333' }, },
+                     crosshair: { mode: LightweightCharts.CrosshairMode.Normal, },
+                     priceScale: { borderColor: '#444', },
+                     timeScale: { borderColor: '#444', timeVisible: true, secondsVisible: true, }, // Seconds visible by default, adjust later
+                 });
+
+                 // Add candlestick series - return it so StockChartApp can set data
+                 const candlestickSeries = this._chartInstance.addCandlestickSeries({
+                     upColor: '#00a67d', downColor: '#ef5350',
+                     borderDownColor: '#ef5350', borderUpColor: '#00a67d',
+                     wickDownColor: '#ef5350', wickUpColor: '#00a67d',
+                 });
+
+                 // Set up resize observer
+                 this._resizeObserver = new ResizeObserver(entries => {
+                     const entry = entries[0];
+                     const { width, height } = entry.contentRect;
+                     if (this._chartInstance) { // Check if chart still exists before applying options
+                          this._chartInstance.applyOptions({ width, height });
+                     }
+                 });
+                 this._resizeObserver.observe(this.#chartContainer);
+
+                 return candlestickSeries;
+             }
+
+             // Public method to update chart series data
+             updateChartSeries(series, data, interval) {
+                 if (series) {
+                      series.setData([]); // Clear old data
+                      series.setData(data);
+
+                      // Adjust time scale visibility based on interval
+                       if (this._chartInstance) {
+                           this._chartInstance.applyOptions({
+                               timeScale: {
+                                   timeVisible: true,
+                                   secondsVisible: (interval.includes('min') || interval.includes('hour')),
+                               }
+                           });
+                            // Fit chart to data
+                           this._chartInstance.timeScale().fitContent();
+                       }
+                 }
+             }
+
+             // Public method to clear chart data
+             clearChartSeries(series) {
+                 if (series) {
+                      series.setData([]);
+                 }
+             }
+
+             // Static method example
+              static isValidInterval(interval) {
+                  const validIntervals = ['1min', '5min', '15min', '30min', '1hour', '4hour', '1day', '1week', '1month'];
+                  return validIntervals.includes(interval);
+              }
+         }
+
+        // --- Autocomplete Class ---
+        class Autocomplete {
+            #symbols;
+            #inputElement;
+            #resultsListElement;
+            #selectedResultIndex = -1; // For keyboard navigation
+            #blurTimeout; // To handle focus/click timing
+
+            constructor(symbols, inputElement, resultsListElement) {
+                this.#symbols = symbols.map(s => s.toUpperCase()).sort(); // Store uppercase and sorted
+                this.#inputElement = inputElement;
+                this.#resultsListElement = resultsListElement;
+
+                 if (!this.#inputElement || !this.#resultsListElement) {
+                     console.error("Autocomplete elements not found.");
+                     throw new Error("Required Autocomplete UI elements not found.");
+                 }
+            }
+
+            // Public method to initialize event listeners
+            init(onSymbolSelectedCallback, onEnterCallback) {
+                this.#inputElement.addEventListener('input', () => this.#handleInput());
+                this.#inputElement.addEventListener('keydown', (event) => this.#handleKeyDown(event, onEnterCallback)); // Use keydown for arrow keys
+                this.#inputElement.addEventListener('blur', () => this.#handleBlur());
+                // Use mousedown on the list to prevent input blur before click
+                this.#resultsListElement.addEventListener('mousedown', (event) => this.#handleMouseDown(event));
+                 // Use click on the list for selection
+                this.#resultsListElement.addEventListener('click', (event) => this.#handleResultClick(event, onSymbolSelectedCallback));
+            }
+
+            // Private method to handle input changes
+            #handleInput() {
+                const searchTerm = this.#inputElement.value.trim().toUpperCase();
+                this.#selectedResultIndex = -1; // Reset selection
+
+                if (searchTerm === '') {
+                    this.#hideResults();
+                    return;
+                }
+
+                // Filter symbols
+                const filteredSymbols = this.#symbols.filter(symbol =>
+                    symbol.startsWith(searchTerm)
+                );
+
+                this.#showResults(filteredSymbols);
+            }
+
+            // Private method to show results
+            #showResults(matches) {
+                this.#resultsListElement.innerHTML = ''; // Clear previous
+
+                if (matches.length === 0) {
+                    this.#hideResults();
+                    return;
+                }
+
+                const maxResults = 10; // Limit display results
+                matches.slice(0, maxResults).forEach(symbol => {
+                    const li = document.createElement('li');
+                    li.innerText = symbol;
+                    // li.dataset.symbol = symbol; // Could use data attributes
+                    this.#resultsListElement.appendChild(li);
+                });
+
+                this.#resultsListElement.style.display = 'block';
+            }
+
+            // Private method to hide results
+            #hideResults() {
+                this.#resultsListElement.style.display = 'none';
+                 this.#selectedResultIndex = -1; // Reset selection
+            }
+
+            // Private method to handle result item click
+            #handleResultClick(event, callback) {
+                const clickedElement = event.target;
+                if (clickedElement.tagName === 'LI') {
+                    const selectedSymbol = clickedElement.innerText; // Or clickedElement.dataset.symbol
+                    this.#inputElement.value = selectedSymbol;
+                    this.#hideResults();
+                    if (callback && typeof callback === 'function') {
+                        callback(selectedSymbol); // Call the provided callback
+                    }
+                     this.#inputElement.focus(); // Keep focus on input
+                }
+            }
+
+             // Private method to handle keyboard navigation/Enter key
+             #handleKeyDown(event, onEnterCallback) {
+                 const items = this.#resultsListElement.querySelectorAll('li');
+                 if (items.length === 0) {
+                      if (event.key === 'Enter' && onEnterCallback) {
+                          event.preventDefault(); // Prevent form submission
+                           onEnterCallback(this.#inputElement.value.trim().toUpperCase());
+                      }
+                     return;
+                 }
+
+                 if (event.key === 'ArrowDown') {
+                     event.preventDefault();
+                     this.#selectedResultIndex = (this.#selectedResultIndex + 1) % items.length;
+                     this.#updateSelection(items);
+                 } else if (event.key === 'ArrowUp') {
+                     event.preventDefault();
+                     this.#selectedResultIndex = (this.#selectedResultIndex - 1 + items.length) % items.length;
+                     this.#updateSelection(items);
+                 } else if (event.key === 'Enter') {
+                     event.preventDefault();
+                     if (this.#selectedResultIndex > -1) {
+                         // Select the highlighted item
+                         const selectedSymbol = items[this.#selectedResultIndex].innerText;
+                         this.#inputElement.value = selectedSymbol;
+                         this.#hideResults();
+                         if (onEnterCallback && typeof onEnterCallback === 'function') { // Use the Enter callback here
+                             onEnterCallback(selectedSymbol);
+                         }
+                     } else {
+                         // If no item is highlighted, use the current input value
+                         const enteredSymbol = this.#inputElement.value.trim().toUpperCase();
+                          this.#hideResults();
+                          if (onEnterCallback && typeof onEnterCallback === 'function') {
+                              onEnterCallback(enteredSymbol);
+                          }
+                     }
+                 } else if (event.key === 'Escape') {
+                     this.#hideResults();
+                 }
+             }
+
+             // Private helper to update the visual selection
+             #updateSelection(items) {
+                 items.forEach((item, index) => {
+                     item.classList.toggle('selected', index === this.#selectedResultIndex);
+                 });
+                  // Optional: Scroll the selected item into view
+                 if (this.#selectedResultIndex > -1) {
+                     items[this.#selectedResultIndex].scrollIntoView({ block: 'nearest' });
+                 }
+             }
+
+            // Private method to handle input blur (delay to allow click)
+            #handleBlur() {
+                this.#blurTimeout = setTimeout(() => {
+                    this.#hideResults();
+                }, 100); // Adjust delay as needed
+            }
+
+            // Private method to handle mousedown on results list
+            #handleMouseDown(event) {
+                event.preventDefault(); // Prevent input blur
+                clearTimeout(this.#blurTimeout); // Clear blur timeout
+            }
+
+             // Static method example
+              static createDefaultList() {
+                  return [
+                      'AAPL', 'MSFT', 'TSLA', 'AMZN', 'GOOGL', 'NVDA', 'META', 'BRK.B', 'JPM',
+                      'JNJ', 'V', 'PG', 'UNH', 'MA', 'HD', 'PYPL', 'NFLX', 'ADBE', 'CMCSA',
+                      'INTC', 'CSCO', 'PEP', 'KO', 'T', 'PFE', 'MRNA', 'AMD', 'BABA', 'XOM',
+                      'CVX', 'BAC', 'WMT', 'NKE', 'DIS', 'CRM', 'ABT', 'TMO', 'LLY', 'COST'
+                  ];
+              }
+        }
+
+        // --- Data Wrapper Class (for Iterator/Generator Demo) ---
+        // This class wraps the raw candlestick data array and provides an iterator
+        // You could add methods here to calculate indicators, format data differently, etc.
+        class ChartDataCollection {
+            #data = []; // Private field storing the array
+
+            constructor(candlestickDataArray) {
+                 if (!Array.isArray(candlestickDataArray)) {
+                      console.warn("ChartDataCollection initialized with non-array data.");
+                 }
+                this.#data = Array.isArray(candlestickDataArray) ? candlestickDataArray : [];
+            }
+
+            // Public method to get the raw array (needed by Lightweight Charts)
+            get rawData() {
+                return this.#data;
+            }
+
+            // Implement the iterable protocol using a generator function
+            // This allows you to iterate over the data like `for (const item of myCollection)`
+            *[Symbol.iterator]() {
+                // Use a generator function for simpler iterator creation
+                for (const item of this.#data) {
+                     // Yield each item, optionally transforming or adding properties
+                    yield {
+                         ...item,
+                         // Example: Add a simple human-readable time string
+                         readableTime: new Date(item.time).toLocaleString()
+                     };
+                }
+            }
+
+            // Example of another method that might use iteration internally
+            findPeakClosePrice() {
+                 let maxPrice = 0;
+                 let peakItem = null;
+                 for (const item of this) { // Uses the [Symbol.iterator] internally
+                     if (item.close > maxPrice) {
+                         maxPrice = item.close;
+                         peakItem = item; // Or just item.rawData for the original
+                     }
+                 }
+                 return peakItem ? { price: peakItem.close, time: peakItem.readableTime } : null;
+            }
+        }
+
+
+        // --- Manual Wrapper/Decorator Function Example ---
+        // This function wraps an async function (like fetchAndRender)
+        // to automatically handle UI states (loading message, button state)
+        function withLoadingAndErrorHandling(asyncFn, uiManagerInstance) {
+            // Return a new function that calls the original asyncFn
+            return async function(...args) {
+                const { symbol, interval, startDate, endDate } = uiManagerInstance.getValues(); // Get current values from UI
+
+                if (!symbol) {
+                     uiManagerInstance.showError('Please enter a stock symbol.');
+                     uiManagerInstance.clearChartSeries(this._candlestickSeries); // Access series from `this`
+                     return;
+                }
+
+                // Use dynamic loading message based on inputs
+                uiManagerInstance.showMessage('loading', `Loading ${interval} data for ${symbol.toUpperCase()}\nFrom ${startDate} to ${endDate}...`);
+                uiManagerInstance.disableButton(); // Disable button
+
+                try {
+                    // Call the original async function with the required arguments
+                    // Note: 'this' context needs to be handled if the original function
+                    // relies on 'this'. Using .call(this, ...) or .apply(this, args)
+                    // is standard, or bind it beforehand. Here, asyncFn is a method
+                    // of StockChartApp, so its 'this' will be the StockChartApp instance.
+                    // The arguments passed to the returned function are just event args,
+                    // we need to use uiManagerInstance.getValues() instead.
+                    await asyncFn.call(this, symbol, interval, startDate, endDate);
+
+                    uiManagerInstance.hideMessages(); // Hide messages on success
+                    uiManagerInstance.enableButton(); // Enable button
+
+                     // Example usage of the iterator/generator pattern (optional)
+                     // const dataCollection = this._lastChartDataCollection; // Assuming StockChartApp stores it
+                     // if (dataCollection) {
+                     //      console.log("Iterating over fetched data:");
+                     //      for (const item of dataCollection) {
+                     //           console.log(`- Time: ${item.readableTime}, Close: ${item.close}`);
+                     //      }
+                     //       const peak = dataCollection.findPeakClosePrice();
+                     //      if (peak) console.log(`Peak close price: ${peak.price} at ${peak.time}`);
+                     // }
+
+
+                } catch (error) {
+                    console.error('Wrapped function caught error:', error);
+                    // Display error message
+                    uiManagerInstance.showError(`Error: ${error.message}`);
+                    // Clear chart on error
+                     uiManagerInstance.clearChartSeries(this._candlestickSeries);
+                    uiManagerInstance.enableButton(); // Enable button on error
+                }
+            };
+        }
+
+
+        // --- Core Application Class ---
+        class StockChartApp {
+            #uiManager;
+            #apiClient;
+            #autocomplete;
+
+            // Private fields for chart instance and series
+            #chart;
+            #candlestickSeries;
+            #resizeObserver;
+
+            // Store the last fetched data collection for iterator demo
+            _lastChartDataCollection = null; // Using protected convention
+
+            constructor(apiKey, elementSelectors, defaultSymbols) {
+                this.#uiManager = new UIManager(elementSelectors);
+                this.#apiClient = new FmpApiClient(apiKey);
+                this.#autocomplete = new Autocomplete(
+                     defaultSymbols,
+                     this.#uiManager.getElements().symbolInput,
+                     this.#uiManager.getElements().autocompleteResults
+                );
+
+                 // References to chart related instances managed by UIManager now
+                this.#chart = null; // Will be created by UIManager.createChart
+                this.#candlestickSeries = null; // Will be returned by UIManager.createChart
+                this.#resizeObserver = null; // Managed by UIManager
+            }
+
+            // Public method to initialize the application
+            async init() {
+                 console.log("Initializing Stock Chart App...");
+
+                 // Initial message before loading library
+                 this.#uiManager.showMessage('initial', 'Loading charting library...');
+
+                 try {
+                     // Dynamically load the charting library
+                    await loadScript(CHART_CDN_URL);
+                    console.log("Charting library loaded successfully.");
+
+                     // Now that the library is loaded, create the chart instance
+                     this.#candlestickSeries = this.#uiManager.createChart();
+                     // The chart and observer instances are now managed internally by UIManager
+                     this.#chart = this.#uiManager._chartInstance; // Access protected property (convention)
+                     this.#resizeObserver = this.#uiManager._resizeObserver; // Access protected property (convention)
+
+
+                    // Enable the load button now that everything is ready
+                    this.#uiManager.enableButton();
+                    this.#uiManager.hideMessages(); // Hide initial message
+
+                    // Setup event listeners for UI elements
+                    this.#setupEventListeners();
+
+                    // Perform initial chart load with default values
+                    const initialValues = this.#uiManager.getValues();
+                    // Use the wrapped function for the initial load too
+                    await this.#loadChartWrapped(
+                        initialValues.symbol,
+                        initialValues.interval,
+                        initialValues.startDate,
+                        initialValues.endDate
+                    );
+
+
+                 } catch (error) {
+                     console.error("Failed to initialize application:", error);
+                     this.#uiManager.showMessage('error', `Initialization Error: ${error.message}\nPlease check your API key and network connection.`);
+                     this.#uiManager.disableButton(); // Keep button disabled on init error
+                 }
+            }
+
+            // Private method to setup UI event listeners
+            #setupEventListeners() {
+                console.log("Setting up event listeners...");
+
+                // Create the wrapped version of fetchAndRender *once*
+                // Pass 'this' context using .bind(this) if #fetchAndRender needed 'this' explicitly.
+                // Here, #fetchAndRender uses 'this.#apiClient', so binding is necessary.
+                this.#loadChartWrapped = withLoadingAndErrorHandling(this.#fetchAndRender.bind(this), this.#uiManager);
+
+
+                // Load chart button click
+                // The wrapper handles reading UI values, messages, and button state
+                this.#uiManager.getElements().loadChartButton.addEventListener('click', this.#loadChartWrapped);
+
+                // Autocomplete setup
+                // Pass the wrapped function as the callback for symbol selection/enter
+                this.#autocomplete.init(
+                    (selectedSymbol) => { // Callback for clicking an autocomplete suggestion
+                         this.#uiManager.setSymbolInputValue(selectedSymbol); // Set the value first
+                         // Then trigger the wrapped chart load using current UI values
+                         this.#loadChartWrapped(); // The wrapper reads the new symbol from input
+                    },
+                    (enteredSymbol) => { // Callback for pressing Enter in the input
+                         // The wrapper reads the value directly, so no need to setInputValue again here
+                         this.#loadChartWrapped();
+                    }
+                );
+
+                 // Optional: Listen for Enter key on date/interval inputs as well
+                 this.#uiManager.getElements().symbolInput.addEventListener('keypress', this.#handleEnterKeyPress.bind(this));
+                 this.#uiManager.getElements().intervalSelect.addEventListener('keypress', this.#handleEnterKeyPress.bind(this));
+                 this.#uiManager.getElements().startDateInput.addEventListener('keypress', this.#handleEnterKeyPress.bind(this));
+                 this.#uiManager.getElements().endDateInput.addEventListener('keypress', this.#handleEnterKeyPress.bind(this));
+
+
+                 // Add cleanup listener (optional but good practice)
+                 window.addEventListener('beforeunload', this.cleanup.bind(this));
+
+                 console.log("Event listeners setup complete.");
+            }
+
+             // Private handler for Enter key press on control inputs
+             #handleEnterKeyPress(event) {
+                 if (event.key === 'Enter') {
+                      event.preventDefault(); // Prevent default form submission/new line
+                      this.#loadChartWrapped(); // Trigger the wrapped chart load
+                      // Optional: Move focus to the button after pressing Enter
+                      this.#uiManager.getElements().loadChartButton.focus();
+                 }
+             }
+
+
+            // Private async method to fetch data and render the chart
+            // This method contains the core logic that the wrapper enhances
+            async #fetchAndRender(symbol, interval, startDate, endDate) {
+                 console.log(`Fetching and rendering chart for ${symbol}...`);
+                 // No UI state logic here - the wrapper handles that
+
+                 // Fetch data using the API client instance
+                 const rawData = await this.#apiClient.fetchHistoricalChart(symbol, interval, startDate, endDate);
+
+                 // Wrap the raw data for potential iteration/generation demo
+                 this._lastChartDataCollection = new ChartDataCollection(rawData);
+
+                 // Update the chart series using the UI Manager
+                 // Use the raw data from the collection for the chart
+                 this.#uiManager.updateChartSeries(this.#candlestickSeries, this._lastChartDataCollection.rawData, interval);
+
+                 console.log("Chart data rendered.");
+
+                 // You could call this.#lastChartDataCollection.findPeakClosePrice() here
+                 // and display it somewhere else if desired, demonstrating the iterator usage.
+            }
+
+
+            // Public cleanup method
+            cleanup() {
+                console.log("Cleaning up resources...");
+                // UIManager handles chart and observer cleanup internally
+                this.#uiManager.createChart(); // Calling createChart when chart exists effectively removes it
+
+                // Any other cleanup needed for other instances could go here
+                 console.log("Cleanup complete.");
+            }
+        }
+
+        // --- Main Initialization Logic ---
+        // Wait for the DOM to be fully loaded before starting
+        document.addEventListener('DOMContentLoaded', () => {
+             console.log("DOM fully loaded.");
+
+             // Define selectors for UI elements
+             const elementSelectors = {
+                 symbolInput: '#symbolInput',
+                 autocompleteResults: '#autocompleteResults',
+                 intervalSelect: '#intervalSelect',
+                 startDateInput: '#startDateInput',
+                 endDateInput: '#endDateInput',
+                 loadChartButton: '#loadChartButton',
+                 chartContainer: '#chart-container'
+             };
+
+             // Get the default symbol list using the static method
+             const initialSymbols = Autocomplete.createDefaultList();
+
+             // Create the main application instance
+             const app = new StockChartApp(API_KEY, elementSelectors, initialSymbols);
+
+             // Start the application initialization (including dynamic script load)
+             app.init();
+
+        });
 
     </script>
 </body>
