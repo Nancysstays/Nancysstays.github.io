@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sandwich Ordering System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        h1 { color: #2d5c88; }
+        form { max-width: 400px; margin: 0 auto; }
+        label { display: block; margin-top: 1em; }
+        select, input[type="text"] { width: 100%; padding: 0.5em; margin-top: 0.5em; }
+        button { margin-top: 1.5em; padding: 0.7em 1.5em; background: #2d5c88; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        #order-summary { margin-top: 2em; background: #f4f4f4; padding: 1em; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h1>Sandwich Ordering System</h1>
+    <form id="sandwichForm">
+        <label>
+            Bread Type:
+            <select name="bread" required>
+                <option value="">Select bread</option>
+                <option value="White">White</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Sourdough">Sourdough</option>
+                <option value="Rye">Rye</option>
+            </select>
+        </label>
+        <label>
+            Protein:
+            <select name="protein" required>
+                <option value="">Select protein</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Ham">Ham</option>
+                <option value="Chicken">Chicken</option>
+                <option value="Tofu">Tofu</option>
+            </select>
+        </label>
+        <label>
+            Cheese:
+            <select name="cheese">
+                <option value="">No cheese</option>
+                <option value="Cheddar">Cheddar</option>
+                <option value="Swiss">Swiss</option>
+                <option value="Provolone">Provolone</option>
+                <option value="American">American</option>
+            </select>
+        </label>
+        <label>
+            Toppings (comma separated):
+            <input type="text" name="toppings" placeholder="Lettuce, Tomato, Onion">
+        </label>
+        <label>
+            Special Instructions:
+            <input type="text" name="instructions" placeholder="e.g. No mayo">
+        </label>
+        <button type="submit">Place Order</button>
+    </form>
+    <div id="order-summary"></div>
+    <script>
+        document.getElementById('sandwichForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const bread = form.bread.value;
+            const protein = form.protein.value;
+            const cheese = form.cheese.value;
+            const toppings = form.toppings.value;
+            const instructions = form.instructions.value;
+            let summary = `<h2>Order Summary</h2>`;
+            summary += `<strong>Bread:</strong> ${bread}<br>`;
+            summary += `<strong>Protein:</strong> ${protein}<br>`;
+            summary += `<strong>Cheese:</strong> ${cheese ? cheese : 'None'}<br>`;
+            summary += `<strong>Toppings:</strong> ${toppings ? toppings : 'None'}<br>`;
+            summary += `<strong>Special Instructions:</strong> ${instructions ? instructions : 'None'}<br>`;
+            document.getElementById('order-summary').innerHTML = summary;
+            form.reset();
+        });
+    </script>
+</body>
+</html>
