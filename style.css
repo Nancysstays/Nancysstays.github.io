@@ -1,263 +1,125 @@
-/* Basic Styling - Replace with your actual CSS */
+/* Basic styling for the page */
 body {
-  margin: 0; /* Remove default body margin */
-}
-
-.container {
-  padding: 20px; /* Add padding to the container */
-}
-
-.jumbotron {
-  background-color: #f8f9fa;
-  padding: 3rem 2rem;
-  border-radius: 0.3rem;
-  margin-bottom: 3rem; 
-}
-.jumbotron h1 {
-  font-weight: 600; 
-  margin-bottom: 1.5rem;
-}
-.inspiration-card {
-  margin-bottom: 2rem; 
-  border: none; 
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-}
-.inspiration-card img {
-  height: 200px; 
-  object-fit: cover; 
-}
-.blog-post {
-  margin-bottom: 2rem; 
-}
-.blog-post img {
-  width: 100%; 
-  height: 250px; 
-  object-fit: cover;
-  margin-bottom: 1rem; 
-  border-top-left-radius: 0.3rem; 
-  border-top-right-radius: 0.3rem; 
-}
-.blog-post h5 {
-  font-weight: 600; 
-}
-.cta-button {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background-color: #007bff; 
-  color: white;
-  text-decoration: none;
-  border-radius: 0.3rem;
-  transition: background-color 0.3s ease; 
-  font-weight: 500; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
-}
-.cta-button:hover {
-  background-color: #0056b3; 
-}
-.section-heading {
-  margin-bottom: 2rem; 
-}
-.section-heading h2 {
-  font-weight: 600; 
-}
-.header-container {
-display: grid;
-grid-template-columns: auto 1fr; /* Divide into two columns: auto-sized for logo, 1fr for sign-in */
-align-items: center; /* Vertically center items within columns */
-padding: 20px; /* Add padding for spacing */
-background-color: #ffffff; /* Optional: Add background color */
-}
-
-.logo-container {
-margin-right: 20px; /* Add spacing between logo and sign-in button */
-}
-
-    /* Basic Styling - Replace with your actual CSS */
-    body {
-      margin: 0; /* Remove default body margin */
-    }
-
-    .container {
-      padding: 20px; /* Add padding to the container */
-    }
-
-    .jumbotron {
-      background-color: #f8f9fa; 
-      padding: 3rem 2rem;
-      border-radius: 0.3rem;
-      margin-bottom: 3rem; 
-    }
-    .jumbotron h1 {
-      font-weight: 600; 
-      margin-bottom: 1.5rem;
-    }
-    .inspiration-card {
-      margin-bottom: 2rem; 
-      border: none; 
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-    }
-    .inspiration-card img {
-      height: 200px; 
-      object-fit: cover; 
-    }
-    .blog-post {
-      margin-bottom: 2rem; 
-    }
-    .blog-post img {
-      width: 100%; 
-      height: 250px; 
-      object-fit: cover;
-      margin-bottom: 1rem; 
-      border-top-left-radius: 0.3rem; 
-      border-top-right-radius: 0.3rem; 
-    }
-    .blog-post h5 {
-      font-weight: 600; 
-    }
-    .cta-button {
-      display: inline-block;
-      padding: 1rem 2rem;
-      background-color: #007bff; 
-      color: white;
-      text-decoration: none;
-      border-radius: 0.3rem;
-      transition: background-color 0.3s ease; 
-      font-weight: 500; 
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
-    }
-    .cta-button:hover {
-      background-color: #0056b3; 
-    }
-    .section-heading {
-      margin-bottom: 2rem; 
-    }
-    .section-heading h2 {
-      font-weight: 600; 
-    }
-.header-container {
-  display: grid;
-  grid-template-columns: auto 1fr; /* Divide into two columns: auto-sized for logo, 1fr for sign-in */
-  align-items: center; /* Vertically center items within columns */
-  padding: 20px; /* Add padding for spacing */
-  background-color: #ffffff; /* Optional: Add background color */
-}
-
-.logo-container {
-  margin-right: 20px; /* Add spacing between logo and sign-in button */
-}
-
-  </style>
-
-#offer-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
-    transition: bottom 0.3s ease-in-out;
-}
-
-.hidden {
-    bottom: -100%;
-}
-
-.offer-content {
+    font-family: Arial, sans-serif;
+    margin: 0 auto; /* Center page content */
     padding: 20px;
-    text-align: center;
-}
-
-.download-button, .close-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.download-button {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.close-button {
-    background-color: #ccc;
+    max-width: 900px; /* Max width for better readability on large screens */
+    line-height: 1.6;
+    background-color: #f4f4f4;
     color: #333;
-    position: absolute;
-    top: 10px;
-    right: 10px;
 }
 
-/* style.css */
-
-/* Base styles */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
+/* Headings */
+h1 {
+    color: #2c3e50; 
+    text-align: center;
+    margin-top: 0; /* Adjust if body padding is added */
+    margin-bottom: 30px;
 }
 
-/* Map container */
-#map {
-  height: 100%;
+h2 {
+    color: #34495e; 
+    border-bottom: 2px solid #3498db; 
+    padding-bottom: 5px;
+    margin-top: 30px; /* Increased top margin for section separation */
+    margin-bottom: 15px;
 }
 
-/* Search bar */
-.search-bar {
-  background-color: #fff;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+/* Form Controls Styling */
+label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
 }
 
-.search-bar input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+select, input[type="text"], button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Space below each control */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Important for width: 100% and padding */
+    font-size: 1em;
 }
 
-.search-bar button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+button {
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* Info window */
-#infowindow-content {
-  display: none;
+button:hover {
+    background-color: #2980b9;
 }
 
-#map #infowindow-content {
-  display: inline;
+#inputFieldsContainer div { /* Style for dynamically added input groups */
+    margin-bottom: 10px;
 }
 
-/* Results list */
-.results-list {
-  list-style-type: none;
-  padding: 0;
+#inputFieldsContainer label { /* More specific styling if needed */
+    font-weight: normal; /* Less emphasis if multiple labels in a group */
+    margin-top: 5px;
+}
+#inputFieldsContainer input[type="text"]{
+    margin-bottom: 5px; /* Tighter spacing within a group of inputs */
 }
 
-.results-list li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+
+/* Styling for data containers */
+#yahoo-data-container, #genai-output-container {
+    background-color: #ffffff; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    padding: 20px; 
+    margin-bottom: 25px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
 }
 
-.results-list li:last-child {
-  border-bottom: none;
+/* Styling for preformatted text elements within containers */
+pre#yahoo-data, pre#genai-data {
+    background-color: #f9f9f9; 
+    padding: 15px; 
+    border: 1px dashed #eee; 
+    border-radius: 4px; 
+    white-space: pre-wrap;   
+    word-wrap: break-word;   
+    max-height: 400px;       
+    overflow-y: auto;        
+    font-family: 'Courier New', Courier, monospace; 
+    color: #333; 
 }
 
-/* Footer */
-.footer {
-  background-color: #f2f2f2;
-  padding: 10px;
-  text-align: center;
+/* Styling for error messages */
+.error {
+    color: #D8000C; 
+    background-color: #FFD2D2; 
+    border: 1px solid #D8000C; 
+    padding: 12px; 
+    border-radius: 4px; 
+    margin-top: 10px;
+    margin-bottom: 15px; /* Consistent margin with other elements */
+    font-weight: bold;
 }
 
-/* W3.CSS and Bootstrap integration */
-/* ... (Your W3.CSS and Bootstrap classes and overrides here) */
-
-.eg-widget {
-  width: 100%;
+/* Styling for the div containing the GenAI analysis type selector */
+div[style*="margin-top: 15px"] { /* A bit fragile, better to add a class if more styling needed */
+    padding: 10px;
+    background-color: #e9ecef; /* Light background for this section */
+    border-radius: 4px;
+    margin-bottom: 20px;
 }
+
+/* Styling for loading messages (if they were separate elements) */
+/* 
+.loading-message {
+    color: #555;
+    font-style: italic;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+*/
