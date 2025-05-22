@@ -1,0 +1,47 @@
+---
+name: Python CI for Stock Predictor
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # E.g., '3.8', '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run train.py test
+        run: |
+          python -m stock_predictor.train \
+            --ticker MSFT \
+            --start_date 2023-01-01 \
+            --end_date 2023-03-31 \
+            --epochs 1 \
+            --batch_size 8 \
+            --model_dir ci_test_model_output
+
+      - name: Run predict.py test
+        run: |
+          python -m stock_predictor.predict \
+            --ticker MSFT \
+            --model_dir ci_test_model_output \
+            --prediction_end_date 2023-04-01
+
+      - name: Clean up test artifacts
+        if: always()  # Ensures this step runs even if previous steps fail
+        run: |
+          rm -rf ci_test_model_output
