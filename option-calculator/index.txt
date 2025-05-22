@@ -1,0 +1,62 @@
+✨ Nancysstays.github.io ✨
+🌟 ┌── index.html                        🏰 Main entry point for the site
+🌟 ├── assets/
+🌟 │   ├── css/
+🌟 │   │   └── 🎨 styles.css              🎀 Global styles
+🌟 │   ├── js/
+🌟 │   │   ├── 🛠️ app.js                 ✨ Main site logic
+🌟 │   │   ├── 📊 chart.js               📈 Chart rendering logic
+🌟 │   │   └── 🌐 api.js                 🌍 API helpers
+🌟 ├── calculators/                      🚪 Gateway to magic calculators
+🌟 │   ├── options/                      💎 Options Trading Calculator
+🌟 │   │   ├── index.html                🌟 Entry point for options
+🌟 │   │   ├── assets/
+🌟 │   │   │   ├── css/
+🌟 │   │   │   │   └── 🎨 styles.css      🧵 Options-specific styles
+🌟 │   │   │   └── js/
+🌟 │   │   │       ├── 🛠️ app.js         🛒 Options logic
+🌟 │   │   │       ├── 💹 calculator.js  📉 Options calculations (e.g., Black-Scholes)
+🌟 │   │   │       ├── 📊 chart.js       📈 Charting for options
+🌟 │   │   │       └── 🌐 api.js         💬 API for options trading
+🌟 │   ├── math/                         🔢 Mathematical Functions Calculator
+🌟 │   │   ├── index.html                🧮 Entry point for math
+🌟 │   │   ├── assets/
+🌟 │   │   │   ├── css/
+🌟 │   │   │   │   └── 🎨 styles.css      🖋️ Math-specific styles
+🌟 │   │   │   └── js/
+🌟 │   │   │       ├── 🛠️ app.js         🧙 Main math logic
+🌟 │   │   │       ├── 📏 stdev.js       🧮 Standard deviation calculations
+🌟 │   │   │       ├── 📐 linear-regression.js 📊 Linear regression logic
+🌟 │   │   │       ├── 🌌 eigen.js       🌠 Eigenvalue calculations
+🌟 │   │   │       ├── 🧮 linear-algebra.js 📚 Matrix math, determinants
+🌟 │   │   │       └── ⚙️ differential-equations.js 🌊 Solve differential equations
+🌟 │   ├── linear-algebra/               🔲 Linear Algebra Calculator
+🌟 │   │   ├── index.html                ♦ Entry point for linear algebra
+🌟 │   │   ├── assets/
+🌟 │   │   │   ├── css/
+🌟 │   │   │   │   └── 🎨 styles.css      🔵 Linear algebra styling
+🌟 │   │   │   └── js/
+🌟 │   │   │       ├── 🛠️ app.js         🔗 Main linear algebra logic
+🌟 │   │   │       ├── 🔢 matrix-math.js 📐 Matrix operations
+🌟 │   │   │       ├── 🌌 eigenvalues.js 🌠 Eigenvalue computation
+🌟 │   │   │       └── 🔗 matrix-operations.js 🧮 Matrix transformations
+🌟 │   ├── differential-equations/       🌊 Differential Equations Calculator
+🌟 │   │   ├── index.html                🔮 Entry point for DE calculator
+🌟 │   │   ├── assets/
+🌟 │   │   │   ├── css/
+🌟 │   │   │   │   └── 🎨 styles.css      🌈 DE styling
+🌟 │   │   │   └── js/
+🌟 │   │   │       ├── 🛠️ app.js         🌊 Main DE logic
+🌟 │   │   │       ├── 🌀 numerical-methods.js 🔢 Euler’s, Runge-Kutta
+🌟 │   │   │       ├── 🌟 symbolic-de.js ✨ Symbolic DE solutions
+🌟 │   │   │       └── ⚙️ advanced-de.js 📚 Nonhomogeneous DE solver
+🌟 ├── option-calculator/
+🌟 │   ├── index.html                    🌟 Legacy entry point for options
+🌟 │   ├── assets/
+🌟 │   │   ├── css/
+🌟 │   │   │   └── 🎨 styles.css          🎀 Legacy styles
+🌟 │   │   ├── js/
+🌟 │   │   │   ├── 🛠️ app.js             🛒 Legacy logic
+🌟 │   │   │   ├── 💹 calculator.js      📉 Legacy options calculations
+🌟 │   │   │   ├── 📊 chart.js           📈 Legacy chart rendering
+🌟 │   │   │   └── 🌐 api.js             🌍 Legacy API helpers

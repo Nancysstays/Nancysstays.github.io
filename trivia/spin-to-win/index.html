@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prize Wheel Spinner</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column; /* Stack elements vertically */
+            background-color: #f0f0f0;
+        }
+        .wheel-container {
+            position: relative; /* Needed for absolute positioning of the pointer */
+            width: 400px; /* Match canvas width */
+            height: 400px; /* Match canvas height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #prizeWheelCanvas {
+            display: block; /* Remove extra space below canvas */
+        }
+        #wheelPointer {
+            position: absolute;
+            top: -15px; /* Position above the center top */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent; /* Triangle shape */
+            border-right: 20px solid transparent;
+            border-top: 30px solid #e74c3c; /* Triangle color */
+            z-index: 10; /* Ensure pointer is above the canvas */
+        }
+        #spinButton {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px; /* Spacing */
+            transition: background-color 0.2s ease;
+        }
+        #spinButton:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+         #spinButton:hover:not(:disabled) {
+             background-color: #2980b9;
+         }
+        #result {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            min-height: 1.5em; /* Prevent layout shift */
+        }
+    </style>
+</head>
+<body>
+    <h1>Prize Wheel</h1>
+
+    <div class="wheel-container">
+        <div id="wheelPointer"></div>
+        <canvas id="prizeWheelCanvas" width="400" height="400">
+            Canvas not supported, use another browser.
+        </canvas>
+    </div>
+
+    <button id="spinButton">Spin!</button>
+    <p id="result">Result: </p>
+
+    <!-- CDNJS Libraries - Async Loading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/winwheel.js/1.2.9/Winwheel.min.js" async></script>
+
+    <!-- Your Custom Script - Also Async -->
+    <script src="script.js" async></script>
+
+</body>
+</html>

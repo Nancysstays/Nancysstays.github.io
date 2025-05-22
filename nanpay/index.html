@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Pay Integration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-TGL7uOBc+pxi43z6lm4wL+wP8Cqbs76agx720W1K7UzxLpz0mX0vsnPQePO+pWNp3" crossorigin="anonymous">
+    <script src="https://payments.developers.google.com/js/client.js?onload=onGoogleApiClientReady"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div id="payment-button-container"></div>
+                <div id="payment-data"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function onGoogleApiClientReady() {
+            google.payments.api.PaymentsClient.initialize({
+                environment: 'TEST' // Replace with 'PRODUCTION' for production
+            }).then(function(client) {
+                const paymentDataRequest = {
+                    apiVersion: 2,
+                    apiVersionMinor: 0,
+                    allowedPaymentMethods: [
+                        {
+                            type: 'CARD',
+                            parameters: {
+                                allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                                allowedCardNetworks: ['VISA', 'MASTERCARD', 'AMEX', 'DISCOVER'],
+                            },
+                            tokenizationSpecification: {
+                                type: 'PAYMENT_GATEWAY',
+                                parameters: {
+                                    // Replace with your payment gateway's parameters
+                                    gateway: 'YOUR_GATEWAY_TOKENIZATION_KEY',
+                                    gatewayMerchantId: 'YOUR_GATEWAY_MERCHANT_ID'
+                                }
+                            }
+                        }
+                    ],
+                    transactionInfo: {
+                        totalPriceStatus: 'FINAL',
+                        totalPrice: '10.00',
+                        currencyCode: 'USD'
+                    },
+                    merchantInfo: {
+                        merchantName: 'Your Merchant Name',
+                        merchantId: 'YOUR_MERCHANT_ID'
+                    }
+                };
+
+                const button = client.createButton({
+                    onClick: () => {
+                        client.loadPaymentData(paymentDataRequest)
+                            .then(function(paymentData) {
+                                // Process the payment data
+                                console.log(paymentData);
+                                document.getElementById('payment-data').textContent = JSON.stringify(paymentData, null, 2);
+                            })
+                            .catch(function(error) {
+                                console.error(error);
+                            });
+                    }
+                });
+
+                document.getElementById('payment-button-container').appendChild(button);
+            });
+        }
+    </script>
+</body>
+</html>

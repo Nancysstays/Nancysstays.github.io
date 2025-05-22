@@ -3,15 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plotly Chart with Indicators</title>
+  <title>Jinx TSLA Chart with Indicators</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <style>
-    .indicator-summary {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
   <div class="container mt-5">
@@ -21,30 +16,46 @@
   </div>
 
   <script>
-    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=googl&apikey=XVYHOWRTRNPN3FJA'; // Replace with your actual API key
+    const tsla = "tsla";
+    const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + tsla + '&apikey=XVYHOWRTRNPN3FJA'; // Replace with your actual API key
 
     async function fetchDataAndPlot() {
-      let cachedData = localStorage.getItem('chartData');
-
-      if (cachedData) {
-        console.log('Using cached data');
-        plotCharts(JSON.parse(cachedData));
-      } else {
+      try {
         console.log('Fetching data from API');
-        try {
-          const response = await fetch(apiUrl);
-          const data = await response.json();
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
-          localStorage.setItem('chartData', JSON.stringify(data));
+        // Check if the API returned an error message
+        if (data['Error Message'] || data['Note']) {
+          throw new Error(data['Error Message'] || data['Note']);
+        }
 
-          plotCharts(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
+        localStorage.setItem('chartData', JSON.stringify(data));
+        plotCharts(data);
+      } catch (error) {
+        console.error('Error fetching data from API:', error);
+
+        // Try to load cached data if API fails
+        let cachedData = localStorage.getItem('chartData');
+        if (cachedData) {
+          console.log('Using cached data');
+          plotCharts(JSON.parse(cachedData));
+        } else {
+          console.error('No cached data available.');
+          // Display an error message to the user if needed
+          document.getElementById('summary').innerHTML = '<p>Error: Could not load data. Please try again later.</p>';
         }
       }
     }
 
     function plotCharts(data) {
+      // Check if the data has the expected structure
+      if (!data['Time Series (Daily)']) {
+        console.error('Invalid data format:', data);
+        document.getElementById('summary').innerHTML = '<p>Error: Invalid data format. Please try again later.</p>';
+        return;
+      }
+
       const dates = Object.keys(data['Time Series (Daily)']).reverse();
       const closingPrices = dates.map(date => parseFloat(data['Time Series (Daily)'][date]['4. close']));
       const highPrices = dates.map(date => parseFloat(data['Time Series (Daily)'][date]['2. high']));
@@ -69,11 +80,11 @@
         y: closingPrices,
         type: 'scatter',
         mode: 'lines',
-        name: 'GOOGL Closing Price'
+        name: 'TSLA Closing Price'
       };
 
       const priceLayout = {
-        title: 'GOOGL Daily Closing Prices',
+        title: 'TSLA Daily Closing Prices',
         xaxis: { title: 'Date' },
         yaxis: { title: 'Price' }
       };

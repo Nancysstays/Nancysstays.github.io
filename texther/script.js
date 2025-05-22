@@ -2,7 +2,6 @@ const textInput = document.getElementById('textInput');
 const saveButton = document.getElementById('saveButton');
 const storedTextsList = document.getElementById('storedTexts');
 
-// Load stored texts on page load
 loadStoredTexts();
 
 textInput.addEventListener('input', () => {
