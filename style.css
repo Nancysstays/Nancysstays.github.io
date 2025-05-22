@@ -1,147 +1,125 @@
-/* 
- * Always set the map height explicitly to define the size of the div element
- * that contains the map. 
- */
-#map {
-  height: 100%;
-}
-
-/* 
- * Optional: Makes the sample page fill the window. 
- */
-html,
+/* Basic styling for the page */
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    font-family: Arial, sans-serif;
+    margin: 0 auto; /* Center page content */
+    padding: 20px;
+    max-width: 900px; /* Max width for better readability on large screens */
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-body {
-  padding: 0 !important;
+/* Headings */
+h1 {
+    color: #2c3e50; 
+    text-align: center;
+    margin-top: 0; /* Adjust if body padding is added */
+    margin-bottom: 30px;
 }
 
-table {
-  font-size: 12px;
+h2 {
+    color: #34495e; 
+    border-bottom: 2px solid #3498db; 
+    padding-bottom: 5px;
+    margin-top: 30px; /* Increased top margin for section separation */
+    margin-bottom: 15px;
 }
 
-.hotel-search {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 440px;
-  z-index: 1;
+/* Form Controls Styling */
+label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
 }
 
-#map {
-  margin-top: 40px;
-  width: 440px;
+select, input[type="text"], button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Space below each control */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Important for width: 100% and padding */
+    font-size: 1em;
 }
 
-#listing {
-  position: absolute;
-  width: 200px;
-  height: 470px;
-  overflow: auto;
-  left: 442px;
-  top: 0px;
-  cursor: pointer;
-  overflow-x: hidden;
+button {
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-#findhotels {
-  font-size: 14px;
+button:hover {
+    background-color: #2980b9;
 }
 
-#locationField {
-  -webkit-box-flex: 1 1 190px;
-  -ms-flex: 1 1 190px;
-  flex: 1 1 190px;
-  margin: 0 8px;
+#inputFieldsContainer div { /* Style for dynamically added input groups */
+    margin-bottom: 10px;
 }
 
-#controls {
-  -webkit-box-flex: 1 1 140px;
-  -ms-flex: 1 1 140px;
-  flex: 1 1 140px;
+#inputFieldsContainer label { /* More specific styling if needed */
+    font-weight: normal; /* Less emphasis if multiple labels in a group */
+    margin-top: 5px;
+}
+#inputFieldsContainer input[type="text"]{
+    margin-bottom: 5px; /* Tighter spacing within a group of inputs */
 }
 
-#autocomplete {
-  width: 100%;
+
+/* Styling for data containers */
+#yahoo-data-container, #genai-output-container {
+    background-color: #ffffff; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    padding: 20px; 
+    margin-bottom: 25px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
 }
 
-#country {
-  width: 100%;
+/* Styling for preformatted text elements within containers */
+pre#yahoo-data, pre#genai-data {
+    background-color: #f9f9f9; 
+    padding: 15px; 
+    border: 1px dashed #eee; 
+    border-radius: 4px; 
+    white-space: pre-wrap;   
+    word-wrap: break-word;   
+    max-height: 400px;       
+    overflow-y: auto;        
+    font-family: 'Courier New', Courier, monospace; 
+    color: #333; 
 }
 
-.placeIcon {
-  width: 20px;
-  height: 34px;
-  margin: 4px;
+/* Styling for error messages */
+.error {
+    color: #D8000C; 
+    background-color: #FFD2D2; 
+    border: 1px solid #D8000C; 
+    padding: 12px; 
+    border-radius: 4px; 
+    margin-top: 10px;
+    margin-bottom: 15px; /* Consistent margin with other elements */
+    font-weight: bold;
 }
 
-.hotelIcon {
-  width: 24px;
-  height: 24px;
+/* Styling for the div containing the GenAI analysis type selector */
+div[style*="margin-top: 15px"] { /* A bit fragile, better to add a class if more styling needed */
+    padding: 10px;
+    background-color: #e9ecef; /* Light background for this section */
+    border-radius: 4px;
+    margin-bottom: 20px;
 }
 
-#resultsTable {
-  border-collapse: collapse;
-  width: 240px;
+/* Styling for loading messages (if they were separate elements) */
+/* 
+.loading-message {
+    color: #555;
+    font-style: italic;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
-
-#rating {
-  font-size: 13px;
-  font-family: Arial Unicode MS;
-}
-
-.iw_table_row {
-  height: 18px;
-}
-
-.iw_attribute_name {
-  font-weight: bold;
-  text-align: right;
-}
-
-.iw_table_icon {
-  text-align: right;
-}
-
-.ajax-popup {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000; 
-}
-
-.ajax-popup-content {
-  text-align: center;
-}
-
-.ajax-popup-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff; 
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.ajax-popup-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-}
+*/

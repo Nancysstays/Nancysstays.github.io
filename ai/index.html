@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jinx Nancy</title>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
   <div class="w3-container">
@@ -12,14 +10,6 @@
       <button type="button" class="w3-button w3-blue" onclick="processText()">Process Text</button>
     </form>
   </div>
-
-  <script>
-    const apiKey = "AIzaSyDiS4F6RE04oMW3BpURdHXXhbtOg3n65OA";
-    const genAI = new GoogleGenerativeAI(apiKey);
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-thinking-exp-01-21",
-      tools: [{ codeExecution: {} }],
     });
 
     const generationConfig = {
@@ -41,6 +31,25 @@
 
       const result = await chatSession.sendMessage(userInput);
       console.log(result.response.text());
+    }
+
+    // Function to save chat histories to localStorage
+    function saveChatHistories() {
+      localStorage.setItem("chatHistories", JSON.stringify(chatHistories));
+    }
+
+    // Function to load chat histories from localStorage
+    function loadChatHistories() {
+      const storedHistories = localStorage.getItem("chatHistories");
+      return storedHistories ? JSON.parse(storedHistories) : [ [], [], [], [] ];
+    }
+
+    // Display chat history for a specific column
+    function displayChatHistory(column, index) {
+      const chatContainer = column.querySelector(".chat-container");
+      chatHistories[index].forEach(msg => {
+        displayMessage(chatContainer, msg.role === "user" ? "user" : "ai", msg.parts);
+      });
     }
   </script>
 </body>

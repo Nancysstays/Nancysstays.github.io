@@ -1,0 +1,153 @@
+//@version=5
+strategy("Covariance MACD Stochastic Strategy v24", initial_capital=10000, overlay=true, max_bars_back=5000, pyramiding=1, default_qty_type=strategy.percent_of_equity, default_qty_value=100, margin_long=30, margin_short=30, commission_type=strategy.commission.percent)
+
+// --- Input Parameters ---
+barsToAnalyze = input.int(2160, "Bars to Analyze", tooltip="The number of historical bars to analyze for probability calculations.", minval=1)
+dowPeriods = input.int(20, "DOW Periods", tooltip="The number of periods to consider for DOW Jones Industrial Average data.", minval=2)
+macdFast = input.int(12, "MACD Fast Length", tooltip="The fast length parameter for the MACD indicator.", minval=1)
+macdSlow = input.int(26, "MACD Slow Length", tooltip="The slow length parameter for the MACD indicator.", minval=1)
+macdSignal = input.int(9, "MACD Signal Length", tooltip="The signal length parameter for the MACD indicator.", minval=1)
+vwmaLength = input.int(20, "VWMA Length", tooltip="The length parameter for the Volume-Weighted Moving Average indicator.", minval=1)
+lsmaLength = input.int(25, "LSMA Length", tooltip="The length parameter for the Least Squares Moving Average indicator.", minval=1)
+rsiLength = input.int(14, "RSI Length", tooltip="The length parameter for the Relative Strength Index indicator.", minval=1)
+stochLength = input.int(14, "Stochastic Length", tooltip="The length parameter for the Stochastic indicator.", minval=1)
+atrLength = input.int(14, "ATR Length", tooltip="The length parameter for the Average True Range indicator.", minval=1)
+cciLength = input.int(20, "CCI Length", tooltip="The length parameter for the Commodity Channel Index indicator.", minval=1)
+
+// --- Probability Calculations ---
+
+// Initialize probability variables for up to 5 consecutive up/down days
+p_uu = 0.0  // Probability of Up given previous Up
+p_ud = 0.0  // Probability of Up given previous Down
+p_du = 0.0  // Probability of Down given previous Up
+p_dd = 0.0  // Probability of Down given previous Down
+p_uuu = 0.0  // Probability of Up given previous Up Up
+p_uud = 0.0  // Probability of Up given previous Up Down
+p_udu = 0.0  // Probability of Up given previous Up Down Up
+p_udd = 0.0  // Probability of Up given previous Down Down
+p_duu = 0.0  // Probability of Down given previous Up Up
+p_dud = 0.0  // Probability of Down given previous Up Down
+p_ddu = 0.0  // Probability of Down given previous Down Up
+p_ddd = 0.0  // Probability of Down given previous Down Down
+p_uuuu = 0.0  // Probability of Up given previous Up Up Up
+p_uuud = 0.0  // Probability of Up given previous Up Up Up Down
+p_uudu = 0.0  // Probability of Up given previous Up Up Down Up
+p_uudd = 0.0  // Probability of Up given previous Up Up Down Down
+p_uduu = 0.0  // Probability of Up given previous Up Down Up Up
+p_udud = 0.0  // Probability of Up given previous Up Down Up Down
+p_uddu = 0.0  // Probability of Up given previous Up Down Down Up
+p_uddd = 0.0  // Probability of Up given previous Up Down Down Down
+p_duuu = 0.0  // Probability of Down given previous Down Up Up Up
+p_duud = 0.0  // Probability of Down given previous Down Up Up Down
+p_dudu = 0.0  // Probability of Down given previous Down Up Down Up
+p_dudd = 0.0  // Probability of Down given previous Down Up Down Down
+p_dduu = 0.0  // Probability of Down given previous Down Down Up Up
+p_ddud = 0.0  // Probability of Down given previous Down Down Up Down
+p_dddu = 0.0  // Probability of Down given previous Down Down Down Up
+p_dddd = 0.0  // Probability of Down given previous Down Down Down Down
+// ... and so on for higher-order probabilities
+
+// Calculate counts for different sequences
+upCount = 0
+downCount = 0
+upUpCount = 0
+upDownCount = 0
+downUpCount = 0
+downDownCount = 0
+upUpUpCount = 0
+upUpDownCount = 0
+upDownUpCount = 0
+upDownDownCount = 0
+downUpUpCount = 0
+downUpDownCount = 0
+downDownUpCount = 0
+downDownDownCount = 0
+upUpUpUpCount = 0
+upUpUpDownCount = 0
+upUpDownUpCount = 0
+upUpDownDownCount = 0
+upDownUpUpCount = 0
+upDownUpDownCount = 0
+upDownDownUpCount = 0
+upDownDownDownCount = 0
+downUpUpUpCount = 0
+downUpUpDownCount = 0
+downUpDownUpCount = 0
+downUpDownDownCount = 0
+downDownUpUpCount = 0
+downDownUpDownCount = 0
+downDownDownUpCount = 0
+downDownDownDownCount = 0
+// ... and so on for higher-order counts
+
+// Loop through historical bars to calculate counts
+for i = barsToAnalyze to 1 by 1
+    if close[i] > close[i + 1]
+        upCount := upCount + 1
+        if close[i + 1] > close[i + 2]
+            upUpCount := upUpCount + 1
+        else
+            upDownCount := upDownCount + 1
+    else
+        downCount := downCount + 1
+        if close[i + 1] > close[i + 2]
+            downUpCount := downUpCount + 1
+        else
+            downDownCount := downDownCount + 1
+
+// Calculate probabilities based on counts
+p_uu := upAfterUp / (upCount == 0 ? 1 : upCount)
+p_ud := upAfterDown / (downCount == 0 ? 1 : downCount)
+p_du := downAfterUp / (upCount == 0 ? 1 : upCount)
+p_dd := downAfterDown / (downCount == 0 ? 1 : downCount)
+p_uuu := upAfterUpUp / (upUpCount == 0 ? 1 : upUpCount)
+p_uud := upAfterUpDown / (upDownCount == 0 ? 1 : upDownCount)
+p_udu := upAfterDownUp / (downUpCount == 0 ? 1 : downUpCount)
+p_udd := upAfterDownDown / (downDownCount == 0 ? 1 : downDownCount)
+p_duu := downAfterUpUp / (upUpCount == 0 ? 1 : upUpCount)
+p_dud := downAfterUpDown / (upDownCount == 0 ? 1 : upDownCount)
+p_ddu := downAfterDownUp / (downUpCount == 0 ? 1 : downUpCount)
+p_ddd := downAfterDownDown / (downDownCount == 0 ? 1 : downDownCount)
+p_uuuu := upAfterUpUpUp / (upUpUpCount == 0 ? 1 : upUpUpCount)
+p_uuud := upAfterUpUpDown / (upUpDownCount == 0 ? 1 : upUpDownCount)
+p_uudu := upAfterUpDownUp / (upDownUpCount == 0 ? 1 : upDownUpCount)
+p_uudd := upAfterUpDownDown / (upDownDownCount == 0 ? 1 : upDownDownCount)
+p_uduu := upAfterDownUpUp / (downUpUpCount == 0 ? 1 : downUpUpCount)
+p_udud := upAfterDownUpDown / (downUpDownCount == 0 ? 1 : downUpDownCount)
+p_uddu := upAfterDownDownUp / (downDownUpCount == 0 ? 1 : downDownUpCount)
+p_uddd := upAfterDownDownDown / (downDownDownCount == 0 ? 1 : downDownDownCount)
+p_duuu := downAfterUpUpUp / (upUpUpCount == 0 ? 1 : upUpUpCount)
+p_duud := downAfterUpUpDown / (upUpDownCount == 0 ? 1 : upUpDownCount)
+p_dudu := downAfterUpDownUp / (upDownUpCount == 0 ? 1 : upDownUpCount)
+p_dudd := downAfterUpDownDown / (upDownDownCount == 0 ? 1 : upDownDownCount)
+p_dduu := downAfterDownUpUp / (downUpUpCount == 0 ? 1 : downUpUpCount)
+p_ddud := downAfterDownUpDown / (downUpDownCount == 0 ? 1 : downUpDownCount)
+p_dddu := downAfterDownDownUp / (downDownUpCount == 0 ? 1 : downDownUpCount)
+p_dddd := downAfterDownDownDown / (downDownDownCount == 0 ? 1 : downDownDownCount)
+// --- Strategy Logic ---
+
+// Define indicators
+[macdLine, signalLine, _] = ta.macd(close, macdFast, macdSlow, macdSignal)
+vwma = ta.vwma(close, vwmaLength)
+lsma = ta.linreg(close, lsmaLength)
+
+// Linear regression to predict the open of the next bar
+predictedOpen = ta.linreg(open, lsmaLength, 0)
+rsi = ta.rsi(close, rsiLength)
+
+// Plot the predicted open
+plot(predictedOpen, title="Predicted Open", color=color.blue)
+[stochK, stochD] = ta.stoch(close, high, low, stochLength)
+atr = ta.atr(atrLength)
+cci = ta.cci(close, high, low, cciLength)
+
+
+// Define entry and exit conditions
+longCondition = (macdLine > signalLine) and (close > vwma) and (rsi < 70) and (stochK < 80)
+shortCondition = (macdLine < signalLine) and (close < vwma) and (rsi > 30) and (stochK > 20)
+
+// Execute trades
+if (longCondition)
+    strategy.entry("Long", strategy.long)
+if (shortCondition)
+    strategy.entry("Short", strategy.short)

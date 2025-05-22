@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send Email</title>
+</head>
+<body>
+
+  <h1>Send Email</h1>
+
+  <form id="emailForm" action="mailto:recipient@example.com" method="post" enctype="text/plain">
+    <label for="to">To:</label><br>
+    <input type="email" id="to" name="to" required><br><br>
+
+    <label for="subject">Subject:</label><br>
+    <input type="text" id="subject" name="subject" required><br><br>
+
+    <label for="body">Message:</label><br>
+    <textarea id="body" name="body" rows="5" required></textarea><br><br>
+
+    <button type="submit">Send Email</button>
+  </form>
+
+</body>
+</html>

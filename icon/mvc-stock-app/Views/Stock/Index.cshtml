@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Data Analysis</title>
+    <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Data Analysis</h1>
+        <form id="stockForm">
+            <div>
+                <label for="tickerSymbol">Ticker Symbol:</label>
+                <input type="text" id="tickerSymbol" name="tickerSymbol" required>
+            </div>
+            <div>
+                <label for="interval">Interval:</label>
+                <select id="interval" name="interval">
+                    <option value="1min">1 Minute</option>
+                    <option value="5min">5 Minutes</option>
+                    <option value="15min">15 Minutes</option>
+                    <option value="30min">30 Minutes</option>
+                    <option value="60min">60 Minutes</option>
+                </select>
+            </div>
+            <button type="submit">Fetch Data</button>
+        </form>
+
+        <div id="results">
+            <h2>Calculated Indicators</h2>
+            <div id="macd"></div>
+            <div id="cci"></div>
+            <div id="rsi"></div>
+            <div id="vwma"></div>
+            <div id="ema"></div>
+            <div id="vwap"></div>
+            <div id="covariance"></div>
+        </div>
+    </div>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>

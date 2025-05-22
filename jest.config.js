@@ -1,0 +1,1 @@
+module.exports = {  preset: 'jest-preset-jsdom', // to simulate a browser environment for DOM manipulation  testEnvironment: 'jsdom',  setupFilesAfterEnv: ['./setupTests.js'], // for mocking window.location.href etc.};

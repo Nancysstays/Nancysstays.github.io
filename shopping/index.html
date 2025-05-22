@@ -8,31 +8,67 @@
       display: flex;
       align-items: center;
     }
-    .item-name {
+    .item-name, .item-category, .item-price, .item-quantity, .item-distributor {
       flex-grow: 1;
+    }
+    .item-image {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+    .item-details {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .subtitle {
+      font-weight: bold;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <div class="container mt-5">
-    <h1>Shopping Lists</h1>
+    <h1 class="mb-4">Shopping Lists</h1>
 
-    <div class="input-group mb-3">
-      <input type="text" id="new-list-name" class="form-control" placeholder="New List Name">
-      <button class="btn btn-outline-secondary" type="button" id="create-list">Create List</button>
+    <div class="mb-3">
+      <h3 class="subtitle">Create New List</h3>
+      <div class="input-group">
+        <input type="text" id="new-list-name" class="form-control" placeholder="New List Name">
+        <button class="btn btn-outline-secondary" type="button" id="create-list">Create List</button>
+      </div>
     </div>
 
-    <ul class="list-group" id="lists-container">
-      </ul>
+    <h3 class="subtitle">My Lists</h3>
+    <ul class="list-group mb-4" id="lists-container">
+    </ul>
 
-    <div id="list-items-container" class="mt-4">
-      <h2>List Items</h2>
+    <div id="list-items-container">
+      <h3 class="subtitle">List Items</h3>
       <ul class="list-group" id="list-items">
       </ul>
 
-      <div class="input-group mt-3">
-        <input type="text" id="new-item" class="form-control" placeholder="Add Item">
-        <button class="btn btn-outline-secondary" type="button" id="add-item">Add</button>
+      <div class="mt-3">
+        <strong>Total: </strong><span id="list-total">0.00</span>
+      </div>
+
+      <div class="mt-3">
+      <h3 class="subtitle">Add New Item</h3>
+      <div class="item-details">
+          <input type="text" id="new-item-name" class="form-control" placeholder="Item Name">
+          <input type="text" id="new-item-category" class="form-control" placeholder="Category">
+          <input type="number" id="new-item-price" class="form-control" placeholder="Price" step="0.01">
+          <input type="number" id="new-item-quantity" class="form-control" placeholder="Quantity" value="1" min="1">
+      </div>
+      <div class="mt-2 item-details">
+        <select id="new-item-distributor" class="form-control">
+          <option value="">Select Distributor</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" id="add-distributor">Add Distributor</button>
+        <input type="text" id="new-item-image" class="form-control" placeholder="Image URL">
+        <button class="btn btn-outline-secondary" type="button" id="add-item">Add Item</button>
+      </div>
       </div>
     </div>
   </div>
@@ -42,46 +78,86 @@
     const listsContainer = document.getElementById('lists-container');
     const listItemsContainer = document.getElementById('list-items-container');
     const listItems = document.getElementById('list-items');
+    const listTotal = document.getElementById('list-total');
     const newListNameInput = document.getElementById('new-list-name');
     const createListButton = document.getElementById('create-list');
-    const newItemInput = document.getElementById('new-item');
+    const newItemNameInput = document.getElementById('new-item-name');
+    const newItemCategoryInput = document.getElementById('new-item-category');
+    const newItemPriceInput = document.getElementById('new-item-price');
+    const newItemQuantityInput = document.getElementById('new-item-quantity');
+    const newItemDistributorSelect = document.getElementById('new-item-distributor');
+    const newItemImageInput = document.getElementById('new-item-image');
     const addItemButton = document.getElementById('add-item');
+    const addDistributorButton = document.getElementById('add-distributor');
 
     let currentList = null;
+    let distributors = []; // Array to store distributors
 
-    // Load lists from localStorage
+    // Load lists
     function loadLists() {
       const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
       for (const listName in savedLists) {
         addList(listName, savedLists[listName]);
       }
+      loadDistributors();
     }
 
-    // Save lists to localStorage
+    // Save lists
     function saveLists() {
       const lists = {};
-      const listItems = listsContainer.querySelectorAll('.list-group-item');
-      listItems.forEach(item => {
-        const listName = item.textContent;
+      const listElements = listsContainer.querySelectorAll('.list-group-item');
+      listElements.forEach(listElement => {
+        const listName = listElement.firstChild.textContent;
         lists[listName] = getListItems(listName);
       });
       localStorage.setItem('shoppingLists', JSON.stringify(lists));
     }
 
-    // Add a new list
+    // Load distributors
+    function loadDistributors() {
+      distributors = JSON.parse(localStorage.getItem('distributors')) || [];
+      updateDistributorSelect();
+    }
+
+    // Save distributors
+    function saveDistributors() {
+      localStorage.setItem('distributors', JSON.stringify(distributors));
+    }
+
+    // Update distributor select
+    function updateDistributorSelect() {
+      newItemDistributorSelect.innerHTML = '<option value="">Select Distributor</option>';
+      distributors.forEach(distributor => {
+        const option = document.createElement('option');
+        option.value = distributor;
+        option.textContent = distributor;
+        newItemDistributorSelect.appendChild(option);
+      });
+    }
+
+    // Add a new distributor
+    addDistributorButton.addEventListener('click', () => {
+      const newDistributor = prompt("Enter new distributor name:");
+      if (newDistributor && !distributors.includes(newDistributor)) {
+        distributors.push(newDistributor);
+        saveDistributors();
+        updateDistributorSelect();
+      }
+    });
+
+    // Add list
     function addList(listName, items = []) {
       const listItem = document.createElement('li');
       listItem.classList.add('list-group-item');
-      listItem.textContent = listName;
+      const listNameSpan = document.createElement('span');
+      listNameSpan.textContent = listName;
+      listItem.appendChild(listNameSpan);
 
       // Edit button
-      const editButton = document.createElement('button');
-      editButton.classList.add('btn', 'btn-sm', 'btn-outline-primary', 'me-2');
-      editButton.textContent = 'Edit';
-      editButton.addEventListener('click', () => {
+      const editButton = createButton('Edit', 'btn-outline-primary', () => {
         const newListName = prompt('Enter new list name:', listName);
         if (newListName && newListName !== listName) {
-          listItem.textContent = newListName;
+          listNameSpan.textContent = newListName;
           renameListInLocalStorage(listName, newListName);
           saveLists();
         }
@@ -89,11 +165,8 @@
       listItem.appendChild(editButton);
 
       // Delete button
-      const deleteButton = document.createElement('button');
-      deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
-      deleteButton.textContent = 'Delete';
-      deleteButton.addEventListener('click', () => {
-        if (confirm(`Are you sure you want to delete "${listName}"?`)) {
+      const deleteButton = createButton('Delete', 'btn-outline-danger', () => {
+        if (confirm(`Delete "${listName}"?`)) {
           listsContainer.removeChild(listItem);
           deleteListFromLocalStorage(listName);
           if (currentList === listName) {
@@ -104,16 +177,22 @@
       });
       listItem.appendChild(deleteButton);
 
+      listItem.addEventListener('click', () => loadListItems(listName, items));
       listsContainer.appendChild(listItem);
-
-      listItem.addEventListener('click', () => {
-        loadListItems(listName, items);
-      });
+    }
+    
+    // Create button helper function
+    function createButton(text, className, clickHandler) {
+      const button = document.createElement('button');
+      button.classList.add('btn', 'btn-sm', className, 'me-2');
+      button.textContent = text;
+      button.addEventListener('click', clickHandler);
+      return button;
     }
 
     // Rename list in localStorage
     function renameListInLocalStorage(oldName, newName) {
-      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      const savedLists = getSavedLists();
       if (savedLists[oldName]) {
         savedLists[newName] = savedLists[oldName];
         delete savedLists[oldName];
@@ -123,69 +202,133 @@
 
     // Delete list from localStorage
     function deleteListFromLocalStorage(listName) {
-      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      const savedLists = getSavedLists();
       if (savedLists[listName]) {
         delete savedLists[listName];
         localStorage.setItem('shoppingLists', JSON.stringify(savedLists));
       }
     }
 
-    // Get list items from localStorage
+    // Get saved lists
+    function getSavedLists() {
+      return JSON.parse(localStorage.getItem('shoppingLists')) || {};
+    }
+
+    // Get list items
     function getListItems(listName) {
-      const savedLists = JSON.parse(localStorage.getItem('shoppingLists')) || {};
+      const savedLists = getSavedLists();
       return savedLists[listName] || [];
     }
 
     // Load list items
     function loadListItems(listName, items) {
       currentList = listName;
-      listItems.innerHTML = ''; // Clear current items
-      items.forEach(item => {
-        addItem(item, false);
-      });
+      listItems.innerHTML = '';
+      items.forEach(item => addItem(item, false));
+      updateTotal();
     }
 
     // Clear list items
     function clearListItems() {
       listItems.innerHTML = '';
+      updateTotal();
     }
-
-    // Add a new item to the current list
-    function addItem(itemName, save = true) {
+    
+    // Add item
+    function addItem(item, save = true) {
       const listItem = document.createElement('li');
       listItem.classList.add('list-group-item');
 
+      if (item.image) {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.classList.add('item-image');
+        listItem.appendChild(img);
+      }
+
+      const itemDetails = document.createElement('div');
+      itemDetails.classList.add('item-details');
+
       const itemNameSpan = document.createElement('span');
       itemNameSpan.classList.add('item-name');
-      itemNameSpan.textContent = itemName;
-      listItem.appendChild(itemNameSpan);
+      itemNameSpan.textContent = item.name;
+      itemDetails.appendChild(itemNameSpan);
+
+      const itemCategorySpan = document.createElement('span');
+      itemCategorySpan.classList.add('item-category');
+      itemCategorySpan.textContent = item.category;
+      itemDetails.appendChild(itemCategorySpan);
+
+      const itemPriceSpan = document.createElement('span');
+      itemPriceSpan.classList.add('item-price');
+      itemPriceSpan.textContent = `\$${item.price.toFixed(2)}`;
+      itemDetails.appendChild(itemPriceSpan);
+      
+      const itemQuantitySpan = document.createElement('span');
+      itemQuantitySpan.classList.add('item-quantity');
+      itemQuantitySpan.textContent = `Qty: ${item.quantity}`;
+      itemDetails.appendChild(itemQuantitySpan);
+
+      const itemDistributorSpan = document.createElement('span');
+      itemDistributorSpan.classList.add('item-distributor');
+      itemDistributorSpan.textContent = item.distributor ? `(${item.distributor})` : '';
+      itemDetails.appendChild(itemDistributorSpan);
+
+      listItem.appendChild(itemDetails);
 
       // Edit button
-      const editButton = document.createElement('button');
-      editButton.classList.add('btn', 'btn-sm', 'btn-outline-primary', 'me-2');
-      editButton.textContent = 'Edit';
-      editButton.addEventListener('click', () => {
-        const newItemName = prompt('Enter new item name:', itemName);
-        if (newItemName) {
-          itemNameSpan.textContent = newItemName;
-          saveLists();
-        }
-      });
+      const editButton = createButton('Edit', 'btn-outline-primary', () => {
+          const newItemName = prompt('Enter new item name:', item.name);
+          const newItemCategory = prompt('Enter new category:', item.category);
+          const newItemPrice = parseFloat(prompt('Enter new price:', item.price));
+          const newItemQuantity = parseInt(prompt('Enter new quantity:', item.quantity));
+          const newItemDistributor = prompt('Enter new distributor:', item.distributor || '');
+          const newItemImage = prompt('Enter new image URL:', item.image);
+
+          if (newItemName) item.name = newItemName;
+          if (newItemCategory) item.category = newItemCategory;
+          if (!isNaN(newItemPrice)) item.price = newItemPrice;
+          if (!isNaN(newItemQuantity)) item.quantity = newItemQuantity;
+          item.distributor = newItemDistributor;
+          if (newItemImage) {
+            item.image = newItemImage;
+            img.src = newItemImage;
+          } else {
+            item.image = '';
+            if (img) listItem.removeChild(img);
+          }
+
+          itemNameSpan.textContent = item.name;
+          itemCategorySpan.textContent = item.category;
+          itemPriceSpan.textContent = `\$${item.price.toFixed(2)}`;
+          itemQuantitySpan.textContent = `Qty: ${item.quantity}`;
+          itemDistributorSpan.textContent = item.distributor ? `(${item.distributor})` : '';
+          if (save) saveLists();
+        });
       listItem.appendChild(editButton);
 
       // Delete button
-      const deleteButton = document.createElement('button');
-      deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
-      deleteButton.textContent = 'Delete';
-      deleteButton.addEventListener('click', () => {
+      const deleteButton = createButton('Delete', 'btn-outline-danger', () => {
         listItems.removeChild(listItem);
         if (save) {
           saveLists();
+          updateTotal();
         }
       });
       listItem.appendChild(deleteButton);
 
       listItems.appendChild(listItem);
+      if (save) updateTotal();
+    }
+
+    // Update total
+    function updateTotal() {
+      let total = 0;
+      const items = getListItems(currentList);
+      items.forEach(item => {
+        total += item.price * item.quantity;
+      });
+      listTotal.textContent = total.toFixed(2);
     }
 
     // Event listeners
@@ -199,16 +342,28 @@
     });
 
     addItemButton.addEventListener('click', () => {
-      const itemName = newItemInput.value.trim();
-      if (itemName && currentList) {
-        addItem(itemName);
-        newItemInput.value = '';
+      const itemName = newItemNameInput.value.trim();
+      const itemCategory = newItemCategoryInput.value.trim();
+      const itemPrice = parseFloat(newItemPriceInput.value.trim());
+      const itemQuantity = parseInt(newItemQuantityInput.value.trim()) || 1;
+      const itemDistributor = newItemDistributorSelect.value;
+      const itemImage = newItemImageInput.value.trim();
+
+      if (itemName && itemCategory && !isNaN(itemPrice) && currentList) {
+        addItem({ name: itemName, category: itemCategory, price: itemPrice, quantity: itemQuantity, distributor: itemDistributor, image: itemImage });
+        newItemNameInput.value = '';
+        newItemCategoryInput.value = '';
+        newItemPriceInput.value = '';
+        newItemQuantityInput.value = '1';
+        newItemDistributorSelect.value = '';
+        newItemImageInput.value = '';
         saveLists();
       }
     });
 
-    // Load initial lists
+    // Load initial lists and distributors
     loadLists();
+    loadDistributors();
   </script>
 </body>
 </html>

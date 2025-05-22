@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wolfram Alpha Integration</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Wolfram Alpha Integration</h1>
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#queryInput">Input</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#historyTab">History</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane container active" id="queryInput">
+        <div class="form-group">
+          <label for="wolframInput">Enter Wolfram Alpha Query:</label>
+          <input type="text" class="form-control" id="wolframInput"
+                 value="Graph y = [//math:3x + 1//] and y = [//math:-5x//]">
+        </div>
+        <button class="btn btn-primary" onclick="submitQuery()">Submit Query</button>
+      </div>
+
+      <div class="tab-pane container fade" id="historyTab">
+        <div id="historyItems">
+        </div>
+      </div>
+    </div>
+
+    <div id="wolframResults">
+    </div>
+    <div id="loadingSpinner"></div>
+  </div>
+
+  <script>
+    const resultsDiv = document.getElementById('wolframResults');
+    const historyItemsDiv = document.getElementById('historyItems');
+    let queryHistory = [];
+
+    function submitQuery() {
+      const query = document.getElementById('wolframInput').value;
+
+      // Display loading spinner
+      document.getElementById('loadingSpinner').style.display = 'block';
+
+      // Encode the query and construct the Wolfram Alpha URL
+      const encodedQuery = encodeURIComponent(query);
+      const wolframURL = `https://www.wolframalpha.com/input?i=${encodedQuery}`;
+
+      // --- Open in new tab ---
+      window.open(wolframURL, '_blank');
+
+      // --- Open in popup ---
+      const popupWindow = window.open(wolframURL, 'Wolfram Alpha Result', 'width=800,height=600');
+
+      // --- Display in iframe ---
+      const iframe = document.createElement('iframe');
+      iframe.src = wolframURL;
+      iframe.onload = function () {
+        // Hide the loading spinner once the iframe has loaded
+        document.getElementById('loadingSpinner').style.display = 'none';
+      };
+
+      resultsDiv.innerHTML = '';
+      resultsDiv.appendChild(iframe);
+
+      queryHistory.push(query);
+      updateHistoryDisplay();
+    }
+
+    // ... (rest of the JavaScript code - same as before)
+ 
+
+  function submitQuery() {
+    const query = document.getElementById('wolframInput').value;
+    const encodedQuery = encodeURIComponent(query);
+    const wolframURL = `https://www.wolframalpha.com/input?i=${encodedQuery}`;
+
+    // Create an iframe and set its source
+    const iframe = document.createElement('iframe');
+    iframe.src = wolframURL;
+
+    // Display the iframe in the results div
+    const resultsDiv = document.getElementById('wolframResults');
+    resultsDiv.innerHTML = ''; // Clear previous results
+    resultsDiv.appendChild(iframe);
+  }
+</script>
+
+</body>
+</html>

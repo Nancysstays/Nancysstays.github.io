@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Expense Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="container">
+        <h1>Hotel Expense Calculator</h1>
+        <div class="form-group">
+            <label for="rooms">Number of Rooms:</label>
+            <input type="number" class="form-control" id="rooms" value="10">
+        </div>
+        <div class="form-group">
+            <label for="occupancy">Occupancy Rate (%):</label>
+            <input type="number" class="form-control" id="occupancy" value="70">
+        </div>
+        <div class="form-group">
+            <label for="roomRate">Average Room Rate:</label>
+            <input type="number" class="form-control" id="roomRate" value="100">
+        </div>
+        <h2>Expenses</h2>
+        <div class="form-group">
+            <label for="staff">Staff Costs:</label>
+            <input type="number" class="form-control" id="staff" value="5000">
+        </div>
+        <div class="form-group">
+            <label for="utilities">Utilities:</label>
+            <input type="number" class="form-control" id="utilities" value="2000">
+        </div>
+        <div class="form-group">
+            <label for="maintenance">Maintenance:</label>
+            <input type="number" class="form-control" id="maintenance" value="1000">
+        </div>
+        <div class="form-group">
+            <label for="other">Other Expenses:</label>
+            <input type="number" class="form-control" id="other" value="500">
+        </div>
+        <button onclick="calculate()" class="btn btn-primary">Calculate</button>
+
+        <h2>Results</h2>
+        <div id="results"></div>
+
+        <h2>Saved Data</h2>
+        <div id="savedData"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

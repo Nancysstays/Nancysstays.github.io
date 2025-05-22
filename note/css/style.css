@@ -1,0 +1,14 @@
+.note-container {
+    margin-bottom: 20px;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+}
+
+.section-label {
+    font-weight: bold;
+}
+
+#preview {
+    margin-top: 10px;
+    max-width: 300px;
+}

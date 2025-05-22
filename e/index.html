@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithmic Trading with MACD</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> </head>
+<body>
+    <div id="container">
+        <header>
+            <h1>Algorithmic Trading with MACD</h1>
+            <p>Automated trading strategy analysis using the Moving Average Convergence Divergence (MACD) indicator.</p>
+            <nav>
+                <ul>
+                    <li><a href="#settings">Settings</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="settings">
+                <h2>Securities</h2>
+                <ul id="security-list">
+                    <li>AAPL</li>
+                    <li>MSFT</li>
+                    <li>GOOG</li>
+                    <li>AMZN</li>
+                    <li>TSLA</li>
+                    <li>META</li>
+                    <li>NVDA</li>
+                    <li>JPM</li>
+                    <li>V</li>
+                    <li>JNJ</li>
+                </ul>
+
+                <h2>Time Intervals</h2>
+                <ul id="interval-list">
+                    <li>1min</li>
+                    <li>15min</li>
+                    <li>60min</li>
+                    <li>120min</li>
+                    <li>240min</li>
+                    <li>D</li>
+                    <li>W</li>
+                </ul>
+
+                <button id="analyze-btn">Analyze</button>
+            </section>
+
+            <div id="loading">
+                <div class="loader"></div>
+                <p>Loading data...</p>
+            </div>
+
+            <section id="results"></section>
+
+            <section id="about">
+                <h2>About This Application</h2>
+                <p>This application demonstrates the use of the MACD indicator for algorithmic trading. It fetches historical stock data, calculates the MACD, and provides buy/sell signals based on the analysis.</p>
+                <p>The application is built using HTML, CSS, and JavaScript, with Plotly.js for charting and the Alpha Vantage API for data retrieval.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Algorithmic Trading with MACD</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
